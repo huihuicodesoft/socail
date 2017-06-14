@@ -1,11 +1,23 @@
-package cn.com.wh.social;
+package cn.com.wh.social.app.pojo;
+
+import org.apache.ibatis.type.Alias;
 
 /**
  * Created by Hui on 2017/6/12.
  */
+@Alias("User")
 public class User {
-    String name;
-    int age;
+    private Long id;
+    private String name;
+    private int age;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

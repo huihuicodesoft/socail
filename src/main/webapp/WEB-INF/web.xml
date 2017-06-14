@@ -6,7 +6,7 @@
     <description>学习后台</description>
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:/root-context.xml</param-value>
+        <param-value>classpath:/context-root.xml</param-value>
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
