@@ -1,9 +1,13 @@
-package cn.com.wh.social.app.config;
+package cn.com.wh.social.config;
 
+import cn.com.wh.social.Application;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -14,17 +18,20 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Created by Hui on 2017/6/13.
+ *
+ * swagger在spring容器中的配置
  */
 @Configuration
 @EnableSwagger2
 @EnableWebMvc
-public class SwaggerConfig {
+@ComponentScan(basePackageClasses = Application.class)
+public class SwaggerConfig extends WebMvcConfigurerAdapter{
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("cn.com.wh.social"))
+                .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -34,5 +41,15 @@ public class SwaggerConfig {
                 .title("Spring 中使用Swagger2构建RESTful APIs")
                 .version("1.1")
                 .build();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/swagger/**").addResourceLocations("/WEB-INF/swagger-ui/");
+    }
+
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
     }
 }
