@@ -1,4 +1,4 @@
-package cn.com.wh.social.config;
+package cn.com.wh.ring.config;
 
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.filter.logging.Log4jFilter;

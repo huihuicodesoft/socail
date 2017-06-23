@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wh.ring.app.dao.user.UserTouristDao">
+    <resultMap id="userTouristResultMap" type="UserTouristPojo">
+        <id property="id" column="ID" />
+        <result property="terminalMark" column="TERMINAL_MARK" />
+        <result property="count" column="COUNT" />
+        <result property="lastTime" column="LAST_TIME" jdbcType="TIMESTAMP"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insertOrUpdate" parameterType="UserTouristPojo" useGeneratedKeys="true" keyColumn="id">
+        INSERT INTO user_tourist (TERMINAL_MARK, LAST_TIME, COUNT, CREATE_TIME) VALUES (#{terminalMark}, NOW(), COUNT+1, NOW())
+        ON DUPLICATE KEY  UPDATE LAST_TIME = NOW(), COUNT = COUNT + 1
+    </insert>
+
+</mapper>

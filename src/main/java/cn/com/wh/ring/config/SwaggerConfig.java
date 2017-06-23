@@ -1,6 +1,6 @@
-package cn.com.wh.social.config;
+package cn.com.wh.ring.config;
 
-import cn.com.wh.social.Application;
+import cn.com.wh.ring.Application;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

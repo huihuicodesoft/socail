@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wh.ring.app.dao.user.UserSaveIdDao">
+    <resultMap id="userSaveIdResultMap" type="UserSaveIdPojo">
+        <id property="id" column="ID" />
+        <result property="saveUserId" column="SAVE_USER_ID" />
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getAll" resultMap="userSaveIdResultMap">
+        SELECT ID, SAVE_USER_ID CREATE_TIME FROM user_save_id
+    </select>
+</mapper>

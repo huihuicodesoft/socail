@@ -1,6 +1,6 @@
-package cn.com.wh.social.config;
+package cn.com.wh.ring.config;
 
-import cn.com.wh.social.Application;
+import cn.com.wh.ring.Application;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -35,7 +35,7 @@ public class MybatisConfig {
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setConfiguration(getConfiguration());
         String path = Application.class.getPackage().getName().replace(".", "/");
-        sqlSessionFactoryBean.setTypeAliasesPackage(Application.class.getPackage().getName());
+        sqlSessionFactoryBean.setTypeAliasesPackage(Application.class.getPackage().getName()+ "/**/*Pojo");
         sqlSessionFactoryBean.setMapperLocations(context.getResources("classpath:/"+path + "/**/*Dao.xml"));
         return sqlSessionFactoryBean;
     }

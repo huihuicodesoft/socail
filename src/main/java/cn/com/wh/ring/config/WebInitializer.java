@@ -1,4 +1,4 @@
-package cn.com.wh.social.config;
+package cn.com.wh.ring.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wh.ring.app.dao.user.UserDao">
+    <resultMap id="userResultMap" type="UserPojo">
+        <id property="id" column="ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="account" column="ACCOUNT"/>
+        <result property="accountType" column="ACCOUNT_TYPE"/>
+        <result property="userInfoId" column="USER_INFO_ID"/>
+        <result property="bindAccount" column="BIND_ACCOUNT"/>
+        <result property="bindAccountType" column="BIND_ACCOUNT_TYPE"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="UserPojo" useGeneratedKeys="true" keyColumn="id">
+        INSERT INTO user
+        (USER_ID, ACCOUNT, ACCOUNT_TYPE, USER_INFO_ID, CREATE_TIME)
+        VALUES
+        (#{userId}, #{account}, #{accountType}, #{userInfoId}, NOW())
+    </insert>
+
+    <update id="updateBindInfo" parameterType="java.lang.Long">
+        UPDATE user
+          SET
+            BIND_ACCOUNT = #{bindAccount},
+            BIND_ACCOUNT_TYPE = #{bindAccountType}
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <update id="updateState" parameterType="java.lang.Long">
+        UPDATE user
+          SET
+            STATE = #{state}
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <select id="queryMaxUserId" resultType="java.lang.Long">
+        SELECT MAX(USER_ID) FROM user
+    </select>
+
+    <select id="queryUserId" resultType="java.lang.Long">
+        SELECT USER_ID FROM user
+        WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
+               OR (BIND_ACCOUNT = #{account} AND BIND_ACCOUNT_TYPE =  #{accountType})
+               AND STATE == 0
+    </select>
+</mapper>

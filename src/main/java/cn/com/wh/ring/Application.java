@@ -1,4 +1,4 @@
-package cn.com.wh.social;
+package cn.com.wh.ring;
 
 /**
  * Created by Hui on 2017/6/15.

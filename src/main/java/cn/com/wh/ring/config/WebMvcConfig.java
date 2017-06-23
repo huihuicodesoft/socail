@@ -1,6 +1,6 @@
-package cn.com.wh.social.config;
+package cn.com.wh.ring.config;
 
-import cn.com.wh.social.Application;
+import cn.com.wh.ring.Application;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = Application.class,
+@ComponentScan(basePackageClasses = {Application.class},
         includeFilters = @ComponentScan.Filter(Controller.class))
 public class WebMvcConfig extends WebMvcConfigurerAdapter{
     @Override
