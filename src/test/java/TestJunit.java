@@ -1,12 +1,12 @@
 import org.junit.Ignore;
-
 import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Hui on 2017/5/26.
  */
-public class TextJunit {
+public class TestJunit{
     @org.junit.Test(timeout=10)
+    @Ignore
     public void a(){
         System.out.println("a");
     }
