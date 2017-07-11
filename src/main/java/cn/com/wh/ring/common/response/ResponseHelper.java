@@ -18,6 +18,10 @@ public class ResponseHelper {
         return response;
     }
 
+    public static <T> Response<T> createResponse(int code, String description) {
+        return createResponse(code, description, null);
+    }
+
     public static <T> Response<T> createResponse(int code, String description, T payload) {
         Response<T> response = new Response<T>();
         response.setCode(code);

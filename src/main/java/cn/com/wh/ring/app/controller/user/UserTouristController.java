@@ -26,7 +26,6 @@ public class UserTouristController {
     @ApiOperation(value = "记录设备登录")
     public Response<?> addUser(@RequestBody UserTouristPojo userTouristPojo) {
         String token = userTouristService.recordAccessInfo(userTouristPojo.getTerminalMark());
-        System.out.println("token =" + token);
         return ResponseHelper.createSuccessResponse(token);
     }
 }
