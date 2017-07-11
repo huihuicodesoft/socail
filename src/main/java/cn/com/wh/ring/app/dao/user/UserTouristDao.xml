@@ -7,6 +7,7 @@
         <result property="count" column="COUNT" />
         <result property="lastTime" column="LAST_TIME" jdbcType="TIMESTAMP"/>
         <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="state" column="STATE"/>
     </resultMap>
 
     <insert id="insertOrUpdate" parameterType="UserTouristPojo" useGeneratedKeys="true" keyColumn="id">
@@ -14,4 +15,13 @@
         ON DUPLICATE KEY  UPDATE LAST_TIME = NOW(), COUNT = COUNT + 1
     </insert>
 
+    <update id="updateState" >
+        UPDATE user_tourist
+        SET STATE = #{state}
+        WHERE TERMINAL_MARK = #{terminalMark}
+    </update>
+
+    <select id="queryByTerminalMark" resultMap="userTouristResultMap">
+        SELECT * FROM user_tourist WHERE TERMINAL_MARK = #{terminalMark}
+    </select>
 </mapper>

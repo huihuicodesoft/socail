@@ -2,6 +2,8 @@ package cn.com.wh.ring.app.bean.pojo;
 
 import org.apache.ibatis.type.Alias;
 
+import java.util.Date;
+
 /**
  * Created by Hui on 2017/6/12.
  */
@@ -14,8 +16,8 @@ public class UserInfoPojo {
     private int sex;
     private String avatar;
     private String signature;
-    private Long lastModifiedTime;
-    private Long createTime;
+    private Date lastModifiedTime;
+    private Date createTime;
     private int state;
 
     public Long getId() {
@@ -74,19 +76,19 @@ public class UserInfoPojo {
         this.signature = signature;
     }
 
-    public Long getLastModifiedTime() {
+    public Date getLastModifiedTime() {
         return lastModifiedTime;
     }
 
-    public void setLastModifiedTime(Long lastModifiedTime) {
+    public void setLastModifiedTime(Date lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public Long getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

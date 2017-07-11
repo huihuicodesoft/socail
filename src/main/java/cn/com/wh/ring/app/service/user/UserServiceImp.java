@@ -1,11 +1,13 @@
 package cn.com.wh.ring.app.service.user;
 
+import cn.com.wh.ring.app.constant.UserConstants;
 import cn.com.wh.ring.app.dao.user.UserDao;
 import cn.com.wh.ring.app.dao.user.UserSaveIdDao;
 import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
 import cn.com.wh.ring.app.bean.pojo.UserPojo;
 import cn.com.wh.ring.app.bean.pojo.UserSaveIdPojo;
 import cn.com.wh.ring.app.bean.vo.UserVo;
+import cn.com.wh.ring.app.helper.TokenHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +62,7 @@ public class UserServiceImp implements UserService {
         return false;
     }
 
-    public Long createUser(UserPojo userPojo) {
+    public String createUser(UserPojo userPojo) {
         //手机号，三方校验
         Long userId = userDao.queryUserId(userPojo.getAccount(), userPojo.getAccountType());
         if (userId > 0) {
@@ -70,7 +72,7 @@ public class UserServiceImp implements UserService {
             userPojo.setUserId(generateUserId());
             userDao.insert(userPojo);
         }
-        return userPojo.getUserId();
+        return TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
     }
 
     public void updateUserInfo(Long userId, UserInfoPojo userPojo) {
@@ -79,5 +81,14 @@ public class UserServiceImp implements UserService {
 
     public UserVo queryUser(Long userId) {
         return null;
+    }
+
+    public boolean isValid(Long userId) {
+        UserPojo userPojo = userDao.queryByUserId(userId);
+        if (userPojo == null){
+            return false;
+        } else {
+            return userPojo.getState() == UserConstants.ACCOUNT_STATE_USEING;
+        }
     }
 }

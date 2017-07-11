@@ -9,6 +9,7 @@
         <result property="userInfoId" column="USER_INFO_ID"/>
         <result property="bindAccount" column="BIND_ACCOUNT"/>
         <result property="bindAccountType" column="BIND_ACCOUNT_TYPE"/>
+        <result property="state" column="STATE"/>
         <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
@@ -43,5 +44,10 @@
         WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
                OR (BIND_ACCOUNT = #{account} AND BIND_ACCOUNT_TYPE =  #{accountType})
                AND STATE == 0
+    </select>
+
+    <select id="queryByUserId" resultMap="userResultMap">
+        SELECT * FROM user
+        WHERE USER_ID = #{userId}
     </select>
 </mapper>

@@ -2,6 +2,8 @@ package cn.com.wh.ring.app.bean.pojo;
 
 import org.apache.ibatis.type.Alias;
 
+import java.util.Date;
+
 /**
  * Created by Hui on 2017/6/23.
  */
@@ -12,10 +14,10 @@ public class UserPojo {
     private String account;
     private int accountType;
     private int userInfoId;
-    private Long createTime;
+    private Date createTime;
     private String bindAccount;
     private int bindAccountType;
-    private int state;
+    private int state; //账号状态 0 : 正在使用（默认）1 : 废弃 2：锁定
 
     public Long getId() {
         return id;
@@ -57,11 +59,11 @@ public class UserPojo {
         this.userInfoId = userInfoId;
     }
 
-    public Long getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Long createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

@@ -1,6 +1,8 @@
 package cn.com.wh.ring.app.dao.user;
 
+import cn.com.wh.ring.app.bean.pojo.UserPojo;
 import cn.com.wh.ring.app.bean.pojo.UserTouristPojo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -13,4 +15,17 @@ public interface UserTouristDao {
      * @param userTouristPojo
      */
     void insertOrUpdate(UserTouristPojo userTouristPojo);
+
+    /**
+     * 更新账号状态
+     * @param terminalMark
+     * @param state
+     * 账号状态
+     * 0 : 正在使用（默认）
+     * 1 : 废弃
+     * 2 ：锁定
+     */
+    void updateState(@Param("terminalMark") String terminalMark, @Param("state") int state);
+
+    UserTouristPojo queryByTerminalMark(@Param("terminalMark") String terminalMark);
 }

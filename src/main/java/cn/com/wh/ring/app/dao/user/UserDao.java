@@ -18,4 +18,6 @@ public interface UserDao {
     Long queryMaxUserId();
 
     Long queryUserId(@Param("account") String account, @Param("accountType")int accountType);
+
+    UserPojo queryByUserId(@Param("userId") Long userId);
 }
