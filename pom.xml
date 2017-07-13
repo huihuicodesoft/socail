@@ -25,6 +25,8 @@
         <version-spring-security>5.0.0.M2</version-spring-security>
         <version-guava>22.0</version-guava>
         <version-shiro>1.3.2</version-shiro>
+        <version-fileupload>1.3.1</version-fileupload>
+        <version-thumbnailator>0.4.8</version-thumbnailator>
     </properties>
 
     <!--确保spring的包都是同一个版本-->
@@ -172,7 +174,13 @@
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
-            <version>1.3.1</version>
+            <version>${version-fileupload}</version>
+        </dependency>
+        <!-- 图片缩略图 -->
+        <dependency>
+            <groupId>net.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>${version-thumbnailator}</version>
         </dependency>
     </dependencies>
 

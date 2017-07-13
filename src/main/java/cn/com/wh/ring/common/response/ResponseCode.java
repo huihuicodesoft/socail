@@ -8,4 +8,6 @@ public class ResponseCode {
     public static final int ERROR_TOKEN = -1;
 
     public static final int ERROR_FILE_STORAGE = 1001;
+    public static final int ERROR_FILE_UPLOAD_EMPTY = 1002;
+    public static final int ERROR_FILE_UPLOAD_MAX_SIZE = 1003;
 }

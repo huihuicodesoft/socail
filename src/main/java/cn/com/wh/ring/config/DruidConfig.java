@@ -21,18 +21,18 @@ import java.util.List;
 @Configuration
 public class DruidConfig {
     @Value("${db.url}")
-    String url;
+    String URL;
     @Value("${db.username}")
-    String username;
+    String USER_NAME;
     @Value("${db.password}")
-    String password;
+    String PASSWORD;
 
     @Bean
     public DataSource instanceDruidDataSource() {
         DruidDataSource dataSource = new DruidDataSource();
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
+        dataSource.setUrl(URL);
+        dataSource.setUsername(USER_NAME);
+        dataSource.setPassword(PASSWORD);
         try {
             dataSource.setFilters("stat,log4j");
         } catch (SQLException e) {

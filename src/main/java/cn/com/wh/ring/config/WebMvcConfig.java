@@ -10,7 +10,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -23,7 +22,7 @@ import java.util.List;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackageClasses = {Application.class},
-        includeFilters = @ComponentScan.Filter(Controller.class))
+        includeFilters = @ComponentScan.Filter({Controller.class}))
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -41,8 +40,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     MultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("UTF-8");
-        resolver.setMaxUploadSize(1 * 1024 * 1024 * 1024);
-        resolver.setMaxInMemorySize(10240);
+        resolver.setMaxUploadSize(100 * 1024 * 1024);
+        resolver.setMaxInMemorySize(10 * 1024 * 1024);
         return resolver;
     }
+
 }
