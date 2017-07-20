@@ -1,9 +1,9 @@
-package cn.com.wh.ring.app.bean.vo;
+package cn.com.wh.ring.app.bean.response;
 
 /**
  * Created by Hui on 2017/6/21.
  */
-public class UserVo {
+public class User {
     private Long userId;
     private String mobile;
     private String nickname;

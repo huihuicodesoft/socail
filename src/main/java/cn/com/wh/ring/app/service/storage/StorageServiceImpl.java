@@ -48,7 +48,7 @@ public class StorageServiceImpl implements StorageService {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + file.getOriginalFilename());
             }
-            String fileName = fileHelper.genrateFileName(file.getOriginalFilename());
+            String fileName = fileHelper.generateFileName(file.getOriginalFilename());
             Files.copy(file.getInputStream(), this.rootLocation.resolve(fileName));
             return fileHelper.getFileUrl(fileName);
         } catch (IOException e) {

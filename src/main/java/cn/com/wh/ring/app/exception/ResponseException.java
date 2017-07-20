@@ -2,6 +2,7 @@ package cn.com.wh.ring.app.exception;
 
 /**
  * Created by Hui on 2017/7/12.
+ * 控制层异常
  */
 public class ResponseException extends RuntimeException{
     private String message;

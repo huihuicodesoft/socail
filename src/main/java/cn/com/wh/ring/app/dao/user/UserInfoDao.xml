@@ -3,7 +3,6 @@
 <mapper namespace="cn.com.wh.ring.app.dao.user.UserInfoDao">
     <resultMap id="userInfoResultMap" type="UserInfoPojo">
         <id property="id" column="ID"/>
-        <result property="terminalMark" column="TERMINAL_MARK"/>
         <result property="nickname" column="NICKNAME"/>
         <result property="birthday" column="BIRTHDAY" jdbcType="TIMESTAMP"/>
         <result property="sex" column="SEX"/>
@@ -16,15 +15,14 @@
 
     <insert id="insert" parameterType="UserInfoPojo" useGeneratedKeys="true" keyColumn="id">
         INSERT INTO user_info
-          (TERMINAL_MARK, NICKNAME, BIRTHDAY, SEX, AVATAR, SIGNATURE, CREATE_TIME)
+          (NICKNAME, BIRTHDAY, SEX, AVATAR, SIGNATURE, CREATE_TIME)
           VALUES
-          (#{terminalMark}, #{nickname}, #{birthday}, #{sex}, #{avatar}, #{signature}, NOW())
+          (#{nickname}, #{birthday}, #{sex}, #{avatar}, #{signature}, NOW())
     </insert>
 
     <update id="update">
         UPDATE user_info
           <set>
-              <if test="terminalMark != null">TERMINAL_MARK = #{terminalMark},</if>
               <if test="nickname != null">NICKNAME = #{nickname},</if>
               <if test="birthday != null">BIRTHDAY = #{birthday},</if>
               <if test="sex >= 0">SEX = #{sex},</if>

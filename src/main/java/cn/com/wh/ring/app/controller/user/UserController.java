@@ -1,8 +1,5 @@
 package cn.com.wh.ring.app.controller.user;
 
-import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
-import cn.com.wh.ring.app.bean.pojo.UserPojo;
-import cn.com.wh.ring.app.bean.vo.UserVo;
 import cn.com.wh.ring.app.service.user.UserService;
 import cn.com.wh.ring.common.response.Response;
 import cn.com.wh.ring.common.response.ResponseHelper;
@@ -25,12 +22,5 @@ public class UserController {
     @ApiOperation(value = "获取用户信息")
     public Response<?> getUser(@PathVariable("userId") Long userId){
         return ResponseHelper.createSuccessResponse(userService.queryUser(userId));
-    }
-
-    @GetMapping("v1")
-    @ApiOperation(value = "添加用户")
-    public Response<?> addUser(@RequestBody UserPojo userPojo){
-        String token = userService.createUser(userPojo);
-        return ResponseHelper.createSuccessResponse(token);
     }
 }

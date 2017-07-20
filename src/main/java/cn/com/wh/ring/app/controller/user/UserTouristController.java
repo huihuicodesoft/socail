@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Hui on 2017/7/10.
  */
 @RestController
-@RequestMapping("rest/userTourist")
+@RequestMapping("rest/tourist")
 @Api("游客用户控制器")
 public class UserTouristController {
     @Autowired

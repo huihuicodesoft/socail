@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wh.ring.app.dao.user.UserTerminalDao">
+    <resultMap id="userTerminalResultMap" type="UserTerminalPojo">
+        <id property="id" column="ID" />
+        <result property="userId" column="USER_ID" />
+        <result property="terminalMark" column="TERMINAL_MARK" />
+    </resultMap>
+
+    <insert id="insert" parameterType="UserTerminalPojo" useGeneratedKeys="true" keyColumn="id">
+        INSERT INTO user_terminal (USER_ID, TERMINAL_MARK) VALUES (#{userId}, #{terminalMark})
+    </insert>
+
+    <select id="queryId" resultType="java.lang.Long">
+        SELECT * FROM user_terminal WHERE USER_ID = #{userId} AND TERMINAL_MARK = #{terminalMark}
+    </select>
+</mapper>

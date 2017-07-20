@@ -1,13 +1,18 @@
 package cn.com.wh.ring.app.service.user;
 
+import cn.com.wh.ring.app.bean.pojo.UserTerminalPojo;
+import cn.com.wh.ring.app.bean.request.LoginMobile;
+import cn.com.wh.ring.app.bean.response.User;
 import cn.com.wh.ring.app.constant.UserConstants;
 import cn.com.wh.ring.app.dao.user.UserDao;
+import cn.com.wh.ring.app.dao.user.UserInfoDao;
 import cn.com.wh.ring.app.dao.user.UserSaveIdDao;
 import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
 import cn.com.wh.ring.app.bean.pojo.UserPojo;
 import cn.com.wh.ring.app.bean.pojo.UserSaveIdPojo;
-import cn.com.wh.ring.app.bean.vo.UserVo;
+import cn.com.wh.ring.app.dao.user.UserTerminalDao;
 import cn.com.wh.ring.app.helper.TokenHelper;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +30,10 @@ public class UserServiceImp implements UserService {
 
     @Autowired
     UserDao userDao;
-
+    @Autowired
+    UserInfoDao userInfoDao;
+    @Autowired
+    UserTerminalDao userTerminalDao;
     @Autowired
     UserSaveIdDao userSaveIdDao;
 
@@ -62,24 +70,45 @@ public class UserServiceImp implements UserService {
         return false;
     }
 
-    public String createUser(UserPojo userPojo) {
+    public String createUser(LoginMobile loginMobile) {
+        Long result;
+        String mobile = loginMobile.getMobile();
         //手机号，三方校验
-        Long userId = userDao.queryUserId(userPojo.getAccount(), userPojo.getAccountType());
+        Long userId = userDao.queryUserId(mobile, UserConstants.ACCOUNT_TYPE_MOBILE);
         if (userId > 0) {
             //用户已存在
-            userPojo.setUserId(userId);
+            result = userId;
         } else {
+            //添加用户信息
+            UserInfoPojo userInfoPojo = new UserInfoPojo();
+            userInfoDao.insert(userInfoPojo);
+
+            //创建账号，绑定用户信息
+            UserPojo userPojo = new UserPojo();
+            userPojo.setAccount(loginMobile.getMobile());
+            userPojo.setAccountType(UserConstants.ACCOUNT_TYPE_MOBILE);
+            userPojo.setUserInfoId(userInfoPojo.getId());
             userPojo.setUserId(generateUserId());
             userDao.insert(userPojo);
+
+            //记录账号和设备标识
+            if (!Strings.isNullOrEmpty(loginMobile.getTerminalMark())){
+                UserTerminalPojo userTerminalPojo = new UserTerminalPojo();
+                userTerminalPojo.setUserId(userPojo.getUserId());
+                userTerminalPojo.setTernimalMark(loginMobile.getTerminalMark());
+                userTerminalDao.insert(userTerminalPojo);
+            }
+
+            result = userPojo.getUserId();
         }
-        return TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
+        return TokenHelper.createUserToken(String.valueOf(result));
     }
 
     public void updateUserInfo(Long userId, UserInfoPojo userPojo) {
 
     }
 
-    public UserVo queryUser(Long userId) {
+    public User queryUser(Long userId) {
         return null;
     }
 

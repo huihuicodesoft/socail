@@ -14,8 +14,10 @@ public class ShiroFilterManager {
     //先后顺序很重要，会拦截
     public static Map<String, String> getFilterChainDefinition() {
         LinkedHashMap<String, String> definitionsMap = new LinkedHashMap<String, String>();
-        definitionsMap.put("/rest/userTourist/v1/record", "anon");
-        definitionsMap.put("/**", "getToken");
+        definitionsMap.put("/rest/login/v1/mobile", "anon");
+        definitionsMap.put("/rest/tourist/v1/record", "anon");
+        definitionsMap.put("/rest/sms/v1/code", "anon");
+        definitionsMap.put("/rest/**", "getToken");
         return definitionsMap;
     }
 }

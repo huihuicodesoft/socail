@@ -1,11 +1,10 @@
 package cn.com.wh.ring.app.auth;
 
 import cn.com.wh.ring.app.helper.ObjectMapperHolder;
-import cn.com.wh.ring.app.helper.TokenHelper;
 import cn.com.wh.ring.app.helper.MessageResourceHelper;
 import cn.com.wh.ring.common.response.Response;
-import cn.com.wh.ring.common.response.ResponseCode;
 import cn.com.wh.ring.common.response.ResponseHelper;
+import cn.com.wh.ring.common.response.ReturnCode;
 import com.google.common.base.Strings;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -37,30 +36,16 @@ public class TokenFilter extends NoSessionCreationFilter {
             if (Strings.isNullOrEmpty(token)) {
                 throw new AuthenticationException("no token provided");
             } else {
-                UserToken userToken = createUserToken(token);
-                System.out.println("userToken = "+ userToken);
-                if (userToken == null) {
-                    throw new AuthenticationException("no token provided");
-                } else {
-                    Subject subject = SecurityUtils.getSubject();
-                    subject.login(userToken);
-                    return true;
-                }
+                UserToken userToken = new UserToken(token);
+                Subject subject = SecurityUtils.getSubject();
+                subject.login(userToken);
+                return true;
             }
         } catch (AuthenticationException e) {
             //返回信息
-            System.out.print("222 = "+e.toString());
-            responseNotLogin((HttpServletRequest) request, (HttpServletResponse) response);
+            responseNotLogin((HttpServletResponse) response);
             return false;
         }
-    }
-
-    private UserToken createUserToken(String token) {
-        String[] userInfo = TokenHelper.parseToken(token);
-        if (userInfo.length == 2) {
-            return new UserToken(userInfo[0], userInfo[1]);
-        }
-        return null;
     }
 
     private String getToken(HttpServletRequest request) {
@@ -77,9 +62,9 @@ public class TokenFilter extends NoSessionCreationFilter {
         return null;
     }
 
-    protected void responseNotLogin(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void responseNotLogin(HttpServletResponse response) throws Exception {
         String message = MessageResourceHelper.getInstance().getMessage("error_token_invalid", Locale.SIMPLIFIED_CHINESE);
-        Response<?> rsp = ResponseHelper.createResponse(ResponseCode.ERROR_TOKEN, message);
+        Response<?> rsp = ResponseHelper.createResponse(ReturnCode.ERROR_TOKEN, message);
         try {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getOutputStream().write(ObjectMapperHolder.getInstance().getMapper().writeValueAsBytes(rsp));

@@ -10,7 +10,6 @@ import java.util.Date;
 @Alias("UserInfoPojo")
 public class UserInfoPojo {
     private Long id;
-    private String terminalMark;
     private String nickname;
     private Long birthday;
     private int sex;
@@ -26,14 +25,6 @@ public class UserInfoPojo {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTerminalMark() {
-        return terminalMark;
-    }
-
-    public void setTerminalMark(String terminalMark) {
-        this.terminalMark = terminalMark;
     }
 
     public String getNickname() {

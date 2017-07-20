@@ -1,11 +1,9 @@
 package cn.com.wh.ring.app.controller.upload;
 
-import cn.com.wh.ring.app.controller.GlobalExceptionHandler;
 import cn.com.wh.ring.app.exception.ResponseException;
-import cn.com.wh.ring.app.helper.MessageResourceHelper;
+import cn.com.wh.ring.common.response.ReturnCode;
 import cn.com.wh.ring.app.service.storage.StorageService;
 import cn.com.wh.ring.common.response.Response;
-import cn.com.wh.ring.common.response.ResponseCode;
 import cn.com.wh.ring.common.response.ResponseHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,17 +32,17 @@ public class FileUploadController {
     @PostMapping("v1/image/upload")
     public Response<?> fileUpload(@RequestParam("file") MultipartFile[] files) {
         if (files == null || files.length == 0) {
-            throw new ResponseException(ResponseCode.ERROR_FILE_UPLOAD_EMPTY, "error_file_upload_empty");
+            throw ResponseException.create(ReturnCode.ERROR_FILE_UPLOAD_EMPTY, "error_file_upload_empty");
         } else {
             List<String> fileUrls = new ArrayList<>();
             for (MultipartFile file : files) {
                 if (file.getSize() > PER_MAX_SIZE) {
-                    throw new ResponseException(ResponseCode.ERROR_FILE_UPLOAD_MAX_SIZE, "error_file_upload_max_size");
+                    throw ResponseException.create(ReturnCode.ERROR_FILE_UPLOAD_MAX_SIZE, "error_file_upload_max_size");
                 } else {
                     try {
                         fileUrls.add(storageService.store(file));
                     } catch (Exception e) {
-                        throw new ResponseException(ResponseCode.ERROR_FILE_STORAGE, "error_file_storage");
+                        throw ResponseException.create(ReturnCode.ERROR_FILE_STORAGE, "error_file_storage");
                     }
                 }
             }

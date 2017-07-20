@@ -13,7 +13,7 @@ public class UserPojo {
     private Long userId;
     private String account;
     private int accountType;
-    private int userInfoId;
+    private Long userInfoId;
     private Date createTime;
     private String bindAccount;
     private int bindAccountType;
@@ -51,11 +51,11 @@ public class UserPojo {
         this.accountType = accountType;
     }
 
-    public int getUserInfoId() {
+    public Long getUserInfoId() {
         return userInfoId;
     }
 
-    public void setUserInfoId(int userInfoId) {
+    public void setUserInfoId(Long userInfoId) {
         this.userInfoId = userInfoId;
     }
 

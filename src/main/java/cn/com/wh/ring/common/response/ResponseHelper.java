@@ -10,7 +10,7 @@ public class ResponseHelper {
 
     public static <T> Response<T> createSuccessResponse(T payload) {
         Response<T> response = new Response<T>();
-        response.setCode(ResponseCode.OK);
+        response.setCode(ReturnCode.OK);
         response.setDescription("");
         if (payload != null) {
             response.setPayload(payload);

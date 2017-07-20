@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wh.ring.app.dao.post.PostDao">
+    <resultMap id="postResultMap" type="PostPojo">
+        <id property="id" column="ID"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="mediaContent" column="MEDIA_CONTENT"/>
+        <result property="mediaType" column="MEDIA_TYPE"/>
+        <result property="addressCode" column="ADDRESS_CODE"/>
+        <result property="praiseNumber" column="PRAISE_NUMBER"/>
+        <result property="criticizeNumber" column="CRITICIZE_NUMBER"/>
+        <result property="commentNumber" column="COMMENT_NUMBER"/>
+        <result property="reportNumber" column="REPORT_NUMBER"/>
+        <result property="type" column="TYPE"/>
+        <result property="anonymous" column="ANONYMOUS"/>
+        <result property="isDeleted" column="IS_DELETED"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="PostPojo" useGeneratedKeys="true" keyColumn="id">
+        INSERT INTO post
+        (USER_ID, DESCRIPTION, MEDIA_CONTENT, MEDIA_TYPE, ADDRESS_CODE, TYPE, CREATE_TIME)
+        VALUES
+        (#{userId}, #{description}, #{mediaContent}, #{mediaType}, #{addressCode}, #{type}, NOW())
+    </insert>
+
+    <update id="increasePraiseNumber" parameterType="java.lang.Long">
+        UPDATE post
+        SET
+        PRAISE_NUMBER = PRAISE_NUMBER + 1
+        WHERE ID = #{id}
+    </update>
+
+    <update id="increaseCriticizeNumber" parameterType="java.lang.Long">
+        UPDATE post
+        SET
+        CRITICIZE_NUMBER = CRITICIZE_NUMBER + 1
+        WHERE ID = #{id}
+    </update>
+
+    <update id="increaseCommentNumber" parameterType="java.lang.Long">
+        UPDATE post
+        SET
+        COMMENT_NUMBER = COMMENT_NUMBER + 1
+        WHERE ID = #{id}
+    </update>
+
+    <update id="increaseReportNumber" parameterType="java.lang.Long">
+        UPDATE post
+        SET
+        REPORT_NUMBER = REPORT_NUMBER + 1
+        WHERE ID = #{id}
+    </update>
+
+    <select id="queryById" parameterType="java.lang.Long" resultMap="postResultMap">
+        SELECT * FROM post WHERE ID = #{id}
+    </select>
+</mapper>

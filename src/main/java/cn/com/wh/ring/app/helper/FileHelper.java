@@ -9,7 +9,7 @@ import java.util.UUID;
  * Created by Hui on 2017/7/12.
  */
 @Component
-public class FileHelper {
+public final class FileHelper {
     @Value("${file.url.prefix}")
     String FILE_URL_PREFIX;
 
@@ -29,7 +29,7 @@ public class FileHelper {
      * @param originFileName
      * @return
      */
-    public String genrateFileName(String originFileName){
+    public String generateFileName(String originFileName){
         String uuid = UUID.randomUUID().toString().replace("-", "");
         String suffix = originFileName.substring(originFileName.indexOf("."), originFileName.length());
         return uuid + suffix;
