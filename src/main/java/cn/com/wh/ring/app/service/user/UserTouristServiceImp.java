@@ -4,6 +4,7 @@ import cn.com.wh.ring.app.bean.pojo.TouristPojo;
 import cn.com.wh.ring.app.bean.request.TouristVo;
 import cn.com.wh.ring.app.constant.UserConstants;
 import cn.com.wh.ring.app.dao.user.TouristDao;
+import cn.com.wh.ring.app.helper.TerminalMarkHelper;
 import cn.com.wh.ring.app.helper.TokenHelper;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class UserTouristServiceImp implements UserTouristService {
             throw new RuntimeException("tpurist info is not null");
         } else {
             TouristPojo touristPojo = new TouristPojo();
-            String terminalMark = touristVo.getTerminalMark() + "+" + touristVo.getType();
+            String terminalMark = TerminalMarkHelper.contact(touristVo.getTerminalMark(), touristVo.getType());
             touristPojo.setTerminalMark(terminalMark);
             touristPojo.setOsType(osType);
             userTouristDao.insertOrUpdate(touristPojo);
