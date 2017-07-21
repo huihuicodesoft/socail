@@ -9,7 +9,7 @@ import org.apache.ibatis.type.Alias;
 public class UserTerminalPojo {
     private Long id;
     private Long userId;
-    private String ternimalMark;
+    private String terminalMark;
 
     public Long getId() {
         return id;
@@ -27,11 +27,11 @@ public class UserTerminalPojo {
         this.userId = userId;
     }
 
-    public String getTernimalMark() {
-        return ternimalMark;
+    public String getTerminalMark() {
+        return terminalMark;
     }
 
-    public void setTernimalMark(String ternimalMark) {
-        this.ternimalMark = ternimalMark;
+    public void setTerminalMark(String terminalMark) {
+        this.terminalMark = terminalMark;
     }
 }

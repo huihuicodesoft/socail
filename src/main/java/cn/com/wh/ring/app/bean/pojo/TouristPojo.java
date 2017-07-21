@@ -7,10 +7,11 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/6/22.
  */
-@Alias("UserTouristPojo")
-public class UserTouristPojo {
+@Alias("TouristPojo")
+public class TouristPojo {
     private Long id;
     private String terminalMark;
+    private int osType; //{OS_ANDROID, OS_IOS}
     private Date lastTime;
     private int count;
     private Date createTime;
@@ -30,6 +31,14 @@ public class UserTouristPojo {
 
     public void setTerminalMark(String terminalMark) {
         this.terminalMark = terminalMark;
+    }
+
+    public int getOsType() {
+        return osType;
+    }
+
+    public void setOsType(int osType) {
+        this.osType = osType;
     }
 
     public Date getLastTime() {

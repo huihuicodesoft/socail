@@ -95,7 +95,7 @@ public class UserServiceImp implements UserService {
             if (!Strings.isNullOrEmpty(loginMobile.getTerminalMark())){
                 UserTerminalPojo userTerminalPojo = new UserTerminalPojo();
                 userTerminalPojo.setUserId(userPojo.getUserId());
-                userTerminalPojo.setTernimalMark(loginMobile.getTerminalMark());
+                userTerminalPojo.setTerminalMark(loginMobile.getTerminalMark());
                 userTerminalDao.insert(userTerminalPojo);
             }
 

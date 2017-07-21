@@ -5,5 +5,10 @@ package cn.com.wh.ring.app.constant;
  */
 public class Constants {
     public static final int BOOLEAN_TRUE = 1;
-    public static final int BOOLEAN_FALSE= 0;
+    public static final int BOOLEAN_FALSE = 0;
+
+    public static final int OS_UNKONW = -1;
+    public static final int OS_ANDROID = 1;
+    public static final int OS_IOS = 2;
+
 }

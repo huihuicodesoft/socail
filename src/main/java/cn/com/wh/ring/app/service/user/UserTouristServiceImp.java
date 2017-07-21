@@ -1,10 +1,11 @@
 package cn.com.wh.ring.app.service.user;
 
+import cn.com.wh.ring.app.bean.pojo.TouristPojo;
+import cn.com.wh.ring.app.bean.request.TouristVo;
 import cn.com.wh.ring.app.constant.UserConstants;
-import cn.com.wh.ring.app.dao.user.UserTouristDao;
-import cn.com.wh.ring.app.bean.pojo.UserTouristPojo;
+import cn.com.wh.ring.app.dao.user.TouristDao;
 import cn.com.wh.ring.app.helper.TokenHelper;
-import cn.com.wh.ring.common.secret.AES;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,21 +15,27 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class UserTouristServiceImp implements UserTouristService{
+public class UserTouristServiceImp implements UserTouristService {
 
     @Autowired
-    UserTouristDao userTouristDao;
+    TouristDao userTouristDao;
 
-    public String recordAccessInfo(String terminalMark) {
-        UserTouristPojo userTouristPojo = new UserTouristPojo();
-        userTouristPojo.setTerminalMark(terminalMark);
-        userTouristDao.insertOrUpdate(userTouristPojo);
-        return TokenHelper.createTerminalToken(terminalMark);
+    public String recordAccessInfo(TouristVo touristVo, int osType) {
+        if (touristVo == null || Strings.isNullOrEmpty(touristVo.getTerminalMark())) {
+            throw new RuntimeException("tpurist info is not null");
+        } else {
+            TouristPojo touristPojo = new TouristPojo();
+            String terminalMark = touristVo.getTerminalMark() + "+" + touristVo.getType();
+            touristPojo.setTerminalMark(terminalMark);
+            touristPojo.setOsType(osType);
+            userTouristDao.insertOrUpdate(touristPojo);
+            return TokenHelper.createTerminalToken(terminalMark);
+        }
     }
 
     public boolean isValid(String terminalMark) {
-        UserTouristPojo userTouristPojo = userTouristDao.queryByTerminalMark(terminalMark);
-        if (userTouristPojo == null){
+        TouristPojo userTouristPojo = userTouristDao.queryByTerminalMark(terminalMark);
+        if (userTouristPojo == null) {
             return false;
         } else {
             return userTouristPojo.getState() == UserConstants.ACCOUNT_STATE_USEING;
