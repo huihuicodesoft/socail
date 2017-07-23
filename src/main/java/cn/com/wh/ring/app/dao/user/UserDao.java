@@ -11,13 +11,19 @@ import org.springframework.stereotype.Repository;
 public interface UserDao {
     void insert(UserPojo userPojo);
 
-    void updateBindInfo(@Param("userId") Long userId, UserPojo userPojo);
+    void updatePassword(@Param("account") String account, @Param("accountType") int accountType, @Param("password") String password);
 
-    void updateState(@Param("userId") Long userId, int state);
+    void updateToken(UserPojo userPojo);
+
+    void updateBindAccount(@Param("userId") Long userId, @Param("account") String account);
+
+    void updateState(@Param("userId") Long userId, @Param("state") int state);
 
     Long queryMaxUserId();
 
-    Long queryUserId(@Param("account") String account, @Param("accountType")int accountType);
+    UserPojo queryByAccount(@Param("account") String account, @Param("accountType") int accountType);
+
+    UserPojo queryByBinAccount(@Param("account") String account);
 
     UserPojo queryByUserId(@Param("userId") Long userId);
 }

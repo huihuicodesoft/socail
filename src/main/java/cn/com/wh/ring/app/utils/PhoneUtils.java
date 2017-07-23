@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
  * Created by Hui on 2017/7/19.
  */
 public class PhoneUtils {
+    public static final String PHONE_REGEX = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
     /**
      * 验证手机号码
      *
@@ -18,8 +19,7 @@ public class PhoneUtils {
      * @return
      */
     public static boolean checkCellphone(String cellphone) {
-        String regex = "^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))\\d{8}$";
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern = Pattern.compile(PHONE_REGEX);
         Matcher matcher = pattern.matcher(cellphone);
         return matcher.matches();
     }

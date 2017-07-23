@@ -7,25 +7,41 @@
         <result property="account" column="ACCOUNT"/>
         <result property="accountType" column="ACCOUNT_TYPE"/>
         <result property="userInfoId" column="USER_INFO_ID"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="accessToken" column="ACCESS_TOKEN"/>
+        <result property="refreshToken" column="REFRESH_TOKEN"/>
         <result property="bindAccount" column="BIND_ACCOUNT"/>
-        <result property="bindAccountType" column="BIND_ACCOUNT_TYPE"/>
         <result property="state" column="STATE"/>
         <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <insert id="insert" parameterType="UserPojo" useGeneratedKeys="true" keyColumn="id">
         INSERT INTO user
-        (USER_ID, ACCOUNT, ACCOUNT_TYPE, USER_INFO_ID, CREATE_TIME)
+        (USER_ID, ACCOUNT, ACCOUNT_TYPE, USER_INFO_ID, ACCESS_TOKEN, REFRESH_TOKEN, CREATE_TIME)
         VALUES
-        (#{userId}, #{account}, #{accountType}, #{userInfoId}, NOW())
+        (#{userId}, #{account}, #{accountType}, #{userInfoId}, #{accessToken}, #{refreshToken}, NOW())
     </insert>
 
-    <update id="updateBindInfo" parameterType="java.lang.Long">
+    <update id="updateBindAccount">
         UPDATE user
           SET
-            BIND_ACCOUNT = #{bindAccount},
-            BIND_ACCOUNT_TYPE = #{bindAccountType}
+            BIND_ACCOUNT = #{account}
         WHERE USER_ID = #{userId}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE user
+          SET
+            PASSWORD = #{password}
+        WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
+    </update>
+
+    <update id="updateToken">
+        UPDATE user
+          SET
+            ACCESS_TOKEN = #{accessToken},
+            REFRESH_TOKEN = #{refreshToken}
+        WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
     </update>
 
     <update id="updateState" parameterType="java.lang.Long">
@@ -39,11 +55,14 @@
         SELECT MAX(USER_ID) FROM user
     </select>
 
-    <select id="queryUserId" resultType="java.lang.Long">
-        SELECT USER_ID FROM user
+    <select id="queryByAccount" resultMap="userResultMap">
+        SELECT * FROM user
         WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
-               OR (BIND_ACCOUNT = #{account} AND BIND_ACCOUNT_TYPE =  #{accountType})
-               AND STATE == 0
+    </select>
+
+    <select id="queryByBinAccount" resultMap="userResultMap">
+        SELECT * FROM user
+        WHERE (BIND_ACCOUNT = #{account} AND STATE == 0
     </select>
 
     <select id="queryByUserId" resultMap="userResultMap">

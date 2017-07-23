@@ -14,10 +14,12 @@ public class UserPojo {
     private String account;
     private int accountType;
     private Long userInfoId;
-    private Date createTime;
+    private String password;
+    private String accessToken;
+    private String refreshToken;
     private String bindAccount;
-    private int bindAccountType;
     private int state; //账号状态 0 : 正在使用（默认）1 : 废弃 2：锁定
+    private Date createTime;
 
     public Long getId() {
         return id;
@@ -59,12 +61,28 @@ public class UserPojo {
         this.userInfoId = userInfoId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     public String getBindAccount() {
@@ -75,19 +93,19 @@ public class UserPojo {
         this.bindAccount = bindAccount;
     }
 
-    public int getBindAccountType() {
-        return bindAccountType;
-    }
-
-    public void setBindAccountType(int bindAccountType) {
-        this.bindAccountType = bindAccountType;
-    }
-
     public int getState() {
         return state;
     }
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

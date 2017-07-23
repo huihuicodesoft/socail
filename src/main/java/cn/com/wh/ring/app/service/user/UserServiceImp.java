@@ -1,23 +1,28 @@
 package cn.com.wh.ring.app.service.user;
 
-import cn.com.wh.ring.app.bean.pojo.UserTerminalPojo;
+import cn.com.wh.ring.app.bean.pojo.*;
 import cn.com.wh.ring.app.bean.request.LoginMobile;
+import cn.com.wh.ring.app.bean.request.RegisterMobile;
+import cn.com.wh.ring.app.bean.request.ThirdAccount;
 import cn.com.wh.ring.app.bean.response.User;
 import cn.com.wh.ring.app.constant.UserConstants;
 import cn.com.wh.ring.app.dao.user.UserDao;
 import cn.com.wh.ring.app.dao.user.UserInfoDao;
 import cn.com.wh.ring.app.dao.user.UserSaveIdDao;
-import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
-import cn.com.wh.ring.app.bean.pojo.UserPojo;
-import cn.com.wh.ring.app.bean.pojo.UserSaveIdPojo;
 import cn.com.wh.ring.app.dao.user.UserTerminalDao;
+import cn.com.wh.ring.app.exception.ServiceException;
+import cn.com.wh.ring.app.helper.SmsCodeHelper;
 import cn.com.wh.ring.app.helper.TokenHelper;
+import cn.com.wh.ring.app.utils.PhoneUtils;
+import cn.com.wh.ring.common.response.ReturnCode;
+import cn.com.wh.ring.common.secret.RSA;
 import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -36,6 +41,8 @@ public class UserServiceImp implements UserService {
     UserTerminalDao userTerminalDao;
     @Autowired
     UserSaveIdDao userSaveIdDao;
+    @Autowired
+    SmsCodeHelper smsCodeHelper;
 
     private List<UserSaveIdPojo> mUserSaveIdList;
 
@@ -70,38 +77,120 @@ public class UserServiceImp implements UserService {
         return false;
     }
 
-    public String createUser(LoginMobile loginMobile) {
-        Long result;
-        String mobile = loginMobile.getMobile();
-        //手机号，三方校验
-        Long userId = userDao.queryUserId(mobile, UserConstants.ACCOUNT_TYPE_MOBILE);
-        if (userId > 0) {
-            //用户已存在
-            result = userId;
+    public String registerMobileUser(@Valid RegisterMobile registerMobile) {
+
+        String result = "";
+        if (smsCodeHelper.verification(registerMobile)) {
+            //手机号校验
+            UserPojo userPojo = userDao.queryByAccount(registerMobile.getMobile(), UserConstants.ACCOUNT_TYPE_MOBILE);
+            if (userPojo == null) {
+                //添加用户信息
+                UserInfoPojo userInfoPojo = new UserInfoPojo();
+                userInfoDao.insert(userInfoPojo);
+
+                //创建账号，绑定用户信息
+                userPojo = new UserPojo();
+                userPojo.setAccount(registerMobile.getMobile());
+                userPojo.setPassword(RSA.decrypt(registerMobile.getPassword()));
+                userPojo.setAccountType(UserConstants.ACCOUNT_TYPE_MOBILE);
+                userPojo.setUserInfoId(userInfoPojo.getId());
+                userPojo.setUserId(generateUserId());
+                userDao.insert(userPojo);
+
+                //记录账号和设备标识
+                recordUserTerminal(registerMobile.getTerminalMark(), userPojo.getUserId());
+
+                result = TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
+            } else {
+                //用户已存在
+                throw new ServiceException(ReturnCode.ERROR_MOBILE_EXIST, "error_mobile_exist");
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public String loginMobileUser(LoginMobile mobileAccount) {
+        UserPojo userPojo = getMobileAccountUsing(mobileAccount.getMobile());
+        if (userPojo != null) {
+            String realPassword = RSA.decrypt(mobileAccount.getPassword());
+            if (realPassword.equals(userPojo.getPassword())) {
+                return TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
+            } else {
+                throw new ServiceException(ReturnCode.ERROR_ACCOUNT_PASSWORD, "error_account_password");
+            }
+        }
+        return null;
+    }
+
+    public void updatePassword(@Valid RegisterMobile mobileAccount) {
+        if (smsCodeHelper.verification(mobileAccount)) {
+            //手机号校验
+            UserPojo userPojo = getMobileAccountUsing(mobileAccount.getMobile());
+            if (userPojo != null) {
+                userDao.updatePassword(mobileAccount.getMobile(), UserConstants.ACCOUNT_TYPE_MOBILE,
+                        RSA.decrypt(mobileAccount.getPassword()));
+            }
+        }
+    }
+
+    @Override
+    public UserPojo validUserMobile(String mobile) {
+        if (PhoneUtils.checkCellphone(mobile)) {
+            return getMobileAccountUsing(mobile);
         } else {
+            throw new ServiceException(ReturnCode.ERROR_INFO, "error_info");
+        }
+    }
+
+    private UserPojo getMobileAccountUsing(String mobile) {
+        UserPojo userPojo = userDao.queryByAccount(mobile, UserConstants.ACCOUNT_TYPE_MOBILE);
+        if (userPojo == null) {
+            throw new ServiceException(ReturnCode.ERROR_MOBILE_UN_EXIST, "error_mobile_un_exist");
+        } else {
+            if (userPojo.getState() == UserConstants.ACCOUNT_STATE_USING) {
+                return userPojo;
+            } else {
+                throw new ServiceException(ReturnCode.ERROR_ACCOUNT_UN_USE, "error_account_un_use");
+            }
+        }
+    }
+
+    public String loginThirdUser(ThirdAccount thirdAccount) {
+        //三方校验
+        UserPojo userPojo = userDao.queryByAccount(thirdAccount.getAccount(), thirdAccount.getAccountType());
+        if (userPojo == null) {
             //添加用户信息
             UserInfoPojo userInfoPojo = new UserInfoPojo();
             userInfoDao.insert(userInfoPojo);
 
             //创建账号，绑定用户信息
-            UserPojo userPojo = new UserPojo();
-            userPojo.setAccount(loginMobile.getMobile());
-            userPojo.setAccountType(UserConstants.ACCOUNT_TYPE_MOBILE);
+            userPojo = new UserPojo();
+            userPojo.setAccount(thirdAccount.getAccount());
+            userPojo.setAccountType(thirdAccount.getAccountType());
+            userPojo.setAccessToken(thirdAccount.getAccessToken());
+            userPojo.setRefreshToken(thirdAccount.getRefreshToken());
             userPojo.setUserInfoId(userInfoPojo.getId());
             userPojo.setUserId(generateUserId());
             userDao.insert(userPojo);
 
             //记录账号和设备标识
-            if (!Strings.isNullOrEmpty(loginMobile.getTerminalMark())){
-                UserTerminalPojo userTerminalPojo = new UserTerminalPojo();
-                userTerminalPojo.setUserId(userPojo.getUserId());
-                userTerminalPojo.setTerminalMark(loginMobile.getTerminalMark());
-                userTerminalDao.insert(userTerminalPojo);
-            }
-
-            result = userPojo.getUserId();
+            recordUserTerminal(thirdAccount.getTerminalMark(), userPojo.getUserId());
+        } else {
+            userPojo.setAccessToken(thirdAccount.getAccessToken());
+            userPojo.setRefreshToken(thirdAccount.getRefreshToken());
+            userDao.updateToken(userPojo);
         }
-        return TokenHelper.createUserToken(String.valueOf(result));
+        return TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
+    }
+
+    private void recordUserTerminal(String terminalMark, Long userId) {
+        if (!Strings.isNullOrEmpty(terminalMark)) {
+            UserTerminalPojo userTerminalPojo = new UserTerminalPojo();
+            userTerminalPojo.setUserId(userId);
+            userTerminalPojo.setTerminalMark(terminalMark);
+            userTerminalDao.insert(userTerminalPojo);
+        }
     }
 
     public void updateUserInfo(Long userId, UserInfoPojo userPojo) {
@@ -114,10 +203,10 @@ public class UserServiceImp implements UserService {
 
     public boolean isValid(Long userId) {
         UserPojo userPojo = userDao.queryByUserId(userId);
-        if (userPojo == null){
+        if (userPojo == null) {
             return false;
         } else {
-            return userPojo.getState() == UserConstants.ACCOUNT_STATE_USEING;
+            return userPojo.getState() == UserConstants.ACCOUNT_STATE_USING;
         }
     }
 }

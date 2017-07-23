@@ -34,7 +34,7 @@ public class FileUploadController {
         if (files == null || files.length == 0) {
             throw ResponseException.create(ReturnCode.ERROR_FILE_UPLOAD_EMPTY, "error_file_upload_empty");
         } else {
-            List<String> fileUrls = new ArrayList<>();
+            List<String> fileUrls = new ArrayList<String>();
             for (MultipartFile file : files) {
                 if (file.getSize() > PER_MAX_SIZE) {
                     throw ResponseException.create(ReturnCode.ERROR_FILE_UPLOAD_MAX_SIZE, "error_file_upload_max_size");

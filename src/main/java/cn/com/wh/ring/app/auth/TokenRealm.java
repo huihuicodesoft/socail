@@ -32,23 +32,23 @@ public class TokenRealm extends AuthorizingRealm {
     PermissionService permissionService;
 
     public TokenRealm() {
-        setCredentialsMatcher((token, info) -> {
-            String mark = (String) token.getPrincipal();
-            String[] userInfo = TokenHelper.parseToken(mark);
-            if (userInfo.length == 2){
-                String userMark = userInfo[0];
-                String userType = userInfo[1];
-                if (TokenHelper.isUserByType(userType)) {
-                    return userService.isValid(Long.valueOf(userMark));
-                } else if (TokenHelper.isTerminalByType(userType)) {
-                    return userTouristService.isValid(userMark);
+        setCredentialsMatcher((AuthenticationToken token, AuthenticationInfo info) ->{
+                String mark = (String) token.getPrincipal();
+                String[] userInfo = TokenHelper.parseToken(mark);
+                if (userInfo.length == 2){
+                    String userMark = userInfo[0];
+                    String userType = userInfo[1];
+                    if (TokenHelper.isUserByType(userType)) {
+                        return userService.isValid(Long.valueOf(userMark));
+                    } else if (TokenHelper.isTerminalByType(userType)) {
+                        return userTouristService.isValid(userMark);
+                    } else {
+                        return false;
+                    }
                 } else {
                     return false;
                 }
-            } else {
-                return false;
-            }
-        });
+            });
     }
 
     @Override
