@@ -9,7 +9,7 @@ public class ReturnCode {
     public static final int ERROR_PROGRAM = 1; //程序异常
     public static final int ERROR_DATA_ACCESS = 2; //数据库访问异常
     public static final int ERROR_PERMISSION = 3; //权限异常
-    public static final int ERROR_INFO = 3; //信息不正确
+    public static final int ERROR_INFO = 4; //信息不正确
 
     //控制层异常
     public static final int ERROR_FILE_STORAGE = 1001; //文件上传失败

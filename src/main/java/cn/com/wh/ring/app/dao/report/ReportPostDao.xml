@@ -10,7 +10,7 @@
         <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insert" parameterType="ReportPostPojo" useGeneratedKeys="true" keyColumn="id">
+    <insert id="insert" parameterType="ReportPostPojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO report_post (POST_ID, MARK, CONTENT, CONTENT_TYPE, CREATE_TIME)
         VALUES (#{postId}, #{mark}, #{content}, #{contentType}, NOW())
     </insert>

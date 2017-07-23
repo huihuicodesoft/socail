@@ -26,7 +26,7 @@ public class SmsCodeHelper {
         } else {
             if (smsCodePojo.getCode().equals(mobileAccount.getCode())
                     && System.currentTimeMillis() - smsCodePojo.getUpdateTime().getTime() <= SMS_CODE_TIME) {
-                result = true;
+                 result = true;
             } else {
                 throw ServiceException.create(ReturnCode.ERROR_SMS_CODE_INVALID, "error_sms_code_invalid");
             }

@@ -11,7 +11,7 @@
         <result property="state" column="STATE"/>
     </resultMap>
 
-    <insert id="insertOrUpdate" parameterType="TouristPojo" useGeneratedKeys="true" keyColumn="id">
+    <insert id="insertOrUpdate" parameterType="TouristPojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO tourist (TERMINAL_MARK, OS_TYPE, LAST_TIME, COUNT, CREATE_TIME)
         VALUES (#{terminalMark}, #{osType}, NOW(), COUNT+1, NOW())
         ON DUPLICATE KEY  UPDATE LAST_TIME = NOW(), COUNT = COUNT + 1

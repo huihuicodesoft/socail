@@ -18,7 +18,7 @@
         <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insert" parameterType="PostPojo" useGeneratedKeys="true" keyColumn="id">
+    <insert id="insert" parameterType="PostPojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO post
         (USER_ID, DESCRIPTION, MEDIA_CONTENT, MEDIA_TYPE, ADDRESS_CODE, TYPE, CREATE_TIME)
         VALUES

@@ -13,7 +13,6 @@ import cn.com.wh.ring.app.dao.user.UserTerminalDao;
 import cn.com.wh.ring.app.exception.ServiceException;
 import cn.com.wh.ring.app.helper.SmsCodeHelper;
 import cn.com.wh.ring.app.helper.TokenHelper;
-import cn.com.wh.ring.app.utils.PhoneUtils;
 import cn.com.wh.ring.common.response.ReturnCode;
 import cn.com.wh.ring.common.secret.RSA;
 import com.google.common.base.Strings;
@@ -135,11 +134,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserPojo validUserMobile(String mobile) {
-        if (PhoneUtils.checkCellphone(mobile)) {
-            return getMobileAccountUsing(mobile);
-        } else {
-            throw new ServiceException(ReturnCode.ERROR_INFO, "error_info");
-        }
+        return getMobileAccountUsing(mobile);
     }
 
     private UserPojo getMobileAccountUsing(String mobile) {

@@ -8,7 +8,7 @@
         <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insertOrUpdate" parameterType="SmsCodePojo" useGeneratedKeys="true" keyColumn="id">
+    <insert id="insertOrUpdate" parameterType="SmsCodePojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sms_code (MOBILE, CODE, UPDATE_TIME) VALUES (#{mobile}, #{code}, NOW())
         ON DUPLICATE KEY UPDATE CODE = #{code}, UPDATE_TIME = NOW()
     </insert>

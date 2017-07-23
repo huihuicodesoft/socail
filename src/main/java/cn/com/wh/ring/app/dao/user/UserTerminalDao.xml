@@ -7,7 +7,7 @@
         <result property="terminalMark" column="TERMINAL_MARK" />
     </resultMap>
 
-    <insert id="insert" parameterType="UserTerminalPojo" useGeneratedKeys="true" keyColumn="id">
+    <insert id="insert" parameterType="UserTerminalPojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_terminal (USER_ID, TERMINAL_MARK) VALUES (#{userId}, #{terminalMark})
     </insert>
 

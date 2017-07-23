@@ -16,10 +16,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -82,7 +79,7 @@ public class AccountController {
 
     @PostMapping("v1/valid/mobile")
     @ApiOperation(value = "验证手机号")
-    public Response<?> loginThird(@RequestBody String mobile) {
+    public Response<?> validMobile(@RequestParam("mobile") String mobile) {
         if (!Strings.isNullOrEmpty(mobile) && PhoneUtils.checkCellphone(mobile)) {
             userService.validUserMobile(mobile);
             return ResponseHelper.createSuccessResponse();

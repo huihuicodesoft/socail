@@ -9,7 +9,7 @@
         <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insert" parameterType="PraisePojo" useGeneratedKeys="true" keyColumn="id">
+    <insert id="insert" parameterType="PraisePojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO praise (POST_ID, MARK, CREATE_TIME) VALUES (#{postId}, #{mark}, NOW())
     </insert>
 

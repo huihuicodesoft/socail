@@ -104,7 +104,7 @@ public class RSA {
         Cipher cipher = null;
         try {
             // 使用默认RSA
-            cipher = Cipher.getInstance("RSA");
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] output = cipher.doFinal(plainTextData);
             return Base64.encode(output);
@@ -137,7 +137,7 @@ public class RSA {
         Cipher cipher = null;
         try {
             // 使用默认RSA
-            cipher = Cipher.getInstance("RSA");
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.ENCRYPT_MODE, privateKey);
             byte[] output = cipher.doFinal(plainTextData);
             return Base64.encode(output);
@@ -170,7 +170,7 @@ public class RSA {
         Cipher cipher = null;
         try {
             // 使用默认RSA
-            cipher = Cipher.getInstance("RSA");
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] output = cipher.doFinal(cipherData);
             return new String(output);
@@ -203,7 +203,7 @@ public class RSA {
         Cipher cipher = null;
         try {
             // 使用默认RSA
-            cipher = Cipher.getInstance("RSA");
+            cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, publicKey);
             byte[] output = cipher.doFinal(cipherData);
             return new String(output);
@@ -236,6 +236,7 @@ public class RSA {
     public static void main(String[] args) {
         try {
             String var1 = encrypt(loadPublicKey(KEY_PUBLIC), "往回".getBytes());
+            //String var2 = decrypt("aELv5IT81RbEJ0RP24+FgCQiBZtR43BkrjZiVTT3vAOzkUoMMuoApXA9uBGjziHbx9xFDhz4R3avHWhv3/cWLEF3Amw2AX3qzESlWWkpqYNvdyp2esbT1+TglIBINIdltKO54jyL/G3wiqZ4eDLQufsNvau824R+z5hFZsynHTM=");
             String var2 = decrypt(var1);
             System.out.println("公钥加密="+var1);
             System.out.println("私钥解密="+var2);

@@ -15,11 +15,11 @@
         <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insert" parameterType="UserPojo" useGeneratedKeys="true" keyColumn="id">
+    <insert id="insert" parameterType="UserPojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user
-        (USER_ID, ACCOUNT, ACCOUNT_TYPE, USER_INFO_ID, ACCESS_TOKEN, REFRESH_TOKEN, CREATE_TIME)
+        (USER_ID, ACCOUNT, ACCOUNT_TYPE, USER_INFO_ID, PASSWORD, ACCESS_TOKEN, REFRESH_TOKEN, CREATE_TIME)
         VALUES
-        (#{userId}, #{account}, #{accountType}, #{userInfoId}, #{accessToken}, #{refreshToken}, NOW())
+        (#{userId}, #{account}, #{accountType}, #{userInfoId}, #{password}, #{accessToken}, #{refreshToken}, NOW())
     </insert>
 
     <update id="updateBindAccount">

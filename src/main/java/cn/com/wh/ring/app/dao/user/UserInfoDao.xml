@@ -13,7 +13,7 @@
         <result property="state" column="STATE"/>
     </resultMap>
 
-    <insert id="insert" parameterType="UserInfoPojo" useGeneratedKeys="true" keyColumn="id">
+    <insert id="insert" parameterType="UserInfoPojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_info
           (NICKNAME, BIRTHDAY, SEX, AVATAR, SIGNATURE, CREATE_TIME)
           VALUES
@@ -22,14 +22,14 @@
 
     <update id="update">
         UPDATE user_info
-          <set>
-              <if test="nickname != null">NICKNAME = #{nickname},</if>
-              <if test="birthday != null">BIRTHDAY = #{birthday},</if>
-              <if test="sex >= 0">SEX = #{sex},</if>
-              <if test="avatar != null">AVATAR = #{avatar},</if>
-              <if test="signature != null">SIGNATURE = #{signature},</if>
-              <if test="true">LAST_MODIFIED_TIME = NOW()</if>
-          </set>
+        <set>
+            <if test="nickname != null">NICKNAME = #{nickname},</if>
+            <if test="birthday != null">BIRTHDAY = #{birthday},</if>
+            <if test="sex >= 0">SEX = #{sex},</if>
+            <if test="avatar != null">AVATAR = #{avatar},</if>
+            <if test="signature != null">SIGNATURE = #{signature},</if>
+            <if test="true">LAST_MODIFIED_TIME = NOW()</if>
+        </set>
         WHERE ID = #{id}
     </update>
 </mapper>
