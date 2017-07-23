@@ -39,7 +39,7 @@ public class UserTouristServiceImp implements UserTouristService {
         if (userTouristPojo == null) {
             return false;
         } else {
-            return userTouristPojo.getState() == UserConstants.ACCOUNT_STATE_USEING;
+            return userTouristPojo.getState() == UserConstants.ACCOUNT_STATE_USING;
         }
     }
 }

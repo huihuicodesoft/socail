@@ -6,9 +6,11 @@ import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.ThirdAccount;
 import cn.com.wh.ring.app.exception.ResponseException;
 import cn.com.wh.ring.app.service.user.UserService;
+import cn.com.wh.ring.app.utils.PhoneUtils;
 import cn.com.wh.ring.common.response.Response;
 import cn.com.wh.ring.common.response.ResponseHelper;
 import cn.com.wh.ring.common.response.ReturnCode;
+import com.google.common.base.Strings;
 import io.swagger.annotations.ApiOperation;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +82,18 @@ public class AccountController {
 
     @PostMapping("v1/valid/mobile")
     @ApiOperation(value = "验证手机号")
-    public Response<?> loginThird(@RequestBody String mobile, BindingResult result) {
+    public Response<?> loginThird(@RequestBody String mobile) {
+        if (!Strings.isNullOrEmpty(mobile) && PhoneUtils.checkCellphone(mobile)) {
+            userService.validUserMobile(mobile);
+            return ResponseHelper.createSuccessResponse();
+        } else {
+            throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
+        }
+    }
+
+    @PostMapping("v1/reset/mobile/password")
+    @ApiOperation(value = "重设密码")
+    public Response<?> resetMobilePassword(@Valid @RequestBody RegisterMobile registerMobile, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             for (ObjectError error : errorList) {
@@ -88,9 +101,8 @@ public class AccountController {
             }
             throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
         } else {
-            userService.validUserMobile(mobile);
+            userService.updatePassword(registerMobile);
             return ResponseHelper.createSuccessResponse();
         }
     }
-
 }

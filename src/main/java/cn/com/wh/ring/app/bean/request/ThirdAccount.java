@@ -20,8 +20,6 @@ public class ThirdAccount {
 
     private String refreshToken;
 
-    private String terminalMark;
-
     public String getAccount() {
         return account;
     }
@@ -54,11 +52,4 @@ public class ThirdAccount {
         this.refreshToken = refreshToken;
     }
 
-    public String getTerminalMark() {
-        return terminalMark;
-    }
-
-    public void setTerminalMark(String terminalMark) {
-        this.terminalMark = terminalMark;
-    }
 }

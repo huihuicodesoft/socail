@@ -78,7 +78,6 @@ public class UserServiceImp implements UserService {
     }
 
     public String registerMobileUser(@Valid RegisterMobile registerMobile) {
-
         String result = "";
         if (smsCodeHelper.verification(registerMobile)) {
             //手机号校验
@@ -98,7 +97,7 @@ public class UserServiceImp implements UserService {
                 userDao.insert(userPojo);
 
                 //记录账号和设备标识
-                recordUserTerminal(registerMobile.getTerminalMark(), userPojo.getUserId());
+                recordUserTerminal(TokenHelper.getCurrentMark(), userPojo.getUserId());
 
                 result = TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
             } else {
@@ -175,7 +174,7 @@ public class UserServiceImp implements UserService {
             userDao.insert(userPojo);
 
             //记录账号和设备标识
-            recordUserTerminal(thirdAccount.getTerminalMark(), userPojo.getUserId());
+            recordUserTerminal(TokenHelper.getCurrentMark(), userPojo.getUserId());
         } else {
             userPojo.setAccessToken(thirdAccount.getAccessToken());
             userPojo.setRefreshToken(thirdAccount.getRefreshToken());

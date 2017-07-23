@@ -19,8 +19,6 @@ public class LoginMobile {
     @Length(min = 1, message = "密码不能为空")
     private String password;
 
-    private String terminalMark;
-
     public String getMobile() {
         return mobile;
     }
@@ -35,13 +33,5 @@ public class LoginMobile {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getTerminalMark() {
-        return terminalMark;
-    }
-
-    public void setTerminalMark(String terminalMark) {
-        this.terminalMark = terminalMark;
     }
 }
