@@ -221,16 +221,8 @@ public class RSA {
         }
     }
 
-    public static String decrypt(String content) {
-        String result = null;
-        try {
-            result = decrypt(loadPrivateKey(KEY_PRIVATE), Base64.decode(content));
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            return result;
-        }
+    public static String decrypt(String content) throws Exception {
+        return decrypt(loadPrivateKey(KEY_PRIVATE), Base64.decode(content));
     }
 
     public static void main(String[] args) {
@@ -238,8 +230,8 @@ public class RSA {
             String var1 = encrypt(loadPublicKey(KEY_PUBLIC), "往回".getBytes());
             //String var2 = decrypt("aELv5IT81RbEJ0RP24+FgCQiBZtR43BkrjZiVTT3vAOzkUoMMuoApXA9uBGjziHbx9xFDhz4R3avHWhv3/cWLEF3Amw2AX3qzESlWWkpqYNvdyp2esbT1+TglIBINIdltKO54jyL/G3wiqZ4eDLQufsNvau824R+z5hFZsynHTM=");
             String var2 = decrypt(var1);
-            System.out.println("公钥加密="+var1);
-            System.out.println("私钥解密="+var2);
+            System.out.println("公钥加密=" + var1);
+            System.out.println("私钥解密=" + var2);
         } catch (Exception e) {
             e.printStackTrace();
         }

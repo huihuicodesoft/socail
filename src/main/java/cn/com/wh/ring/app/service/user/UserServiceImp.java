@@ -16,6 +16,8 @@ import cn.com.wh.ring.app.helper.TokenHelper;
 import cn.com.wh.ring.common.response.ReturnCode;
 import cn.com.wh.ring.common.secret.RSA;
 import com.google.common.base.Strings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceImp implements UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class.getName());
     private static final long baseUserIdNumber = 100000;
 
     @Autowired
@@ -86,15 +89,19 @@ public class UserServiceImp implements UserService {
                 UserInfoPojo userInfoPojo = new UserInfoPojo();
                 userInfoDao.insert(userInfoPojo);
 
-                //创建账号，绑定用户信息
-                userPojo = new UserPojo();
-                userPojo.setAccount(registerMobile.getMobile());
-                userPojo.setPassword(RSA.decrypt(registerMobile.getPassword()));
-                userPojo.setAccountType(UserConstants.ACCOUNT_TYPE_MOBILE);
-                userPojo.setUserInfoId(userInfoPojo.getId());
-                userPojo.setUserId(generateUserId());
-                userDao.insert(userPojo);
-
+                try {
+                    //创建账号，绑定用户信息
+                    userPojo = new UserPojo();
+                    userPojo.setAccount(registerMobile.getMobile());
+                    userPojo.setPassword(RSA.decrypt(registerMobile.getPassword()));
+                    userPojo.setAccountType(UserConstants.ACCOUNT_TYPE_MOBILE);
+                    userPojo.setUserInfoId(userInfoPojo.getId());
+                    userPojo.setUserId(generateUserId());
+                    userDao.insert(userPojo);
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                    throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
+                }
                 //记录账号和设备标识
                 recordUserTerminal(TokenHelper.getCurrentMark(), userPojo.getUserId());
 
@@ -111,11 +118,16 @@ public class UserServiceImp implements UserService {
     public String loginMobileUser(LoginMobile mobileAccount) {
         UserPojo userPojo = getMobileAccountUsing(mobileAccount.getMobile());
         if (userPojo != null) {
-            String realPassword = RSA.decrypt(mobileAccount.getPassword());
-            if (realPassword.equals(userPojo.getPassword())) {
-                return TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
-            } else {
-                throw new ServiceException(ReturnCode.ERROR_ACCOUNT_PASSWORD, "error_account_password");
+            try {
+                String realPassword = RSA.decrypt(mobileAccount.getPassword());
+                if (realPassword.equals(userPojo.getPassword())) {
+                    return TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
+                } else {
+                    throw new ServiceException(ReturnCode.ERROR_ACCOUNT_PASSWORD, "error_account_password");
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
             }
         }
         return null;
@@ -126,8 +138,13 @@ public class UserServiceImp implements UserService {
             //手机号校验
             UserPojo userPojo = getMobileAccountUsing(mobileAccount.getMobile());
             if (userPojo != null) {
-                userDao.updatePassword(mobileAccount.getMobile(), UserConstants.ACCOUNT_TYPE_MOBILE,
-                        RSA.decrypt(mobileAccount.getPassword()));
+                try {
+                    userDao.updatePassword(mobileAccount.getMobile(), UserConstants.ACCOUNT_TYPE_MOBILE,
+                            RSA.decrypt(mobileAccount.getPassword()));
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                    throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
+                }
             }
         }
     }
