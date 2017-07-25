@@ -118,17 +118,19 @@ public class UserServiceImp implements UserService {
     public String loginMobileUser(LoginMobile mobileAccount) {
         UserPojo userPojo = getMobileAccountUsing(mobileAccount.getMobile());
         if (userPojo != null) {
+            String realPassword;
             try {
-                String realPassword = RSA.decrypt(mobileAccount.getPassword());
-                if (realPassword.equals(userPojo.getPassword())) {
-                    return TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
-                } else {
-                    throw new ServiceException(ReturnCode.ERROR_ACCOUNT_PASSWORD, "error_account_password");
-                }
+                realPassword = RSA.decrypt(mobileAccount.getPassword());
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
             }
+            if (!Strings.isNullOrEmpty(realPassword) && realPassword.equals(userPojo.getPassword())) {
+                return TokenHelper.createUserToken(String.valueOf(userPojo.getUserId()));
+            } else {
+                throw new ServiceException(ReturnCode.ERROR_ACCOUNT_PASSWORD, "error_account_password");
+            }
+
         }
         return null;
     }
