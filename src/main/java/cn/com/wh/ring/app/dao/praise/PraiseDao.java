@@ -1,6 +1,7 @@
 package cn.com.wh.ring.app.dao.praise;
 
 import cn.com.wh.ring.app.bean.pojo.PraisePojo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface PraiseDao {
     void insert(PraisePojo praisePojo);
 
-    PraisePojo query(PraisePojo praisePojo);
+    PraisePojo query(@Param("postId") Long postId, @Param("mark") String mark);
 }

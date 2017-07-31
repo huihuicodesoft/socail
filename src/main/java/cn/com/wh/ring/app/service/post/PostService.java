@@ -7,7 +7,7 @@ import cn.com.wh.ring.app.bean.request.Report;
  * Created by Hui on 2017/7/17.
  */
 public interface PostService {
-    void publish(PostPublish postPublish) throws Exception;
+    Long publish(PostPublish postPublish);
 
     void praise(Long id);
 

@@ -50,7 +50,7 @@ public class StorageServiceImpl implements StorageService {
             }
             String fileName = fileHelper.generateFileName(file.getOriginalFilename());
             Files.copy(file.getInputStream(), this.rootLocation.resolve(fileName));
-            return fileHelper.getFileUrl(fileName);
+            return fileName;
         } catch (IOException e) {
             throw new StorageException("Failed to store file " + file.getOriginalFilename(), e);
         }

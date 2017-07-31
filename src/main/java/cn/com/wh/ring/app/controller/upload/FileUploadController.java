@@ -34,19 +34,19 @@ public class FileUploadController {
         if (files == null || files.length == 0) {
             throw ResponseException.create(ReturnCode.ERROR_FILE_UPLOAD_EMPTY, "error_file_upload_empty");
         } else {
-            List<String> fileUrls = new ArrayList<String>();
+            List<String> fileNames = new ArrayList<>();
             for (MultipartFile file : files) {
                 if (file.getSize() > PER_MAX_SIZE) {
                     throw ResponseException.create(ReturnCode.ERROR_FILE_UPLOAD_MAX_SIZE, "error_file_upload_max_size");
                 } else {
                     try {
-                        fileUrls.add(storageService.store(file));
+                        fileNames.add(storageService.store(file));
                     } catch (Exception e) {
                         throw ResponseException.create(ReturnCode.ERROR_FILE_STORAGE, "error_file_storage");
                     }
                 }
             }
-            return ResponseHelper.createSuccessResponse(fileUrls);
+            return ResponseHelper.createSuccessResponse(fileNames);
         }
     }
 }

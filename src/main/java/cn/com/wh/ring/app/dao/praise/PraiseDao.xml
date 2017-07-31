@@ -13,7 +13,7 @@
         INSERT INTO praise (POST_ID, MARK, CREATE_TIME) VALUES (#{postId}, #{mark}, NOW())
     </insert>
 
-    <select id="query" parameterType="PraisePojo" resultMap="praiseResultMap">
+    <select id="query" resultMap="praiseResultMap">
         SELECT * FROM praise WHERE POST_ID = #{postId} AND MARK = #{mark}
     </select>
 </mapper>
