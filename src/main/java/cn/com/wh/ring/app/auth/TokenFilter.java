@@ -67,6 +67,7 @@ public class TokenFilter extends NoSessionCreationFilter {
         Response<?> rsp = ResponseHelper.createResponse(ReturnCode.ERROR_TOKEN, message);
         try {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("text/html;charset=utf-8");
             response.getOutputStream().write(ObjectMapperHolder.getInstance().getMapper().writeValueAsBytes(rsp));
         } catch (Exception e) {
             logger.error("responseNotLogin failed", e);
