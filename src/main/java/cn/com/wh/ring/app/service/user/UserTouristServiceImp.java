@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.service.user;
 
-import cn.com.wh.ring.app.bean.pojo.TouristPojo;
+import cn.com.wh.ring.app.bean.pojo.Tourist;
 import cn.com.wh.ring.app.bean.request.TouristVo;
 import cn.com.wh.ring.app.constant.UserConstants;
 import cn.com.wh.ring.app.dao.user.TouristDao;
@@ -25,21 +25,21 @@ public class UserTouristServiceImp implements UserTouristService {
         if (touristVo == null || Strings.isNullOrEmpty(touristVo.getTerminalMark())) {
             throw new RuntimeException("tpurist info is not null");
         } else {
-            TouristPojo touristPojo = new TouristPojo();
+            Tourist tourist = new Tourist();
             String terminalMark = TerminalMarkHelper.contact(touristVo.getTerminalMark(), touristVo.getType());
-            touristPojo.setTerminalMark(terminalMark);
-            touristPojo.setOsType(osType);
-            userTouristDao.insertOrUpdate(touristPojo);
+            tourist.setTerminalMark(terminalMark);
+            tourist.setOsType(osType);
+            userTouristDao.insertOrUpdate(tourist);
             return TokenHelper.createTerminalToken(terminalMark);
         }
     }
 
     public boolean isValid(String terminalMark) {
-        TouristPojo userTouristPojo = userTouristDao.queryByTerminalMark(terminalMark);
-        if (userTouristPojo == null) {
+        Tourist tourist = userTouristDao.queryByTerminalMark(terminalMark);
+        if (tourist == null) {
             return false;
         } else {
-            return userTouristPojo.getState() == UserConstants.ACCOUNT_STATE_USING;
+            return tourist.getState() == UserConstants.ACCOUNT_STATE_USING;
         }
     }
 }

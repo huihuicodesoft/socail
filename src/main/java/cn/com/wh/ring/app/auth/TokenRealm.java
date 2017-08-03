@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.auth;
 
-import cn.com.wh.ring.app.bean.pojo.PermissionPojo;
+import cn.com.wh.ring.app.bean.pojo.Permission;
 import cn.com.wh.ring.app.helper.TokenHelper;
 import cn.com.wh.ring.app.service.permission.PermissionService;
 import cn.com.wh.ring.app.service.user.UserService;
@@ -10,10 +10,8 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
-import org.apache.shiro.authz.permission.WildcardPermission;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,8 +67,8 @@ public class TokenRealm extends AuthorizingRealm {
             String userMark = userInfo[0];
             String userType = userInfo[1];
             if (TokenHelper.isUserByType(userType)) {
-                List<PermissionPojo> permissions = permissionService.getPermissionsOfUser(Long.valueOf(userMark));
-                for (PermissionPojo p : permissions) {
+                List<Permission> permissions = permissionService.getPermissionsOfUser(Long.valueOf(userMark));
+                for (Permission p : permissions) {
                     info.addStringPermission(p.getPermission());
                 }
             } else {

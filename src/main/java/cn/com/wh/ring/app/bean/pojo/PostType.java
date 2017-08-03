@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/7/31.
  */
-@Alias("PostTypePojo")
-public class PostTypePojo {
+@Alias("PostType")
+public class PostType {
     private Long id;
     private String name;
     private String description;

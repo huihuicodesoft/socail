@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.user;
 
-import cn.com.wh.ring.app.bean.pojo.TouristPojo;
+import cn.com.wh.ring.app.bean.pojo.Tourist;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface TouristDao {
     /**
      * 根据terminalMark，如果存在就更新，如果不存在就插入
-     * @param touristPojo
+     * @param tourist
      */
-    void insertOrUpdate(TouristPojo touristPojo);
+    void insertOrUpdate(Tourist tourist);
 
     /**
      * 更新账号状态
@@ -26,5 +26,5 @@ public interface TouristDao {
      */
     void updateState(@Param("terminalMark") String terminalMark, @Param("state") int state);
 
-    TouristPojo queryByTerminalMark(@Param("terminalMark") String terminalMark);
+    Tourist queryByTerminalMark(@Param("terminalMark") String terminalMark);
 }

@@ -1,8 +1,8 @@
 package cn.com.wh.ring.app.controller.post;
 
-import cn.com.wh.ring.app.bean.pojo.PostTypePojo;
+import cn.com.wh.ring.app.bean.pojo.PostType;
 import cn.com.wh.ring.app.bean.response.Page;
-import cn.com.wh.ring.app.constant.PermisisonConstants;
+import cn.com.wh.ring.app.constant.PermissionConstants;
 import cn.com.wh.ring.app.service.post.PostTypeService;
 import cn.com.wh.ring.common.response.Response;
 import cn.com.wh.ring.common.response.ResponseHelper;
@@ -20,11 +20,11 @@ public class PostTypeController {
     PostTypeService postTypeService;
 
     @GetMapping("v1/page")
-    @RequiresPermissions(PermisisonConstants.PERMISSION_POST_TYPE_GET)
+    @RequiresPermissions(PermissionConstants.PERMISSION_POST_TYPE_GET)
     public Response<?> query(@RequestParam("maxId") Long maxId,
                              @RequestParam("pageNum") int pageNum,
                              @RequestParam("pageSize") int pageSize) {
-        Page<PostTypePojo> page = postTypeService.query(maxId, pageNum, pageSize);
+        Page<PostType> page = postTypeService.query(maxId, pageNum, pageSize);
         return ResponseHelper.createSuccessResponse(page);
     }
 }

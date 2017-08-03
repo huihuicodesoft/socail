@@ -1,9 +1,7 @@
 package cn.com.wh.ring.app.service.sms;
 
-import cn.com.wh.ring.app.bean.pojo.SmsCodePojo;
-import cn.com.wh.ring.app.bean.request.SmsCode;
+import cn.com.wh.ring.app.bean.pojo.SmsCode;
 import cn.com.wh.ring.app.dao.sms.SmsCodeDao;
-import cn.com.wh.ring.app.exception.ResponseException;
 import cn.com.wh.ring.app.exception.ServiceException;
 import cn.com.wh.ring.app.utils.PhoneUtils;
 import cn.com.wh.ring.common.response.ReturnCode;
@@ -23,17 +21,17 @@ public class SmsServiceImpl implements SmsService {
     SmsCodeDao smsCodeDao;
 
     @Override
-    public void record(SmsCode smsCode) {
+    public void record(cn.com.wh.ring.app.bean.request.SmsCode smsCode) {
         if (smsCode != null){
             String mobile = smsCode.getMobile();
             if (!Strings.isNullOrEmpty(mobile) && PhoneUtils.checkCellphone(mobile)){
                 //发送获取获取验证码
                 String code = "111111";
                 //存入数据库
-                SmsCodePojo smsCodePojo = new SmsCodePojo();
-                smsCodePojo.setMobile(mobile);
-                smsCodePojo.setCode(code);
-                smsCodeDao.insertOrUpdate(smsCodePojo);
+                SmsCode smsCodeTemp = new SmsCode();
+                smsCodeTemp.setMobile(mobile);
+                smsCodeTemp.setCode(code);
+                smsCodeDao.insertOrUpdate(smsCodeTemp);
             } else {
                 throw ServiceException.create(ReturnCode.ERROR_PHONE, "error_phone");
             }
@@ -41,7 +39,7 @@ public class SmsServiceImpl implements SmsService {
     }
 
     @Override
-    public SmsCodePojo get(String mobile) {
+    public SmsCode get(String mobile) {
         return smsCodeDao.query(mobile);
     }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wh.ring.app.dao.user.UserDao">
-    <resultMap id="userResultMap" type="UserPojo">
+    <resultMap id="baseResultMap" type="User">
         <id property="id" column="ID"/>
         <result property="userId" column="USER_ID"/>
         <result property="account" column="ACCOUNT"/>
@@ -15,7 +15,7 @@
         <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insert" parameterType="UserPojo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user
         (USER_ID, ACCOUNT, ACCOUNT_TYPE, USER_INFO_ID, PASSWORD, ACCESS_TOKEN, REFRESH_TOKEN, CREATE_TIME)
         VALUES
@@ -55,17 +55,17 @@
         SELECT MAX(USER_ID) FROM user
     </select>
 
-    <select id="queryByAccount" resultMap="userResultMap">
+    <select id="queryByAccount" resultMap="baseResultMap">
         SELECT * FROM user
         WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
     </select>
 
-    <select id="queryByBinAccount" resultMap="userResultMap">
+    <select id="queryByBinAccount" resultMap="baseResultMap">
         SELECT * FROM user
         WHERE (BIND_ACCOUNT = #{account} AND STATE == 0
     </select>
 
-    <select id="queryByUserId" resultMap="userResultMap">
+    <select id="queryByUserId" resultMap="baseResultMap">
         SELECT * FROM user
         WHERE USER_ID = #{userId}
     </select>

@@ -19,8 +19,8 @@ public class ReturnCode {
     //服务层异常
     public static final int ERROR_POST_ILLEGAL_MEDIA_PHOTO_NUMBER = 2001; //图片数目不合法
     public static final int ERROR_POST_ILLEGAL_MEDIA_VIDEO_NUMBER = 2002; //视频数目不合法
-    public static final int ERROR_POST_PRAISED = 2003; //已经顶过
-    public static final int ERROR_POST_CRITICIZED = 2004; //已经踩过
+    public static final int ERROR_PRAISED = 2003; //已经顶过
+    public static final int ERROR_CRITICIZED = 2004; //已经踩过
     public static final int ERROR_PHONE = 2005; //手机号不正确
     public static final int ERROR_SMS_CODE_INVALID = 2006; //验证码失效
     public static final int ERROR_SMS_CODE = 2007; //验证码错误
@@ -30,5 +30,6 @@ public class ReturnCode {
     public static final int ERROR_ACCOUNT_UN_USE = 2011; //该账号不能使用
     public static final int ERROR_ACCOUNT_PASSWORD = 2012; //账号密码不正确
     public static final int ERROR_POST_ILLEGAL_MEDIA_TYPE = 2013; //媒体类型不合法
+    public static final int ERROR_POST_COMMENT_NULL = 2014; //帖子回复不能为空
 
 }

@@ -7,13 +7,14 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/7/18.
  */
-@Alias("ReportPostPojo")
-public class ReportPostPojo {
+@Alias("Evaluate")
+public class Evaluate {
     private Long id;
-    private Long postId;
+    private Long hostId;
+    private int hostType;
     private String mark;
-    private String content;
-    private int contentType;
+    private int markType;
+    private int type;
     private Date createTime;
 
     public Long getId() {
@@ -24,12 +25,20 @@ public class ReportPostPojo {
         this.id = id;
     }
 
-    public Long getPostId() {
-        return postId;
+    public Long getHostId() {
+        return hostId;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setHostId(Long hostId) {
+        this.hostId = hostId;
+    }
+
+    public int getHostType() {
+        return hostType;
+    }
+
+    public void setHostType(int hostType) {
+        this.hostType = hostType;
     }
 
     public String getMark() {
@@ -40,20 +49,20 @@ public class ReportPostPojo {
         this.mark = mark;
     }
 
-    public String getContent() {
-        return content;
+    public int getMarkType() {
+        return markType;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setMarkType(int markType) {
+        this.markType = markType;
     }
 
-    public int getContentType() {
-        return contentType;
+    public int getType() {
+        return type;
     }
 
-    public void setContentType(int contentType) {
-        this.contentType = contentType;
+    public void setType(int type) {
+        this.type = type;
     }
 
     public Date getCreateTime() {

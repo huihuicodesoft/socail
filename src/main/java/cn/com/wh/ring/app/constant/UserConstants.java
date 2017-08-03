@@ -12,4 +12,10 @@ public class UserConstants {
     public static final int ACCOUNT_STATE_WX = 2;
     public static final int ACCOUNT_STATE_QQ = 3;
     public static final int ACCOUNT_STATE_SINA = 4;
+
+    public static final int TYPE_TOURIST = 1;
+    public static final int TYPE_USER = 2;
+    
+    
+
 }

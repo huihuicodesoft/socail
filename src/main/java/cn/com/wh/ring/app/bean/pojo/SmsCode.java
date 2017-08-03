@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/7/19.
  */
-@Alias("SmsCodePojo")
-public class SmsCodePojo {
+@Alias("SmsCode")
+public class SmsCode {
     private Long id;
     private String mobile;
     private String code;

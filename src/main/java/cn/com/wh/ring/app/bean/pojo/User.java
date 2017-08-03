@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/6/23.
  */
-@Alias("UserPojo")
-public class UserPojo {
+@Alias("User")
+public class User {
     private Long id;
     private Long userId;
     private String account;

@@ -5,8 +5,8 @@ import org.apache.ibatis.type.Alias;
 /**
  * Created by Hui on 2017/7/19.
  */
-@Alias("UserTerminalPojo")
-public class UserTerminalPojo {
+@Alias("UserTerminal")
+public class UserTerminal {
     private Long id;
     private Long userId;
     private String terminalMark;

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wh.ring.app.dao.sms.SmsCodeDao">
-    <resultMap id="smsCodePojoResultMap" type="SmsCodePojo">
+    <resultMap id="baseResultMap" type="SmsCode">
         <id property="id" column="ID"/>
         <result property="mobile" column="MOBILE"/>
         <result property="code" column="CODE"/>
         <result property="updateTime" column="UPDATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insertOrUpdate" parameterType="SmsCodePojo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertOrUpdate" parameterType="SmsCode" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO sms_code (MOBILE, CODE, UPDATE_TIME) VALUES (#{mobile}, #{code}, NOW())
         ON DUPLICATE KEY UPDATE CODE = #{code}, UPDATE_TIME = NOW()
     </insert>
 
-    <select id="query" resultMap="smsCodePojoResultMap">
+    <select id="query" resultMap="baseResultMap">
         SELECT * FROM sms_code WHERE MOBILE = #{mobile}
     </select>
 

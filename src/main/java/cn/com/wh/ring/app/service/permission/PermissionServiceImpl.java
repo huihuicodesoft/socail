@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.service.permission;
 
-import cn.com.wh.ring.app.bean.pojo.PermissionPojo;
+import cn.com.wh.ring.app.bean.pojo.Permission;
 import cn.com.wh.ring.app.dao.permission.PermissionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class PermissionServiceImpl implements PermissionService{
     PermissionDao permissionDao;
 
     @Override
-    public List<PermissionPojo> getPermissionsOfUser(Long userId) {
+    public List<Permission> getPermissionsOfUser(Long userId) {
         return permissionDao.queryByUserId(userId);
     }
 }

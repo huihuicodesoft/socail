@@ -7,12 +7,13 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/7/18.
  */
-@Alias("PraisePojo")
-public class PraisePojo {
+@Alias("ReportPost")
+public class ReportPost {
     private Long id;
     private Long postId;
     private String mark;
-    private int isBad; //{0,1}
+    private String content;
+    private int contentType;
     private Date createTime;
 
     public Long getId() {
@@ -39,12 +40,20 @@ public class PraisePojo {
         this.mark = mark;
     }
 
-    public int getIsBad() {
-        return isBad;
+    public String getContent() {
+        return content;
     }
 
-    public void setIsBad(int isBad) {
-        this.isBad = isBad;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public int getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(int contentType) {
+        this.contentType = contentType;
     }
 
     public Date getCreateTime() {

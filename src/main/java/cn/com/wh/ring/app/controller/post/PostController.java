@@ -1,9 +1,11 @@
 package cn.com.wh.ring.app.controller.post;
 
 import cn.com.wh.ring.app.bean.request.PostPublish;
+import cn.com.wh.ring.app.constant.PermissionConstants;
 import cn.com.wh.ring.app.service.post.PostService;
 import cn.com.wh.ring.common.response.Response;
 import cn.com.wh.ring.common.response.ResponseHelper;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,7 @@ public class PostController {
     PostService postService;
 
     @PostMapping("v1/publish")
+    @RequiresPermissions(PermissionConstants.PERMISSION_POST_PUBLISH)
     public Response<?> publish(@RequestBody PostPublish postPublish) {
         Long id = postService.publish(postPublish);
         return ResponseHelper.createSuccessResponse(id);

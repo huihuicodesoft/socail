@@ -1,10 +1,9 @@
 package cn.com.wh.ring.app.service.user;
 
-import cn.com.wh.ring.app.bean.pojo.UserPojo;
+import cn.com.wh.ring.app.bean.pojo.User;
 import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.ThirdAccount;
-import cn.com.wh.ring.app.bean.response.User;
 
 /**
  * Created by Hui on 2017/6/14.
@@ -42,9 +41,9 @@ public interface UserService {
      * 验证手机号
      * @param mobile
      */
-    UserPojo validUserMobile(String mobile);
+    User validUserMobile(String mobile);
 
-    User queryUser(Long userId);
+    cn.com.wh.ring.app.bean.response.User queryUser(Long userId);
 
     boolean isValid(Long userId);
 }

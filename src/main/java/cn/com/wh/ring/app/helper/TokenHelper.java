@@ -46,6 +46,14 @@ public class TokenHelper {
         return null;
     }
 
+    public static String getMarkType(String token) {
+        String[] infos = parseToken(token);
+        if (infos.length == 2) {
+            return infos[1];
+        }
+        return null;
+    }
+
     /**
      * 返回当前用户的标识
      *
@@ -56,6 +64,18 @@ public class TokenHelper {
         String token = (String) subject.getPrincipal();
         String mark = TokenHelper.getMark(token);
         return mark;
+    }
+
+    /**
+     * 返回当前用户的类型
+     *
+     * @return
+     */
+    public static String getCurrentMarkType() {
+        Subject subject = SecurityUtils.getSubject();
+        String token = (String) subject.getPrincipal();
+        String type = TokenHelper.getMarkType(token);
+        return type;
     }
 
     public static boolean isUserByType(String type) {

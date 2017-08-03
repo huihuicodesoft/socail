@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.post;
 
-import cn.com.wh.ring.app.bean.pojo.PostPojo;
+import cn.com.wh.ring.app.bean.pojo.Post;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,13 +9,15 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface PostDao {
-    void insert(PostPojo postPojo);
+    void insert(Post post);
 
     void increasePraiseNumber(@Param("id") Long id);
 
     void increaseCriticizeNumber(@Param("id") Long id);
 
+    void increaseCommentNumber(@Param("id") Long id);
+
     void increaseReportNumber(@Param("id") Long id);
 
-    PostPojo queryById(@Param("id") Long id);
+    Post queryById(@Param("id") Long id);
 }

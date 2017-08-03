@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wh.ring.app.dao.comment.CommentDao">
+    <resultMap id="baseResultMap" type="Comment">
+        <id property="id" column="ID"/>
+        <result property="hostId" column="HOST_ID"/>
+        <result property="hostType" column="HOST_TYPE"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="content" column="CONTENT"/>
+        <result property="praiseNumber" column="PRAISE_NUMBER"/>
+        <result property="criticizeNumber" column="CRITICIZE_NUMBER"/>
+        <result property="reportNumber" column="REPORT_NUMBER"/>
+        <result property="isDeleted" column="IS_DELETED"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="Comment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO post_comment
+        (HOST_ID, HOST_TYPE, USER_ID, CONTENT, CREATE_TIME)
+        VALUES
+        (#{hostId}, #{hostType}, #{userId}, #{content}, NOW())
+    </insert>
+
+    <update id="increasePraiseNumber" parameterType="java.lang.Long">
+        UPDATE post_comment
+        SET
+        PRAISE_NUMBER = PRAISE_NUMBER + 1
+        WHERE ID = #{id}
+    </update>
+
+    <update id="increaseCriticizeNumber" parameterType="java.lang.Long">
+        UPDATE post_comment
+        SET
+        CRITICIZE_NUMBER = CRITICIZE_NUMBER + 1
+        WHERE ID = #{id}
+    </update>
+
+    <update id="increaseReportNumber" parameterType="java.lang.Long">
+        UPDATE post_comment
+        SET
+        REPORT_NUMBER = REPORT_NUMBER + 1
+        WHERE ID = #{id}
+    </update>
+
+    <select id="queryOrderByTime" parameterType="java.lang.Long" resultMap="baseResultMap">
+        SELECT * FROM post_comment WHERE POST_ID = #{postId} ORDER BY CREATE_TIME DESC
+    </select>
+
+    <select id="queryOrderByPraise" parameterType="java.lang.Long" resultMap="baseResultMap">
+        SELECT * FROM post_comment WHERE POST_ID = #{postId} ORDER BY PRAISE_NUMBER DESC
+    </select>
+</mapper>

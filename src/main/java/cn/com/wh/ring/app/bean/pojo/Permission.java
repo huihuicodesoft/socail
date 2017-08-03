@@ -5,8 +5,8 @@ import org.apache.ibatis.type.Alias;
 /**
  * Created by Hui on 2017/7/18.
  */
-@Alias("PermissionPojo")
-public class PermissionPojo {
+@Alias("Permission")
+public class Permission {
     private Long id;
     private String description;
     private String permission;

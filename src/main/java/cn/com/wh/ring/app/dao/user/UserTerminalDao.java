@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.user;
 
-import cn.com.wh.ring.app.bean.pojo.UserTerminalPojo;
+import cn.com.wh.ring.app.bean.pojo.UserTerminal;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserTerminalDao {
-    void insert(UserTerminalPojo userTerminalPojo);
+    void insert(UserTerminal userTerminal);
 
-    Long queryId(UserTerminalPojo userTerminalPojo);
+    Long queryId(UserTerminal userTerminal);
 }

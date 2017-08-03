@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/6/22.
  */
-@Alias("TouristPojo")
-public class TouristPojo {
+@Alias("Tourist")
+public class Tourist {
     private Long id;
     private String terminalMark;
     private int osType; //{OS_ANDROID, OS_IOS}

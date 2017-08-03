@@ -1,6 +1,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wh.ring.app.dao.post.PostTypeDao">
-    <resultMap id="postTypeResultMap" type="PostTypePojo">
+    <resultMap id="baseResultMap" type="PostType">
         <id property="id" column="ID"/>
         <result property="name" column="NAME"/>
         <result property="description" column="DESCRIPTION"/>
@@ -10,7 +10,7 @@
         <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <select id="query" resultMap="postTypeResultMap">
+    <select id="query" resultMap="baseResultMap">
         SELECT * FROM post_type WHERE STATE = #{state}
        <if test="maxId > 0">
            <![CDATA[

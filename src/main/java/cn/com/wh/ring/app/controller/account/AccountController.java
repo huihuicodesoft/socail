@@ -1,6 +1,5 @@
 package cn.com.wh.ring.app.controller.account;
 
-import cn.com.wh.ring.app.bean.pojo.UserPojo;
 import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.ThirdAccount;

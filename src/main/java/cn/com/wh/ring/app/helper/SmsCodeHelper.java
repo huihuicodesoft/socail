@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.helper;
 
-import cn.com.wh.ring.app.bean.pojo.SmsCodePojo;
+import cn.com.wh.ring.app.bean.pojo.SmsCode;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.dao.sms.SmsCodeDao;
 import cn.com.wh.ring.app.exception.ServiceException;
@@ -20,12 +20,12 @@ public class SmsCodeHelper {
 
     public boolean verification(RegisterMobile mobileAccount) {
         boolean result;
-        SmsCodePojo smsCodePojo = smsCodeDao.query(mobileAccount.getMobile());
-        if (smsCodePojo == null) {
+        SmsCode smsCode = smsCodeDao.query(mobileAccount.getMobile());
+        if (smsCode == null) {
             throw ServiceException.create(ReturnCode.ERROR_SMS_CODE, "error_sms_code");
         } else {
-            if (smsCodePojo.getCode().equals(mobileAccount.getCode())
-                    && System.currentTimeMillis() - smsCodePojo.getUpdateTime().getTime() <= SMS_CODE_TIME) {
+            if (smsCode.getCode().equals(mobileAccount.getCode())
+                    && System.currentTimeMillis() - smsCode.getUpdateTime().getTime() <= SMS_CODE_TIME) {
                  result = true;
             } else {
                 throw ServiceException.create(ReturnCode.ERROR_SMS_CODE_INVALID, "error_sms_code_invalid");

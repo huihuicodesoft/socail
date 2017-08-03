@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.user;
 
-import cn.com.wh.ring.app.bean.pojo.UserSaveIdPojo;
+import cn.com.wh.ring.app.bean.pojo.UserSaveId;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,5 +10,5 @@ import java.util.List;
  */
 @Repository
 public interface UserSaveIdDao {
-    List<UserSaveIdPojo> getAll();
+    List<UserSaveId> getAll();
 }
