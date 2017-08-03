@@ -8,6 +8,8 @@ public class PermisisonConstants {
     public static final String PERMISSION_POST_PUBLISH = "post:publish";
     public static final String PERMISSION_POST_COMMENT = "post:comment";
     public static final String PERMISSION_POST_PRAISE = "post:praise";
-    public static final String PERMISSION_POST_CRITICIZE= "post:criticize";
-    public static final String PERMISSION_POST_REPORT= "post:report";
+    public static final String PERMISSION_POST_CRITICIZE = "post:criticize";
+    public static final String PERMISSION_POST_REPORT = "post:report";
+
+    public static final String PERMISSION_POST_TYPE_GET = "postType:get";
 }

@@ -17,6 +17,7 @@ public class ShiroFilterManager {
         definitionsMap.put("/rest/login/v1/mobile", "anon");
         definitionsMap.put("/rest/tourist/v1/record", "anon");
         definitionsMap.put("/rest/sms/v1/code", "anon");
+        definitionsMap.put("/rest/postType/v1/page", "getToken");
         definitionsMap.put("/rest/**", "getToken");
         return definitionsMap;
     }

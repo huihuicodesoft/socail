@@ -58,7 +58,6 @@ public class TokenRealm extends AuthorizingRealm {
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         String mark = principals.getPrimaryPrincipal().toString();
-        System.out.println(mark);
 
         if (Strings.isNullOrEmpty(mark)) {
             return null;
