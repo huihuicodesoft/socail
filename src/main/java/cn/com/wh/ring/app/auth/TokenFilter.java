@@ -66,7 +66,7 @@ public class TokenFilter extends NoSessionCreationFilter {
         String message = MessageResourceHelper.getInstance().getMessage("error_token_invalid", Locale.SIMPLIFIED_CHINESE);
         Response<?> rsp = ResponseHelper.createResponse(ReturnCode.ERROR_TOKEN, message);
         try {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("text/html;charset=utf-8");
             response.getOutputStream().write(ObjectMapperHolder.getInstance().getMapper().writeValueAsBytes(rsp));
         } catch (Exception e) {
