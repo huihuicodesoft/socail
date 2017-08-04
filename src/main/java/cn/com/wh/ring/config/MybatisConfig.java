@@ -42,7 +42,7 @@ public class MybatisConfig {
         sqlSessionFactoryBean.setDataSource(dataSource);
         sqlSessionFactoryBean.setConfiguration(getConfiguration());
         String path = Application.class.getPackage().getName().replace(".", "/");
-        sqlSessionFactoryBean.setTypeAliasesPackage(Application.class.getPackage().getName());
+        sqlSessionFactoryBean.setTypeAliasesPackage(Application.class.getPackage().getName()+ ".app.bean.pojo");
         sqlSessionFactoryBean.setMapperLocations(context.getResources("classpath:/"+path + "/**/*Dao.xml"));
         sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageInterceptor()});
         return sqlSessionFactoryBean;

@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/8/3.
  */
-@Alias("PostCommentDao")
+@Alias("Comment")
 public class Comment {
     private Long id;
     private Long hostId;

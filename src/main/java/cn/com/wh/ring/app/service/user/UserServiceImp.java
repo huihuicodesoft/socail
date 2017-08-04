@@ -4,11 +4,9 @@ import cn.com.wh.ring.app.bean.pojo.*;
 import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.ThirdAccount;
+import cn.com.wh.ring.app.constant.RoleConstants;
 import cn.com.wh.ring.app.constant.UserConstants;
-import cn.com.wh.ring.app.dao.user.UserDao;
-import cn.com.wh.ring.app.dao.user.UserInfoDao;
-import cn.com.wh.ring.app.dao.user.UserSaveIdDao;
-import cn.com.wh.ring.app.dao.user.UserTerminalDao;
+import cn.com.wh.ring.app.dao.user.*;
 import cn.com.wh.ring.app.exception.ServiceException;
 import cn.com.wh.ring.app.helper.SmsCodeHelper;
 import cn.com.wh.ring.app.helper.TokenHelper;
@@ -42,6 +40,8 @@ public class UserServiceImp implements UserService {
     UserTerminalDao userTerminalDao;
     @Autowired
     UserSaveIdDao userSaveIdDao;
+    @Autowired
+    UserRoleDao userRoleDao;
     @Autowired
     SmsCodeHelper smsCodeHelper;
 
@@ -97,6 +97,8 @@ public class UserServiceImp implements UserService {
                     user.setUserInfoId(userInfo.getId());
                     user.setUserId(generateUserId());
                     userDao.insert(user);
+
+                    userRoleDao.insert(user.getUserId(), RoleConstants.ROLE_USER);
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
@@ -185,6 +187,8 @@ public class UserServiceImp implements UserService {
             user.setUserInfoId(userInfo.getId());
             user.setUserId(generateUserId());
             userDao.insert(user);
+
+            userRoleDao.insert(user.getUserId(), RoleConstants.ROLE_USER);
 
             //记录账号和设备标识
             recordUserTerminal(TokenHelper.getCurrentMark(), user.getUserId());

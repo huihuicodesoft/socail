@@ -4,7 +4,7 @@ import cn.com.wh.ring.app.bean.pojo.Permission;
 import cn.com.wh.ring.app.helper.TokenHelper;
 import cn.com.wh.ring.app.service.permission.PermissionService;
 import cn.com.wh.ring.app.service.user.UserService;
-import cn.com.wh.ring.app.service.user.UserTouristService;
+import cn.com.wh.ring.app.service.user.TouristService;
 import com.google.common.base.Strings;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -25,7 +25,7 @@ public class TokenRealm extends AuthorizingRealm {
     @Autowired
     UserService userService;
     @Autowired
-    UserTouristService userTouristService;
+    TouristService userTouristService;
     @Autowired
     PermissionService permissionService;
 

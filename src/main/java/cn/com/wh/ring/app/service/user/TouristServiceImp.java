@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class UserTouristServiceImp implements UserTouristService {
+public class TouristServiceImp implements TouristService {
 
     @Autowired
-    TouristDao userTouristDao;
+    TouristDao touristDao;
 
     public String recordAccessInfo(TouristVo touristVo, int osType) {
         if (touristVo == null || Strings.isNullOrEmpty(touristVo.getTerminalMark())) {
@@ -29,13 +29,13 @@ public class UserTouristServiceImp implements UserTouristService {
             String terminalMark = TerminalMarkHelper.contact(touristVo.getTerminalMark(), touristVo.getType());
             tourist.setTerminalMark(terminalMark);
             tourist.setOsType(osType);
-            userTouristDao.insertOrUpdate(tourist);
+            touristDao.insertOrUpdate(tourist);
             return TokenHelper.createTerminalToken(terminalMark);
         }
     }
 
     public boolean isValid(String terminalMark) {
-        Tourist tourist = userTouristDao.queryByTerminalMark(terminalMark);
+        Tourist tourist = touristDao.queryByTerminalMark(terminalMark);
         if (tourist == null) {
             return false;
         } else {

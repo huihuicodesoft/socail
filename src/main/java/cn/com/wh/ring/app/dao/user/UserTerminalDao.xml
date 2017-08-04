@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wh.ring.app.dao.user.UserTerminalDao">
-    <resultMap id="baseResultMap" type="UserTerminalPojo">
+    <resultMap id="baseResultMap" type="UserTerminal">
         <id property="id" column="ID" />
         <result property="userId" column="USER_ID" />
         <result property="terminalMark" column="TERMINAL_MARK" />

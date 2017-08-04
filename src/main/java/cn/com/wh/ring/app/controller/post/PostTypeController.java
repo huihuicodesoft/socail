@@ -20,7 +20,6 @@ public class PostTypeController {
     PostTypeService postTypeService;
 
     @GetMapping("v1/page")
-    @RequiresPermissions(PermissionConstants.PERMISSION_POST_TYPE_GET)
     public Response<?> query(@RequestParam("maxId") Long maxId,
                              @RequestParam("pageNum") int pageNum,
                              @RequestParam("pageSize") int pageSize) {
