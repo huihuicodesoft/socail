@@ -14,7 +14,7 @@ public class ReportPost {
     private String mark;
     private String content;
     private int contentType;
-    private Date createTime;
+    private Date creationTime;
 
     public Long getId() {
         return id;
@@ -56,11 +56,11 @@ public class ReportPost {
         this.contentType = contentType;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 }

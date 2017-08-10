@@ -3,7 +3,6 @@ package cn.com.wh.ring.app.service.comment;
 import cn.com.wh.ring.app.bean.pojo.Evaluate;
 import cn.com.wh.ring.app.bean.pojo.Comment;
 import cn.com.wh.ring.app.constant.Constants;
-import cn.com.wh.ring.app.constant.UserConstants;
 import cn.com.wh.ring.app.dao.evaluate.EvaluateDao;
 import cn.com.wh.ring.app.dao.comment.CommentDao;
 import cn.com.wh.ring.app.dao.post.PostDao;
@@ -36,7 +35,7 @@ public class CommentServiceImpl implements CommentService {
         String mark = TokenHelper.getCurrentMark();
         Comment commentTemp = new Comment();
         commentTemp.setHostId(postId);
-        commentTemp.setHostType(Constants.COMMENT_HOST_POST);
+        commentTemp.setHostType(Comment.HOST_POST);
         commentTemp.setContent(comment);
         commentTemp.setUserId(Long.valueOf(mark));
         commentDao.insert(commentTemp);
@@ -48,21 +47,21 @@ public class CommentServiceImpl implements CommentService {
     public void praise(Long id) {
         String currentMark = TokenHelper.getCurrentMark();
         String currentMarkType = TokenHelper.getCurrentMarkType();
-        int type = TokenHelper.isUserByType(currentMarkType) ? UserConstants.TYPE_USER : UserConstants.TYPE_TOURIST;
-        Evaluate evaluate = evaluateDao.query(id, Constants.EVALUATE_TYPE_HOST_COMMENT, currentMark, type);
+        int type = TokenHelper.isUserByType(currentMarkType) ? Constants.USER_TYPE_USER : Constants.USER_TYPE_TOURIST;
+        Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_COMMENT, currentMark, type);
         if (evaluate == null) {
             evaluate = new Evaluate();
             evaluate.setHostId(id);
-            evaluate.setHostType(Constants.EVALUATE_TYPE_HOST_COMMENT);
+            evaluate.setHostType(Evaluate.HOST_TYPE_COMMENT);
             evaluate.setMark(currentMark);
             evaluate.setMarkType(type);
-            evaluate.setType(Constants.EVALUATE_TYPE_PRAISE);
+            evaluate.setType(Evaluate.TYPE_PRAISE);
             evaluateDao.insert(evaluate);
             commentDao.increasePraiseNumber(id);
         } else {
-            if (evaluate.getType() == Constants.EVALUATE_TYPE_PRAISE) {
+            if (evaluate.getType() == Evaluate.TYPE_PRAISE) {
                 throw ServiceException.create(ReturnCode.ERROR_PRAISED, "error_praised");
-            } else if (evaluate.getType() == Constants.EVALUATE_TYPE_CRITICIZED) {
+            } else if (evaluate.getType() == Evaluate.TYPE_CRITICIZED) {
                 throw ServiceException.create(ReturnCode.ERROR_CRITICIZED, "error_criticized");
             }
         }
@@ -72,21 +71,21 @@ public class CommentServiceImpl implements CommentService {
     public void criticize(Long id) {
         String currentMark = TokenHelper.getCurrentMark();
         String currentMarkType = TokenHelper.getCurrentMarkType();
-        int type = TokenHelper.isUserByType(currentMarkType) ? UserConstants.TYPE_USER : UserConstants.TYPE_TOURIST;
-        Evaluate evaluate = evaluateDao.query(id, Constants.EVALUATE_TYPE_HOST_COMMENT, currentMark, type);
+        int type = TokenHelper.isUserByType(currentMarkType) ? Constants.USER_TYPE_USER : Constants.USER_TYPE_TOURIST;
+        Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_COMMENT, currentMark, type);
         if (evaluate == null) {
             evaluate = new Evaluate();
             evaluate.setHostId(id);
-            evaluate.setHostType(Constants.EVALUATE_TYPE_HOST_COMMENT);
+            evaluate.setHostType(Evaluate.HOST_TYPE_COMMENT);
             evaluate.setMark(currentMark);
             evaluate.setMarkType(type);
-            evaluate.setType(Constants.EVALUATE_TYPE_CRITICIZED);
+            evaluate.setType(Evaluate.TYPE_CRITICIZED);
             evaluateDao.insert(evaluate);
             commentDao.increaseCriticizeNumber(id);
         } else {
-            if (evaluate.getType() == Constants.EVALUATE_TYPE_PRAISE) {
+            if (evaluate.getType() == Evaluate.TYPE_PRAISE) {
                 throw ServiceException.create(ReturnCode.ERROR_PRAISED, "error_praised");
-            } else if (evaluate.getType() == Constants.EVALUATE_TYPE_CRITICIZED) {
+            } else if (evaluate.getType() == Evaluate.TYPE_CRITICIZED) {
                 throw ServiceException.create(ReturnCode.ERROR_CRITICIZED, "error_criticized");
             }
         }

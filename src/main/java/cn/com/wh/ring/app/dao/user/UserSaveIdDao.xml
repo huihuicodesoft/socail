@@ -4,7 +4,7 @@
     <resultMap id="baseResultMap" type="UserSaveId">
         <id property="id" column="ID" />
         <result property="saveUserId" column="SAVE_USER_ID" />
-        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="getAll" resultMap="baseResultMap">

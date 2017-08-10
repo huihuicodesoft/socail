@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.bean.request;
 
-import cn.com.wh.ring.app.constant.UserConstants;
+import cn.com.wh.ring.app.bean.pojo.User;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
@@ -12,8 +12,8 @@ public class ThirdAccount {
     @NotNull(message = "账号不能为空")
     private String account;
 
-    @Range(min = UserConstants.ACCOUNT_STATE_WX, max = UserConstants.ACCOUNT_STATE_SINA, message = "账号类型非法")
-    private int accountType;
+    @Range(min = User.ACCOUNT_TYPE_WX, max = User.ACCOUNT_TYPE_SINA, message = "账号类型非法")
+    private byte accountType;
 
     @NotNull(message = "accessToken不能为空")
     private String accessToken;
@@ -28,11 +28,11 @@ public class ThirdAccount {
         this.account = account;
     }
 
-    public int getAccountType() {
+    public byte getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(int accountType) {
+    public void setAccountType(byte accountType) {
         this.accountType = accountType;
     }
 

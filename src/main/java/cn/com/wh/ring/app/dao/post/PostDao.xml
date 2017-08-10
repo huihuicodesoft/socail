@@ -15,12 +15,12 @@
         <result property="type" column="TYPE"/>
         <result property="anonymous" column="ANONYMOUS"/>
         <result property="isDeleted" column="IS_DELETED"/>
-        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO post
-        (USER_ID, DESCRIPTION, MEDIA_CONTENT, MEDIA_TYPE, ADDRESS_CODE, TYPE, CREATE_TIME)
+        (USER_ID, DESCRIPTION, MEDIA_CONTENT, MEDIA_TYPE, ADDRESS_CODE, TYPE, CREATION_TIME)
         VALUES
         (#{userId}, #{description}, #{mediaContent}, #{mediaType}, #{addressCode}, #{type}, NOW())
     </insert>

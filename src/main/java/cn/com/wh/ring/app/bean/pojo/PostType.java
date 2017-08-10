@@ -9,13 +9,27 @@ import java.util.Date;
  */
 @Alias("PostType")
 public class PostType {
+    public static final byte SUPPORT_ALL = 1; //全被格式
+    public static final byte SUPPORT_W = 2; //只支持文字
+    public static final byte SUPPORT_P = 3; //只支持图片
+    public static final byte SUPPORT_V = 4; //只支持视频
+    public static final byte SUPPORT_G = 5; //只支持gif
+    public static final byte SUPPORT_WP = 6; //只支持文字、图片
+    public static final byte SUPPORT_WV = 7; //只支持文字、视频
+    public static final byte SUPPORT_WG = 8;//只支持文字、gif
+    public static final byte SUPPORT_PV = 9;//只支持图片、视频
+    public static final byte SUPPORT_PG = 10;//只支持图片、gif
+    public static final byte SUPPORT_VG = 11;//只支持视频、gif
+    public static final byte SUPPORT_WPV = 12;//只支持文字、图片、视频
+    public static final byte SUPPORT_PVG = 13;//只支持图片、视频、gif
+
     private Long id;
     private String name;
     private String description;
     private String symbol;
-    private int support;
-    private int state; //0 : 正在使用（默认）1 : 废弃 2：锁定
-    private Date createTime;
+    private byte support;
+    private byte isDeleted;
+    private Date creationTime;
 
     public Long getId() {
         return id;
@@ -49,27 +63,27 @@ public class PostType {
         this.symbol = symbol;
     }
 
-    public int getSupport() {
+    public byte getSupport() {
         return support;
     }
 
-    public void setSupport(int support) {
+    public void setSupport(byte support) {
         this.support = support;
     }
 
-    public int getState() {
-        return state;
+    public byte getIsDeleted() {
+        return isDeleted;
     }
 
-    public void setState(int state) {
-        this.state = state;
+    public void setIsDeleted(byte isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 }

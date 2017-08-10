@@ -1,8 +1,8 @@
 package cn.com.wh.ring.app.service.user;
 
 import cn.com.wh.ring.app.bean.pojo.Tourist;
+import cn.com.wh.ring.app.bean.pojo.User;
 import cn.com.wh.ring.app.bean.request.TouristVo;
-import cn.com.wh.ring.app.constant.UserConstants;
 import cn.com.wh.ring.app.dao.user.TouristDao;
 import cn.com.wh.ring.app.helper.TerminalMarkHelper;
 import cn.com.wh.ring.app.helper.TokenHelper;
@@ -39,7 +39,7 @@ public class TouristServiceImp implements TouristService {
         if (tourist == null) {
             return false;
         } else {
-            return tourist.getState() == UserConstants.ACCOUNT_STATE_USING;
+            return tourist.getState() == User.STATE_USING;
         }
     }
 }

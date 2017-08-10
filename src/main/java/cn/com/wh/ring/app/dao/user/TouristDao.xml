@@ -7,12 +7,12 @@
         <result property="osType" column="OS_TYPE" />
         <result property="count" column="COUNT" />
         <result property="lastTime" column="LAST_TIME" jdbcType="TIMESTAMP"/>
-        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
         <result property="state" column="STATE"/>
     </resultMap>
 
     <insert id="insertOrUpdate" parameterType="Tourist" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO tourist (TERMINAL_MARK, OS_TYPE, LAST_TIME, COUNT, CREATE_TIME)
+        INSERT INTO tourist (TERMINAL_MARK, OS_TYPE, LAST_TIME, COUNT, CREATION_TIME)
         VALUES (#{terminalMark}, #{osType}, NOW(), COUNT+1, NOW())
         ON DUPLICATE KEY  UPDATE LAST_TIME = NOW(), COUNT = COUNT + 1
     </insert>

@@ -9,20 +9,23 @@ import java.util.Date;
  */
 @Alias("Post")
 public class Post {
+    public static final byte MEDIA_TYPE_PHOTO = 1; //图片
+    public static final byte MEDIA_TYPE_VIDEO = 2; //视频
+
     private Long id;
     private Long userId;
     private String description;
     private String mediaContent;
-    private int mediaType;
+    private byte mediaType;
     private String addressCode;
     private int praiseNumber;
     private int criticizeNumber;
     private int commentNumber;
     private int reportNumber;
-    private int type;
-    private int anonymous; //{0,1}
-    private int isDeleted; //{0,1}
-    private Date createTime;
+    private byte type;
+    private byte anonymous; //{0,1}
+    private byte isDeleted; //{0,1}
+    private Date creationTime;
 
     public Long getId() {
         return id;
@@ -56,11 +59,11 @@ public class Post {
         this.mediaContent = mediaContent;
     }
 
-    public int getMediaType() {
+    public byte getMediaType() {
         return mediaType;
     }
 
-    public void setMediaType(int mediaType) {
+    public void setMediaType(byte mediaType) {
         this.mediaType = mediaType;
     }
 
@@ -104,35 +107,35 @@ public class Post {
         this.reportNumber = reportNumber;
     }
 
-    public int getType() {
+    public byte getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(byte type) {
         this.type = type;
     }
 
-    public int getAnonymous() {
+    public byte getAnonymous() {
         return anonymous;
     }
 
-    public void setAnonymous(int anonymous) {
+    public void setAnonymous(byte anonymous) {
         this.anonymous = anonymous;
     }
 
-    public int getIsDeleted() {
+    public byte getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(int isDeleted) {
+    public void setIsDeleted(byte isDeleted) {
         this.isDeleted = isDeleted;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 }

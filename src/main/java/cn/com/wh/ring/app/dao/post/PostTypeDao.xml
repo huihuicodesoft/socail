@@ -6,16 +6,17 @@
         <result property="description" column="DESCRIPTION"/>
         <result property="symbol" column="SYMBOL"/>
         <result property="support" column="SUPPORT"/>
-        <result property="state" column="STATE"/>
-        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="isDeleted" column="IS_DELETED"/>
+        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <select id="query" resultMap="baseResultMap">
-        SELECT * FROM post_type WHERE STATE = #{state}
+        SELECT * FROM post_type WHERE IS_DELETED = #{isDeleted}
        <if test="maxId > 0">
            <![CDATA[
             AND id <= #{maxId}
             ]]>
        </if>
+        ORDER BY CREATION_TIME DESC
     </select>
 </mapper>

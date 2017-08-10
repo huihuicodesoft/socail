@@ -5,7 +5,6 @@ import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.ThirdAccount;
 import cn.com.wh.ring.app.constant.RoleConstants;
-import cn.com.wh.ring.app.constant.UserConstants;
 import cn.com.wh.ring.app.dao.user.*;
 import cn.com.wh.ring.app.exception.ServiceException;
 import cn.com.wh.ring.app.helper.SmsCodeHelper;
@@ -82,7 +81,7 @@ public class UserServiceImp implements UserService {
         String result = "";
         if (smsCodeHelper.verification(registerMobile)) {
             //手机号校验
-            User user = userDao.queryByAccount(registerMobile.getMobile(), UserConstants.ACCOUNT_TYPE_MOBILE);
+            User user = userDao.queryByAccount(registerMobile.getMobile(), User.ACCOUNT_TYPE_MOBILE);
             if (user == null) {
                 //添加用户信息
                 UserInfo userInfo = new UserInfo();
@@ -93,7 +92,7 @@ public class UserServiceImp implements UserService {
                     user = new User();
                     user.setAccount(registerMobile.getMobile());
                     user.setPassword(RSA.decrypt(registerMobile.getPassword()));
-                    user.setAccountType(UserConstants.ACCOUNT_TYPE_MOBILE);
+                    user.setAccountType(User.ACCOUNT_TYPE_MOBILE);
                     user.setUserInfoId(userInfo.getId());
                     user.setUserId(generateUserId());
                     userDao.insert(user);
@@ -142,7 +141,7 @@ public class UserServiceImp implements UserService {
             User user = getMobileAccountUsing(mobileAccount.getMobile());
             if (user != null) {
                 try {
-                    userDao.updatePassword(mobileAccount.getMobile(), UserConstants.ACCOUNT_TYPE_MOBILE,
+                    userDao.updatePassword(mobileAccount.getMobile(), User.ACCOUNT_TYPE_MOBILE,
                             RSA.decrypt(mobileAccount.getPassword()));
                 } catch (Exception e) {
                     logger.error(e.getMessage());
@@ -158,11 +157,11 @@ public class UserServiceImp implements UserService {
     }
 
     private User getMobileAccountUsing(String mobile) {
-        User user = userDao.queryByAccount(mobile, UserConstants.ACCOUNT_TYPE_MOBILE);
+        User user = userDao.queryByAccount(mobile, User.ACCOUNT_TYPE_MOBILE);
         if (user == null) {
             throw new ServiceException(ReturnCode.ERROR_MOBILE_UN_EXIST, "error_mobile_un_exist");
         } else {
-            if (user.getState() == UserConstants.ACCOUNT_STATE_USING) {
+            if (user.getState() == User.STATE_USING) {
                 return user;
             } else {
                 throw new ServiceException(ReturnCode.ERROR_ACCOUNT_UN_USE, "error_account_un_use");
@@ -222,7 +221,7 @@ public class UserServiceImp implements UserService {
         if (user == null) {
             return false;
         } else {
-            return user.getState() == UserConstants.ACCOUNT_STATE_USING;
+            return user.getState() == User.STATE_USING;
         }
     }
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface UserDao {
     void insert(User user);
 
-    void updatePassword(@Param("account") String account, @Param("accountType") int accountType, @Param("password") String password);
+    void updatePassword(@Param("account") String account, @Param("accountType") byte accountType, @Param("password") String password);
 
     void updateToken(User user);
 
@@ -21,7 +21,7 @@ public interface UserDao {
 
     Long queryMaxUserId();
 
-    User queryByAccount(@Param("account") String account, @Param("accountType") int accountType);
+    User queryByAccount(@Param("account") String account, @Param("accountType") byte accountType);
 
     User queryByBinAccount(@Param("account") String account);
 

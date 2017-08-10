@@ -11,5 +11,5 @@ import java.util.List;
  */
 @Repository
 public interface PostTypeDao {
-    List<PostType> query(@Param("maxId") Long maxId, @Param("state") int state);
+    List<PostType> query(@Param("maxId") Long maxId, @Param("isDeleted") int isDeleted);
 }

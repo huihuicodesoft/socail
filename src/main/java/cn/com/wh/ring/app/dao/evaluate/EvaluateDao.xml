@@ -8,11 +8,11 @@
         <result property="mark" column="MARK"/>
         <result property="markType" column="MARK_TYPE"/>
         <result property="type" column="TYPE"/>
-        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <insert id="insert" parameterType="Evaluate" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO evaluate (HOST_ID, HOST_TYPE, MARK, MARK_TYPE, TYPE, CREATE_TIME)
+        INSERT INTO evaluate (HOST_ID, HOST_TYPE, MARK, MARK_TYPE, TYPE, CREATION_TIME)
         VALUES (#{hostId}, #{hostType}, #{mark}, #{markType}, #{type}, NOW())
     </insert>
 

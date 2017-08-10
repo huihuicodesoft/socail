@@ -11,12 +11,12 @@
         <result property="criticizeNumber" column="CRITICIZE_NUMBER"/>
         <result property="reportNumber" column="REPORT_NUMBER"/>
         <result property="isDeleted" column="IS_DELETED"/>
-        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <insert id="insert" parameterType="Comment" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO post_comment
-        (HOST_ID, HOST_TYPE, USER_ID, CONTENT, CREATE_TIME)
+        (HOST_ID, HOST_TYPE, USER_ID, CONTENT, CREATION_TIME)
         VALUES
         (#{hostId}, #{hostType}, #{userId}, #{content}, NOW())
     </insert>
@@ -43,7 +43,7 @@
     </update>
 
     <select id="queryOrderByTime" parameterType="java.lang.Long" resultMap="baseResultMap">
-        SELECT * FROM post_comment WHERE POST_ID = #{postId} ORDER BY CREATE_TIME DESC
+        SELECT * FROM post_comment WHERE POST_ID = #{postId} ORDER BY CREATION_TIME DESC
     </select>
 
     <select id="queryOrderByPraise" parameterType="java.lang.Long" resultMap="baseResultMap">

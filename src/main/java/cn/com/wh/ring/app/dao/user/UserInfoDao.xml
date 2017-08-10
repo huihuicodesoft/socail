@@ -9,13 +9,13 @@
         <result property="avatar" column="AVATAR"/>
         <result property="signature" column="SIGNATURE"/>
         <result property="lastModifiedTime" column="LAST_MODIFIED_TIME" jdbcType="TIMESTAMP"/>
-        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
         <result property="state" column="STATE"/>
     </resultMap>
 
     <insert id="insert" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_info
-          (NICKNAME, BIRTHDAY, SEX, AVATAR, SIGNATURE, CREATE_TIME)
+          (NICKNAME, BIRTHDAY, SEX, AVATAR, SIGNATURE, CREATION_TIME)
           VALUES
           (#{nickname}, #{birthday}, #{sex}, #{avatar}, #{signature}, NOW())
     </insert>

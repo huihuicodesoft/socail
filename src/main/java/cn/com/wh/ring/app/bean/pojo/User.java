@@ -9,17 +9,26 @@ import java.util.Date;
  */
 @Alias("User")
 public class User {
+    public static final byte ACCOUNT_TYPE_MOBILE = 1;
+    public static final byte ACCOUNT_TYPE_WX = 2;
+    public static final byte ACCOUNT_TYPE_QQ = 3;
+    public static final byte ACCOUNT_TYPE_SINA = 4;
+
+    public static final byte STATE_USING = 0;
+    public static final byte STATE_SCRAP = 1;
+    public static final byte STATE_LOCAK = 2;
+
     private Long id;
     private Long userId;
     private String account;
-    private int accountType;
+    private byte accountType;
     private Long userInfoId;
     private String password;
     private String accessToken;
     private String refreshToken;
     private String bindAccount;
-    private int state; //账号状态 0 : 正在使用（默认）1 : 废弃 2：锁定
-    private Date createTime;
+    private byte state; //账号状态 0 : 正在使用（默认）1 : 废弃 2：锁定
+    private Date creationTime;
 
     public Long getId() {
         return id;
@@ -45,11 +54,11 @@ public class User {
         this.account = account;
     }
 
-    public int getAccountType() {
+    public byte getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(int accountType) {
+    public void setAccountType(byte accountType) {
         this.accountType = accountType;
     }
 
@@ -93,19 +102,19 @@ public class User {
         this.bindAccount = bindAccount;
     }
 
-    public int getState() {
+    public byte getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(byte state) {
         this.state = state;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 }

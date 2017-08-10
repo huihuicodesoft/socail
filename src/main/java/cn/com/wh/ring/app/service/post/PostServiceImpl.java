@@ -6,8 +6,6 @@ import cn.com.wh.ring.app.bean.pojo.ReportPost;
 import cn.com.wh.ring.app.bean.request.PostPublish;
 import cn.com.wh.ring.app.bean.request.Report;
 import cn.com.wh.ring.app.constant.Constants;
-import cn.com.wh.ring.app.constant.PostConstants;
-import cn.com.wh.ring.app.constant.UserConstants;
 import cn.com.wh.ring.app.dao.post.PostDao;
 import cn.com.wh.ring.app.dao.evaluate.EvaluateDao;
 import cn.com.wh.ring.app.dao.report.ReportPostDao;
@@ -44,27 +42,27 @@ public class PostServiceImpl implements PostService {
         List<String> list = postPublish.getMediaContent();
         if (list != null && !list.isEmpty()) {
             int mediaType = postPublish.getMediaType();
-            if (mediaType == PostConstants.MEDIA_TYPE_PHOTO) {
-                if (list.size() <= PostConstants.MAX_PHOTO_NUMBER) {
+            if (mediaType == Post.MEDIA_TYPE_PHOTO) {
+                if (list.size() <= Constants.MAX_PHOTO_NUMBER) {
                     try {
                         post.setMediaContent(JacksonUtils.toJSon(list));
                     } catch (Exception e) {
                         logger.error("图片内容jackson转化异常 =>" + e.toString());
                         throw ServiceException.create(ReturnCode.ERROR_INFO, "error_info");
                     }
-                    post.setMediaType(mediaType);
+                    post.setMediaType((byte) mediaType);
                 } else {
                     throw ServiceException.create(ReturnCode.ERROR_POST_ILLEGAL_MEDIA_PHOTO_NUMBER, "error_post_illegal_media_photo_number");
                 }
-            } else if (mediaType == PostConstants.MEDIA_TYPE_VIDEO) {
-                if (list.size() == PostConstants.MAX_VIDEO_NUMBER) {
+            } else if (mediaType == Post.MEDIA_TYPE_VIDEO) {
+                if (list.size() == Constants.MAX_VIDEO_NUMBER) {
                     try {
                         post.setMediaContent(JacksonUtils.toJSon(list));
                     } catch (Exception e) {
                         logger.error("视频内容jackson转化异常 =>" + e.toString());
                         throw ServiceException.create(ReturnCode.ERROR_INFO, "error_info");
                     }
-                    post.setMediaType(mediaType);
+                    post.setMediaType((byte) mediaType);
                 } else {
                     throw ServiceException.create(ReturnCode.ERROR_POST_ILLEGAL_MEDIA_VIDEO_NUMBER, "error_post_illegal_media_video_number");
                 }
@@ -76,7 +74,7 @@ public class PostServiceImpl implements PostService {
         post.setUserId(Long.valueOf(TokenHelper.getCurrentMark()));
         post.setDescription(postPublish.getDescription());
         post.setAddressCode(postPublish.getAddressCode());
-        post.setType(postPublish.getType());
+        post.setType((byte) postPublish.getType());
         post.setAnonymous(postPublish.isAnonymous() ? Constants.BOOLEAN_TRUE : Constants.BOOLEAN_FALSE);
         postDao.insert(post);
         return post.getId();
@@ -86,21 +84,21 @@ public class PostServiceImpl implements PostService {
     public void praise(Long id) {
         String currentMark = TokenHelper.getCurrentMark();
         String currentMarkType = TokenHelper.getCurrentMarkType();
-        int type = TokenHelper.isUserByType(currentMarkType) ? UserConstants.TYPE_USER : UserConstants.TYPE_TOURIST;
-        Evaluate evaluate = evaluateDao.query(id, Constants.EVALUATE_TYPE_HOST_POST, currentMark, type);
+        int type = TokenHelper.isUserByType(currentMarkType) ? Constants.USER_TYPE_USER : Constants.USER_TYPE_TOURIST;
+        Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_POST, currentMark, type);
         if (evaluate == null) {
             evaluate = new Evaluate();
             evaluate.setHostId(id);
-            evaluate.setHostType(Constants.EVALUATE_TYPE_HOST_POST);
+            evaluate.setHostType(Evaluate.HOST_TYPE_POST);
             evaluate.setMark(currentMark);
             evaluate.setMarkType(type);
-            evaluate.setType(Constants.EVALUATE_TYPE_PRAISE);
+            evaluate.setType(Evaluate.TYPE_PRAISE);
             evaluateDao.insert(evaluate);
             postDao.increasePraiseNumber(id);
         } else {
-            if (evaluate.getType() == Constants.EVALUATE_TYPE_PRAISE) {
+            if (evaluate.getType() == Evaluate.TYPE_PRAISE) {
                 throw ServiceException.create(ReturnCode.ERROR_PRAISED, "error_praised");
-            } else if (evaluate.getType() == Constants.EVALUATE_TYPE_CRITICIZED) {
+            } else if (evaluate.getType() == Evaluate.TYPE_CRITICIZED) {
                 throw ServiceException.create(ReturnCode.ERROR_CRITICIZED, "error_criticized");
             }
         }
@@ -110,21 +108,21 @@ public class PostServiceImpl implements PostService {
     public void criticize(Long id) {
         String currentMark = TokenHelper.getCurrentMark();
         String currentMarkType = TokenHelper.getCurrentMarkType();
-        int type = TokenHelper.isUserByType(currentMarkType) ? UserConstants.TYPE_USER : UserConstants.TYPE_TOURIST;
-        Evaluate evaluate = evaluateDao.query(id, Constants.EVALUATE_TYPE_HOST_POST, currentMark, type);
+        int type = TokenHelper.isUserByType(currentMarkType) ? Constants.USER_TYPE_USER : Constants.USER_TYPE_TOURIST;
+        Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_POST, currentMark, type);
         if (evaluate == null) {
             evaluate = new Evaluate();
             evaluate.setHostId(id);
-            evaluate.setHostType(Constants.EVALUATE_TYPE_HOST_POST);
+            evaluate.setHostType(Evaluate.HOST_TYPE_POST);
             evaluate.setMark(currentMark);
             evaluate.setMarkType(type);
-            evaluate.setType(Constants.EVALUATE_TYPE_CRITICIZED);
+            evaluate.setType(Evaluate.TYPE_CRITICIZED);
             evaluateDao.insert(evaluate);
             postDao.increaseCriticizeNumber(id);
         } else {
-            if (evaluate.getType() == Constants.EVALUATE_TYPE_PRAISE) {
+            if (evaluate.getType() == Evaluate.TYPE_PRAISE) {
                 throw ServiceException.create(ReturnCode.ERROR_PRAISED, "error_praised");
-            } else if (evaluate.getType() == Constants.EVALUATE_TYPE_CRITICIZED) {
+            } else if (evaluate.getType() == Evaluate.TYPE_CRITICIZED) {
                 throw ServiceException.create(ReturnCode.ERROR_CRITICIZED, "error_criticized");
             }
         }

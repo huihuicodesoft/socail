@@ -7,11 +7,11 @@
         <result property="mark" column="MARK" />
         <result property="content" column="CONTENT" />
         <result property="contentType" column="CONTENT_TYPE" />
-        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <insert id="insert" parameterType="ReportPost" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO report_post (POST_ID, MARK, CONTENT, CONTENT_TYPE, CREATE_TIME)
+        INSERT INTO report_post (POST_ID, MARK, CONTENT, CONTENT_TYPE, CREATION_TIME)
         VALUES (#{postId}, #{mark}, #{content}, #{contentType}, NOW())
     </insert>
 </mapper>

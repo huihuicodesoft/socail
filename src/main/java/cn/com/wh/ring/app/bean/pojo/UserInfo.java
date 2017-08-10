@@ -16,7 +16,7 @@ public class UserInfo {
     private String avatar;
     private String signature;
     private Date lastModifiedTime;
-    private Date createTime;
+    private Date creationTime;
     private int state;
 
     public Long getId() {
@@ -75,12 +75,12 @@ public class UserInfo {
         this.lastModifiedTime = lastModifiedTime;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 
     public int getState() {

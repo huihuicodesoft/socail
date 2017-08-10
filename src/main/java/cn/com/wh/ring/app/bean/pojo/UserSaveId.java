@@ -11,7 +11,7 @@ import java.util.Date;
 public class UserSaveId {
     private Long id;
     private Long saveUserId;
-    private Date createTime;
+    private Date creationTime;
 
     public Long getId() {
         return id;
@@ -29,11 +29,11 @@ public class UserSaveId {
         this.saveUserId = saveUserId;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 }

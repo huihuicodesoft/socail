@@ -14,7 +14,7 @@ public class Tourist {
     private int osType; //{OS_ANDROID, OS_IOS}
     private Date lastTime;
     private int count;
-    private Date createTime;
+    private Date creationTime;
     private int state;//账号状态 0 : 正在使用（默认）1 : 废弃 2：锁定
 
     public Long getId() {
@@ -57,12 +57,12 @@ public class Tourist {
         this.count = count;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 
     public int getState() {

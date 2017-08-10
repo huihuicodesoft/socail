@@ -9,13 +9,19 @@ import java.util.Date;
  */
 @Alias("Evaluate")
 public class Evaluate {
+    public static final byte HOST_TYPE_POST = 1;//帖子点赞
+    public static final byte HOST_TYPE_COMMENT = 2;//回复点赞
+
+    public static final byte TYPE_PRAISE = 1;//点赞
+    public static final byte TYPE_CRITICIZED = 2;//踩
+
     private Long id;
     private Long hostId;
-    private int hostType;
+    private byte hostType;
     private String mark;
     private int markType;
     private int type;
-    private Date createTime;
+    private Date creationTime;
 
     public Long getId() {
         return id;
@@ -33,11 +39,11 @@ public class Evaluate {
         this.hostId = hostId;
     }
 
-    public int getHostType() {
+    public byte getHostType() {
         return hostType;
     }
 
-    public void setHostType(int hostType) {
+    public void setHostType(byte hostType) {
         this.hostType = hostType;
     }
 
@@ -65,11 +71,11 @@ public class Evaluate {
         this.type = type;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 }

@@ -9,16 +9,18 @@ import java.util.Date;
  */
 @Alias("Comment")
 public class Comment {
+    public static final byte HOST_POST = 1;//帖子回复
+
     private Long id;
     private Long hostId;
-    private int hostType;
+    private byte hostType;
     private Long userId;
     private String content;
     private int praiseNumber;
     private int criticizeNumber;
     private int reportNumber;
-    private int isDeleted;
-    private Date createTime;
+    private byte isDeleted;
+    private Date creationTime;
 
     public Long getId() {
         return id;
@@ -36,11 +38,11 @@ public class Comment {
         this.hostId = hostId;
     }
 
-    public int getHostType() {
+    public byte getHostType() {
         return hostType;
     }
 
-    public void setHostType(int hostType) {
+    public void setHostType(byte hostType) {
         this.hostType = hostType;
     }
 
@@ -84,19 +86,19 @@ public class Comment {
         this.reportNumber = reportNumber;
     }
 
-    public int getIsDeleted() {
+    public byte getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(int isDeleted) {
+    public void setIsDeleted(byte isDeleted) {
         this.isDeleted = isDeleted;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    public Date getCreationTime() {
+        return creationTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setCreationTime(Date creationTime) {
+        this.creationTime = creationTime;
     }
 }
