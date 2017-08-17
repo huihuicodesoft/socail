@@ -11,17 +11,17 @@ import java.util.Date;
 public class PostType {
     public static final byte SUPPORT_ALL = 1; //全被格式
     public static final byte SUPPORT_W = 2; //只支持文字
-    public static final byte SUPPORT_P = 3; //只支持图片
-    public static final byte SUPPORT_V = 4; //只支持视频
-    public static final byte SUPPORT_G = 5; //只支持gif
-    public static final byte SUPPORT_WP = 6; //只支持文字、图片
-    public static final byte SUPPORT_WV = 7; //只支持文字、视频
-    public static final byte SUPPORT_WG = 8;//只支持文字、gif
-    public static final byte SUPPORT_PV = 9;//只支持图片、视频
-    public static final byte SUPPORT_PG = 10;//只支持图片、gif
-    public static final byte SUPPORT_VG = 11;//只支持视频、gif
-    public static final byte SUPPORT_WPV = 12;//只支持文字、图片、视频
-    public static final byte SUPPORT_PVG = 13;//只支持图片、视频、gif
+    public static final byte SUPPORT_P = 3; //[文字] + 图片
+    public static final byte SUPPORT_V = 4; //[文字] + 视频
+    public static final byte SUPPORT_G = 5; //[文字] + gif
+    public static final byte SUPPORT_WP = 6; // 2/3
+    public static final byte SUPPORT_WV = 7; // 2/4
+    public static final byte SUPPORT_WG = 8;// 2/5
+    public static final byte SUPPORT_PV = 9;// 3/4
+    public static final byte SUPPORT_PG = 10;// 3/5
+    public static final byte SUPPORT_VG = 11;// 4/5
+    public static final byte SUPPORT_WPV = 12;// 2/3/4
+    public static final byte SUPPORT_PVG = 13;// 3/4/5
 
     private Long id;
     private String name;
