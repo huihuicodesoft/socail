@@ -4,6 +4,8 @@ import cn.com.wh.ring.app.bean.pojo.Post;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by Hui on 2017/7/17.
  */
@@ -20,4 +22,6 @@ public interface PostDao {
     void increaseReportNumber(@Param("id") Long id);
 
     Post queryById(@Param("id") Long id);
+
+    List<Post> queryByUserId(@Param("userId") Long userId, @Param("maxId") Long maxId, @Param("isDeleted") int isDeleted);
 }

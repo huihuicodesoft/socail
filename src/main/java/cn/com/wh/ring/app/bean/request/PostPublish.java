@@ -8,9 +8,8 @@ import java.util.List;
 public class PostPublish {
     private String description;
     private List<String> mediaContent;
-    private int mediaType;
     private String addressCode;
-    private int type;
+    private int postType;
     private boolean anonymous;
 
     public String getDescription() {
@@ -29,14 +28,6 @@ public class PostPublish {
         this.mediaContent = mediaContent;
     }
 
-    public int getMediaType() {
-        return mediaType;
-    }
-
-    public void setMediaType(int mediaType) {
-        this.mediaType = mediaType;
-    }
-
     public String getAddressCode() {
         return addressCode;
     }
@@ -45,12 +36,12 @@ public class PostPublish {
         this.addressCode = addressCode;
     }
 
-    public int getType() {
-        return type;
+    public int getPostType() {
+        return postType;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setPostType(int postType) {
+        this.postType = postType;
     }
 
     public boolean isAnonymous() {

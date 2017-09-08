@@ -7,6 +7,7 @@ import cn.com.wh.ring.app.service.post.PostService;
 import cn.com.wh.ring.common.response.Response;
 import cn.com.wh.ring.common.response.ResponseHelper;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +27,10 @@ public class PostController {
         return ResponseHelper.createSuccessResponse(id);
     }
 
-    @GetMapping("v1/{userId}")
-    public Response<?> publish(@PathVariable("userId") Long userId, @ModelAttribute Page page) {
-        
-        return ResponseHelper.createSuccessResponse();
+    @GetMapping("v1/user/page")
+    @RequiresPermissions(PermissionConstants.PERMISSION_USER_INFO)
+    public Response<?> publish(@RequestParam(value = "userId", required = false) Long userId, @ModelAttribute Page page) {
+        cn.com.wh.ring.app.bean.response.Page<cn.com.wh.ring.app.bean.response.Post> response = postService.queryByUserId(userId, page);
+        return ResponseHelper.createSuccessResponse(response);
     }
 }

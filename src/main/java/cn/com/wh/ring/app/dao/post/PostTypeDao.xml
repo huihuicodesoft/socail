@@ -12,11 +12,15 @@
 
     <select id="query" resultMap="baseResultMap">
         SELECT * FROM post_type WHERE IS_DELETED = #{isDeleted}
-       <if test="maxId > 0">
-           <![CDATA[
-            AND id <= #{maxId}
+        <if test="maxId > 0">
+            <![CDATA[
+            AND ID <= #{maxId}
             ]]>
-       </if>
+        </if>
         ORDER BY CREATION_TIME DESC
+    </select>
+
+    <select id="queryById" resultMap="baseResultMap">
+        SELECT * FROM post_type WHERE ID = #{id}
     </select>
 </mapper>

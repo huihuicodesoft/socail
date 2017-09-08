@@ -24,6 +24,6 @@ public class PostTypeServiceImpl implements PostTypeService {
     public Page<PostType> query(cn.com.wh.ring.app.bean.request.Page page) {
         PageHelper.startPage(page.getPageNumber(), page.getPageSize());
         List<PostType> list = postTypeDao.query(page.getMaxId(), Constants.BOOLEAN_FALSE);
-        return new Page(page.getMaxId(), list);
+        return new Page(list);
     }
 }

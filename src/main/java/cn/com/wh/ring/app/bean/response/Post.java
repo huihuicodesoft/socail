@@ -1,29 +1,49 @@
-package cn.com.wh.ring.app.bean.pojo;
-
-import org.apache.ibatis.type.Alias;
+package cn.com.wh.ring.app.bean.response;
 
 import java.util.Date;
+import java.util.List;
 
 /**
- * Created by Hui on 2017/7/17.
+ * Created by Hui on 2017/8/17.
  */
-@Alias("Post")
 public class Post {
-    public static final byte MEDIA_TYPE_PHOTO = 1; //图片
-    public static final byte MEDIA_TYPE_VIDEO = 2; //视频
+     class PostType {
+        public PostType(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        private Long id;
+        private String name;
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
 
     private Long id;
     private Long userId;
     private String description;
-    private String mediaContent;
-    private int postTypeId;
+    private List<String> mediaList;
+    private PostType postType;
     private String addressCode;
     private int praiseNumber;
     private int criticizeNumber;
     private int commentNumber;
     private int reportNumber;
-    private byte anonymous; //{0,1}
-    private byte isDeleted; //{0,1}
+    private boolean anonymous;
     private Date creationTime;
 
     public Long getId() {
@@ -50,20 +70,16 @@ public class Post {
         this.description = description;
     }
 
-    public String getMediaContent() {
-        return mediaContent;
+    public List<String> getMediaList() {
+        return mediaList;
     }
 
-    public void setMediaContent(String mediaContent) {
-        this.mediaContent = mediaContent;
+    public void setMediaList(List<String> mediaList) {
+        this.mediaList = mediaList;
     }
 
-    public int getPostTypeId() {
-        return postTypeId;
-    }
-
-    public void setPostTypeId(int postTypeId) {
-        this.postTypeId = postTypeId;
+    public void setPostType(long id, String name) {
+        this.postType = new PostType(id, name);
     }
 
     public String getAddressCode() {
@@ -106,20 +122,12 @@ public class Post {
         this.reportNumber = reportNumber;
     }
 
-    public byte getAnonymous() {
+    public boolean isAnonymous() {
         return anonymous;
     }
 
-    public void setAnonymous(byte anonymous) {
+    public void setAnonymous(boolean anonymous) {
         this.anonymous = anonymous;
-    }
-
-    public byte getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(byte isDeleted) {
-        this.isDeleted = isDeleted;
     }
 
     public Date getCreationTime() {

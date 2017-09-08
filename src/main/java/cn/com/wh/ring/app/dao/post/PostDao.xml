@@ -6,13 +6,12 @@
         <result property="userId" column="USER_ID"/>
         <result property="description" column="DESCRIPTION"/>
         <result property="mediaContent" column="MEDIA_CONTENT"/>
-        <result property="mediaType" column="MEDIA_TYPE"/>
+        <result property="postTypeId" column="POST_TYPE_ID"/>
         <result property="addressCode" column="ADDRESS_CODE"/>
         <result property="praiseNumber" column="PRAISE_NUMBER"/>
         <result property="criticizeNumber" column="CRITICIZE_NUMBER"/>
         <result property="commentNumber" column="COMMENT_NUMBER"/>
         <result property="reportNumber" column="REPORT_NUMBER"/>
-        <result property="type" column="TYPE"/>
         <result property="anonymous" column="ANONYMOUS"/>
         <result property="isDeleted" column="IS_DELETED"/>
         <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
@@ -20,9 +19,9 @@
 
     <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO post
-        (USER_ID, DESCRIPTION, MEDIA_CONTENT, MEDIA_TYPE, ADDRESS_CODE, TYPE, CREATION_TIME)
+        (USER_ID, DESCRIPTION, MEDIA_CONTENT, POST_TYPE_ID, ADDRESS_CODE, CREATION_TIME)
         VALUES
-        (#{userId}, #{description}, #{mediaContent}, #{mediaType}, #{addressCode}, #{type}, NOW())
+        (#{userId}, #{description}, #{mediaContent}, #{postTypeId}, #{addressCode}, NOW())
     </insert>
 
     <update id="increasePraiseNumber" parameterType="java.lang.Long">
@@ -55,5 +54,15 @@
 
     <select id="queryById" parameterType="java.lang.Long" resultMap="baseResultMap">
         SELECT * FROM post WHERE ID = #{id}
+    </select>
+
+    <select id="queryByUserId" resultMap="baseResultMap">
+        SELECT * FROM post WHERE USER_ID = #{userId} AND IS_DELETED = #{isDeleted}
+        <if test="maxId > 0">
+            <![CDATA[
+            AND ID <= #{maxId}
+            ]]>
+        </if>
+        ORDER BY CREATION_TIME DESC
     </select>
 </mapper>

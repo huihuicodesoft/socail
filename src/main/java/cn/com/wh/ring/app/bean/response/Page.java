@@ -8,7 +8,6 @@ import java.util.List;
  * Created by Hui on 2017/8/1.
  */
 public class Page<T> implements Serializable {
-    private long maxId;        //记录Id
     private long total;        //总记录数
     private int pageNum;    // 第几页
     private int pageSize;    // 每页记录数
@@ -16,9 +15,8 @@ public class Page<T> implements Serializable {
     private int size;        // 当前页的数量 <= pageSize，该属性来自ArrayList的size属性
     private List<T> list;    //结果集
 
-    public Page(long maxId, List<T> list) {
+    public Page(List<T> list) {
         if (list instanceof com.github.pagehelper.Page) {
-            this.maxId = maxId;
             com.github.pagehelper.Page page = (com.github.pagehelper.Page) list;
             this.pageNum = page.getPageNum();
             this.pageSize = page.getPageSize();
@@ -27,7 +25,6 @@ public class Page<T> implements Serializable {
             this.size = page.size();
             this.total = page.getTotal();
         } else if (list instanceof Collection) {
-            this.maxId = maxId;
             this.pageNum = 1;
             this.pageSize = list.size();
             this.pages = this.pageSize > 0 ? 1 : 0;
@@ -35,14 +32,6 @@ public class Page<T> implements Serializable {
             this.size = list.size();
             this.total = (long) list.size();
         }
-    }
-
-    public long getMaxId() {
-        return maxId;
-    }
-
-    public void setMaxId(long maxId) {
-        this.maxId = maxId;
     }
 
     public long getTotal() {

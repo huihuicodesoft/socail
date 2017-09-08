@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.service.user;
 
-import cn.com.wh.ring.app.bean.request.TouristVo;
+import cn.com.wh.ring.app.bean.pojo.Tourist;
 
 /**
  * Created by Hui on 2017/6/23.
@@ -8,10 +8,7 @@ import cn.com.wh.ring.app.bean.request.TouristVo;
 public interface TouristService {
     /**
      * 记录访问记录，如果没有就插入，有的话就更新时间
-     * @param touristVo
-     * @return token
+     * @param tourist
      */
-    String recordAccessInfo(TouristVo touristVo, int osType);
-
-    boolean isValid(String terminalMark);
+    void recordAccessInfo(Tourist tourist);
 }

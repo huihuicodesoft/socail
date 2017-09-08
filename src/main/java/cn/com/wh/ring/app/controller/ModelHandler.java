@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ModelHandler {
     @ModelAttribute("page")
-    public Page initPage(@RequestParam("maxId") long maxId,
-                         @RequestParam("pageNumber") int pageNumber,
-                         @RequestParam("pageSize") int pageSize) {
+    public Page initPage(@RequestParam(value = "maxId", required = false) Long maxId,
+                         @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
+                         @RequestParam(value = "pageSize", required = false) Integer pageSize) {
+        if (maxId == null || pageNumber == null || pageSize == null) {
+            return null;
+        }
         Page page = new Page();
         page.setMaxId(maxId);
         page.setPageNumber(pageNumber);

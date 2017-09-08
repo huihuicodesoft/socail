@@ -1,6 +1,5 @@
 package cn.com.wh.ring.app.controller.user;
 
-import cn.com.wh.ring.app.bean.request.TouristVo;
 import cn.com.wh.ring.app.helper.OSHelper;
 import cn.com.wh.ring.app.service.user.TouristService;
 import cn.com.wh.ring.common.response.Response;
@@ -19,14 +18,4 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("rest/tourist")
 @Api("游客用户控制器")
 public class TouristController {
-    @Autowired
-    TouristService touristService;
-
-    @PostMapping("v1/record")
-    @ApiOperation(value = "记录设备登录")
-    @ApiImplicitParams({@ApiImplicitParam(name = "ApiVersion", value = "A1", required = true, allowableValues = "A1,I1", paramType = "header")})
-    public Response<?> addUser(@RequestHeader("ApiVersion") String apiVersion, @RequestBody TouristVo touristVo) {
-        String token = touristService.recordAccessInfo(touristVo, OSHelper.getOSCode(apiVersion));
-        return ResponseHelper.createSuccessResponse(token);
-    }
 }

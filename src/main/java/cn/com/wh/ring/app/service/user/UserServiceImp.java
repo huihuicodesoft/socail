@@ -105,7 +105,7 @@ public class UserServiceImp implements UserService {
                 //记录账号和设备标识
                 recordUserTerminal(TokenHelper.getCurrentMark(), user.getUserId());
 
-                result = TokenHelper.createUserToken(String.valueOf(user.getUserId()));
+                result = TokenHelper.createToken(String.valueOf(user.getUserId()));
             } else {
                 //用户已存在
                 throw new ServiceException(ReturnCode.ERROR_MOBILE_EXIST, "error_mobile_exist");
@@ -126,7 +126,7 @@ public class UserServiceImp implements UserService {
                 throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
             }
             if (!Strings.isNullOrEmpty(realPassword) && realPassword.equals(user.getPassword())) {
-                return TokenHelper.createUserToken(String.valueOf(user.getUserId()));
+                return TokenHelper.createToken(String.valueOf(user.getUserId()));
             } else {
                 throw new ServiceException(ReturnCode.ERROR_ACCOUNT_PASSWORD, "error_account_password");
             }
@@ -196,7 +196,7 @@ public class UserServiceImp implements UserService {
             user.setRefreshToken(thirdAccount.getRefreshToken());
             userDao.updateToken(user);
         }
-        return TokenHelper.createUserToken(String.valueOf(user.getUserId()));
+        return TokenHelper.createToken(String.valueOf(user.getUserId()));
     }
 
     private void recordUserTerminal(String terminalMark, Long userId) {

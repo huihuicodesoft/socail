@@ -6,6 +6,7 @@ package cn.com.wh.ring.common.response;
 public class ReturnCode {
     public static final int OK = 0;
     public static final int ERROR_TOKEN = -1; //token错误，请重新登录
+    public static final int ERROR_TOKEN_INVALID = -2; //token失效，请重新登录
     public static final int ERROR_PROGRAM = 1; //程序异常
     public static final int ERROR_DATA_ACCESS = 2; //数据库访问异常
     public static final int ERROR_PERMISSION = 3; //权限异常
@@ -31,5 +32,9 @@ public class ReturnCode {
     public static final int ERROR_ACCOUNT_PASSWORD = 2012; //账号密码不正确
     public static final int ERROR_POST_ILLEGAL_MEDIA_TYPE = 2013; //媒体类型不合法
     public static final int ERROR_POST_COMMENT_NULL = 2014; //帖子回复不能为空
+
+
+    public static final int ERROR_TOURIST_INFO = 2015; //游客信息不正确
+    public static final int ERROR_TOURIST_INVALID = 2016; //游客被封
 
 }
