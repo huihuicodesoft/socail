@@ -29,8 +29,13 @@
             <if test="sex >= 0">SEX = #{sex},</if>
             <if test="avatar != null">AVATAR = #{avatar},</if>
             <if test="signature != null">SIGNATURE = #{signature},</if>
+            <if test="addressCode != null">ADDRESS_CODE = #{addressCode},</if>
             <if test="true">LAST_MODIFIED_TIME = NOW()</if>
         </set>
         WHERE ID = #{id}
     </update>
+
+    <select id="queryById" resultMap="baseResultMap">
+        SELECT * FROM user_info WHERE ID = #{id}
+    </select>
 </mapper>

@@ -12,4 +12,6 @@ public interface UserInfoDao {
     void insert(UserInfo userInfo);
 
     void update(@Param("id") Long id, UserInfo userInfo);
+
+    UserInfo queryById(@Param("id") Long id);
 }

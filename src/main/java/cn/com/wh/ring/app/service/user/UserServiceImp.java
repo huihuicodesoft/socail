@@ -1,9 +1,13 @@
 package cn.com.wh.ring.app.service.user;
 
 import cn.com.wh.ring.app.bean.pojo.*;
+import cn.com.wh.ring.app.bean.pojo.User;
+import cn.com.wh.ring.app.bean.pojo.UserInfo;
 import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.LoginThird;
+import cn.com.wh.ring.app.bean.request.TerminalDetailInfo;
+import cn.com.wh.ring.app.bean.response.*;
 import cn.com.wh.ring.app.constant.Constants;
 import cn.com.wh.ring.app.constant.RoleConstants;
 import cn.com.wh.ring.app.dao.user.*;
@@ -40,7 +44,7 @@ public class UserServiceImp implements UserService {
     @Autowired
     UserTerminalService userTerminalService;
     @Autowired
-    UserSaveIdService userSaveIdService;
+    UserSaveIdDao userSaveIdDao;
     @Autowired
     UserRoleDao userRoleDao;
     @Autowired
@@ -52,7 +56,7 @@ public class UserServiceImp implements UserService {
 
     @PostConstruct
     private void init() {
-        mUserSaveIdList = userSaveIdService.getAll();
+        mUserSaveIdList = userSaveIdDao.getAll();
     }
 
     private Long generateUserId() {
@@ -113,7 +117,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public String loginMobileUser(LoginMobile loginMobile) {
+    public LoginUser loginMobileUser(LoginMobile loginMobile) {
         if (TokenHelper.getCurrentSubjectType() != Constants.USER_TYPE_TERMINAL) {
             throw new ServiceException(ReturnCode.ERROR_TOKEN_ERROR, "error_token_error");
         }
@@ -127,12 +131,7 @@ public class UserServiceImp implements UserService {
                 throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
             }
             if (!Strings.isNullOrEmpty(realPassword) && realPassword.equals(user.getPassword())) {
-                //补充设备详细信息,
-                terminalService.recordDetailInfo(loginMobile.getTerminalDetailInfo());
-                //绑定用户和设备
-                Terminal terminal = terminalService.queryByMark(TokenHelper.getCurrentSubjectMark());
-                bindUserTerminal(user.getUserId(), terminal.getId());
-                return TokenHelper.createToken(user.getUserId(), terminal.getId());
+                return recordTerminalToResponse(loginMobile.getTerminalDetailInfo(), user);
             } else {
                 throw new ServiceException(ReturnCode.ERROR_ACCOUNT_PASSWORD, "error_account_password");
             }
@@ -141,6 +140,42 @@ public class UserServiceImp implements UserService {
         return null;
     }
 
+    @Override
+    public LoginUser loginThirdUser(LoginThird loginThird) {
+        if (TokenHelper.getCurrentSubjectType() != Constants.USER_TYPE_TERMINAL) {
+            throw new ServiceException(ReturnCode.ERROR_TOKEN_ERROR, "error_token_error");
+        }
+        //三方校验
+        User user = userDao.queryByAccount(loginThird.getAccount(), loginThird.getAccountType());
+        if (user == null) {
+            //添加用户信息
+            UserInfo userInfo = new UserInfo();
+            userInfoDao.insert(userInfo);
+
+            //创建账号，绑定用户信息
+            user = new User();
+            user.setAccount(loginThird.getAccount());
+            user.setAccountType(loginThird.getAccountType());
+            user.setAccessToken(loginThird.getAccessToken());
+            user.setRefreshToken(loginThird.getRefreshToken());
+            user.setUserInfoId(userInfo.getId());
+            user.setUserId(generateUserId());
+            userDao.insert(user);
+
+            userRoleDao.insert(user.getUserId(), RoleConstants.ROLE_USER);
+        } else {
+            if (!UserHelper.canUse(user.getState())) {
+                throw new ServiceException(ReturnCode.ERROR_ACCOUNT_UN_USE, "error_account_un_use");
+            }
+            user.setAccessToken(loginThird.getAccessToken());
+            user.setRefreshToken(loginThird.getRefreshToken());
+            userDao.updateToken(user);
+        }
+
+        return recordTerminalToResponse(loginThird.getTerminalDetailInfo(), user);
+    }
+
+    @Override
     public void updatePassword(@Valid RegisterMobile registerMobile) {
         if (smsCodeHelper.verification(registerMobile)) {
             //手机号校验
@@ -175,44 +210,27 @@ public class UserServiceImp implements UserService {
         }
     }
 
-    public String loginThirdUser(LoginThird loginThird) {
-        if (TokenHelper.getCurrentSubjectType() != Constants.USER_TYPE_TERMINAL) {
-            throw new ServiceException(ReturnCode.ERROR_TOKEN_ERROR, "error_token_error");
-        }
-        //三方校验
-        User user = userDao.queryByAccount(loginThird.getAccount(), loginThird.getAccountType());
-        if (user == null) {
-            //添加用户信息
-            UserInfo userInfo = new UserInfo();
-            userInfoDao.insert(userInfo);
-
-            //创建账号，绑定用户信息
-            user = new User();
-            user.setAccount(loginThird.getAccount());
-            user.setAccountType(loginThird.getAccountType());
-            user.setAccessToken(loginThird.getAccessToken());
-            user.setRefreshToken(loginThird.getRefreshToken());
-            user.setUserInfoId(userInfo.getId());
-            user.setUserId(generateUserId());
-            userDao.insert(user);
-
-            userRoleDao.insert(user.getUserId(), RoleConstants.ROLE_USER);
-        } else {
-            if (!UserHelper.canUse(user.getState())) {
-                throw new ServiceException(ReturnCode.ERROR_ACCOUNT_UN_USE, "error_account_un_use");
-            }
-            user.setAccessToken(loginThird.getAccessToken());
-            user.setRefreshToken(loginThird.getRefreshToken());
-            userDao.updateToken(user);
-        }
-
+    /**
+     * 记录设备信息，组合登陆成功结果
+     *
+     * @param terminalDetailInfo
+     * @param user
+     * @return
+     */
+    private LoginUser recordTerminalToResponse(TerminalDetailInfo terminalDetailInfo, User user) {
         //补充设备详细信息,
-        terminalService.recordDetailInfo(loginThird.getTerminalDetailInfo());
+        terminalService.recordDetailInfo(terminalDetailInfo);
         //绑定用户和设备
         Terminal terminal = terminalService.queryByMark(TokenHelper.getCurrentSubjectMark());
         bindUserTerminal(user.getUserId(), terminal.getId());
 
-        return TokenHelper.createToken(user.getUserId(), terminal.getId());
+        //组合返回信息
+        UserInfo userInfo = userInfoDao.queryById(user.getUserInfoId());
+        String token = TokenHelper.createToken(user.getUserId(), terminal.getId());
+        LoginUser loginUser = new LoginUser();
+        loginUser.setToken(token);
+        loginUser.setUserInfo(new cn.com.wh.ring.app.bean.response.UserInfo(user.getUserId(), userInfo));
+        return loginUser;
     }
 
     private void bindUserTerminal(Long userId, Long terminalId) {

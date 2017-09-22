@@ -3,6 +3,7 @@ package cn.com.wh.ring.app.controller.account;
 import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.LoginThird;
+import cn.com.wh.ring.app.bean.response.LoginUser;
 import cn.com.wh.ring.app.exception.ResponseException;
 import cn.com.wh.ring.app.service.user.UserService;
 import cn.com.wh.ring.app.utils.PhoneUtils;
@@ -56,8 +57,8 @@ public class AccountController {
             }
             throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
         } else {
-            String token = userService.loginMobileUser(loginMobile);
-            return ResponseHelper.createSuccessResponse(token);
+            LoginUser loginUser = userService.loginMobileUser(loginMobile);
+            return ResponseHelper.createSuccessResponse(loginUser);
         }
     }
 
@@ -71,8 +72,8 @@ public class AccountController {
             }
             throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
         } else {
-            String token = userService.loginThirdUser(loginThird);
-            return ResponseHelper.createSuccessResponse(token);
+            LoginUser loginUser = userService.loginThirdUser(loginThird);
+            return ResponseHelper.createSuccessResponse(loginUser);
         }
     }
 

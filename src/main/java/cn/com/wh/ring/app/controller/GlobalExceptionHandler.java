@@ -2,11 +2,14 @@ package cn.com.wh.ring.app.controller;
 
 import cn.com.wh.ring.app.exception.ResponseException;
 import cn.com.wh.ring.app.exception.ServiceException;
+import cn.com.wh.ring.app.service.user.UserServiceImp;
 import cn.com.wh.ring.common.response.ReturnCode;
 import cn.com.wh.ring.app.helper.MessageResourceHelper;
 import cn.com.wh.ring.common.response.Response;
 import cn.com.wh.ring.common.response.ResponseHelper;
 import org.apache.shiro.authz.AuthorizationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +24,7 @@ import java.util.Locale;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class.getName());
 
     @ExceptionHandler(ResponseException.class)
     @ResponseStatus(HttpStatus.OK)
@@ -39,14 +43,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataAccessException.class)
     @ResponseStatus(HttpStatus.OK)
     public Response<?> handleException(DataAccessException exception) {
+        logger.error(exception.getMessage() == null ? exception.getClass().getName() : exception.getMessage());
+
         String message = MessageResourceHelper.getInstance().getMessage("error_data_access", Locale.SIMPLIFIED_CHINESE);
-        return ResponseHelper.createResponse(ReturnCode.ERROR_DATA_ACCESS, message + exception.getClass().getSimpleName());
+        return ResponseHelper.createResponse(ReturnCode.ERROR_DATA_ACCESS, message);
     }
 
     @ExceptionHandler({AuthorizationException.class, NoPermissionException.class})
     @ResponseStatus(HttpStatus.OK)
     public Response<?> handleException(Exception exception) {
-        return ResponseHelper.createResponse(ReturnCode.ERROR_PERMISSION, exception.getMessage());
+        logger.error(exception.getMessage() == null ? exception.getClass().getName() : exception.getMessage());
+
+        String message = MessageResourceHelper.getInstance().getMessage("error_permission", Locale.SIMPLIFIED_CHINESE);
+        return ResponseHelper.createResponse(ReturnCode.ERROR_PERMISSION, message);
     }
 
     /**
@@ -55,8 +64,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.OK)
     public Response<?> exception(Exception exception) {
-        String desc = exception.getMessage() == null ? exception.getClass().getName() : exception.getMessage();
-        return ResponseHelper.createResponse(ReturnCode.ERROR_PROGRAM, desc);
+        logger.error(exception.getMessage() == null ? exception.getClass().getName() : exception.getMessage());
+
+        String message = MessageResourceHelper.getInstance().getMessage("error_program", Locale.SIMPLIFIED_CHINESE);
+        return ResponseHelper.createResponse(ReturnCode.ERROR_PROGRAM, message);
     }
 
 }

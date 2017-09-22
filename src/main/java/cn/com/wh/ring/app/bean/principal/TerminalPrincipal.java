@@ -1,9 +1,11 @@
 package cn.com.wh.ring.app.bean.principal;
 
+import java.io.Serializable;
+
 /**
  * Created by Hui on 2017/9/22.
  */
-public class TerminalPrincipal {
+public class TerminalPrincipal implements Serializable{
     private String mark;
     private Byte osType;
 

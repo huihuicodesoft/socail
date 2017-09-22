@@ -22,8 +22,6 @@ import sun.rmi.runtime.Log;
 @Service
 @Transactional
 public class TerminalServiceImp implements TerminalService {
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class.getName());
-
     @Autowired
     TerminalDao terminalDao;
 
@@ -35,7 +33,6 @@ public class TerminalServiceImp implements TerminalService {
             if (dbTerminal == null || UserHelper.canUse(dbTerminal.getState())) {
                 terminalDao.insertOrUpdate(terminal);
             } else {
-                logger.error("terminal is not used");
                 throw new ServiceException(ReturnCode.ERROR_TERMINAL_INVALID, "error_terminal_invalid");
             }
         }

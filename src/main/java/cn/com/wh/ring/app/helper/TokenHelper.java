@@ -35,7 +35,7 @@ public class TokenHelper {
         UserPrincipal userPrincipal = null;
         String realToken = AES.decrypt(requestToken);
         String[] info = realToken.split(COLON);
-        if (info != null && info.length != USER_TOKEN_ARRAY_LENGTH && info[3] == USER) {
+        if (info != null && info.length == USER_TOKEN_ARRAY_LENGTH && info[3] == USER) {
             userPrincipal = new UserPrincipal();
             userPrincipal.setUserId(Long.valueOf(info[0]));
             userPrincipal.setTerminalId(Long.valueOf(info[1]));

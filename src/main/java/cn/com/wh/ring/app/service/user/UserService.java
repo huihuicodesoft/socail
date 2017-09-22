@@ -4,6 +4,7 @@ import cn.com.wh.ring.app.bean.pojo.User;
 import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.LoginThird;
+import cn.com.wh.ring.app.bean.response.LoginUser;
 
 /**
  * Created by Hui on 2017/6/14.
@@ -20,14 +21,14 @@ public interface UserService {
      * @param mobileAccount
      * @return principal
      */
-    String loginMobileUser(LoginMobile mobileAccount);
+    LoginUser loginMobileUser(LoginMobile mobileAccount);
 
     /**
      * 三方登录
      * @param loginThird
      * @return principal
      */
-    String loginThirdUser(LoginThird loginThird);
+    LoginUser loginThirdUser(LoginThird loginThird);
 
     /**
      * 修改密码
