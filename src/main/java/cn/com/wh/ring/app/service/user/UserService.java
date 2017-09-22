@@ -3,7 +3,7 @@ package cn.com.wh.ring.app.service.user;
 import cn.com.wh.ring.app.bean.pojo.User;
 import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
-import cn.com.wh.ring.app.bean.request.ThirdAccount;
+import cn.com.wh.ring.app.bean.request.LoginThird;
 
 /**
  * Created by Hui on 2017/6/14.
@@ -12,30 +12,29 @@ public interface UserService {
     /**
      * 手机号注册
      * @param registerMobile
-     * @return token
      */
-    String registerMobileUser(RegisterMobile registerMobile);
+    void registerMobileUser(RegisterMobile registerMobile);
 
     /**
      * 手机号登录
      * @param mobileAccount
-     * @return token
+     * @return principal
      */
     String loginMobileUser(LoginMobile mobileAccount);
 
     /**
      * 三方登录
-     * @param thirdAccount
-     * @return token
+     * @param loginThird
+     * @return principal
      */
-    String loginThirdUser(ThirdAccount thirdAccount);
+    String loginThirdUser(LoginThird loginThird);
 
     /**
      * 修改密码
-     * @param mobileAccount
-     * @return token
+     * @param registerMobile
+     * @return principal
      */
-    void updatePassword(RegisterMobile mobileAccount);
+    void updatePassword(RegisterMobile registerMobile);
 
     /**
      * 验证手机号

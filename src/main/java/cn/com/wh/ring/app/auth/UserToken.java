@@ -6,14 +6,14 @@ import org.apache.shiro.authc.AuthenticationToken;
  * Created by Hui on 2017/7/7.
  */
 public class UserToken implements AuthenticationToken {
-    private String mark;
+    private Object principal;
 
-    public UserToken(String mark) {
-        this.mark = mark;
+    public UserToken(Object principal) {
+        this.principal = principal;
     }
 
-    public String getPrincipal() {
-        return mark;
+    public Object getPrincipal() {
+        return principal;
     }
 
     @Override

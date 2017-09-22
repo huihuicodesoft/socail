@@ -23,7 +23,7 @@ public interface UserDao {
 
     User queryByAccount(@Param("account") String account, @Param("accountType") byte accountType);
 
-    User queryByBinAccount(@Param("account") String account);
+    User queryByBindAccount(@Param("account") String account);
 
     User queryByUserId(@Param("userId") Long userId);
 }

@@ -12,7 +12,7 @@
         <result property="refreshToken" column="REFRESH_TOKEN"/>
         <result property="bindAccount" column="BIND_ACCOUNT"/>
         <result property="state" column="STATE"/>
-        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creationTime" column="CREATION_TIME"/>
     </resultMap>
 
     <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
@@ -60,9 +60,9 @@
         WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
     </select>
 
-    <select id="queryByBinAccount" resultMap="baseResultMap">
+    <select id="queryByBindAccount" resultMap="baseResultMap">
         SELECT * FROM user
-        WHERE (BIND_ACCOUNT = #{account} AND STATE == 0
+        WHERE (BIND_ACCOUNT = #{account} AND STATE == 1
     </select>
 
     <select id="queryByUserId" resultMap="baseResultMap">

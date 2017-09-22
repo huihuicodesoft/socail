@@ -13,13 +13,13 @@ public class Comment {
 
     private Long id;
     private Long hostId;
-    private byte hostType;
+    private Byte hostType;
     private Long userId;
     private String content;
-    private int praiseNumber;
-    private int criticizeNumber;
-    private int reportNumber;
-    private byte isDeleted;
+    private Integer praiseNumber;
+    private Integer criticizeNumber;
+    private Integer reportNumber;
+    private Byte isDeleted;
     private Date creationTime;
 
     public Long getId() {
@@ -38,11 +38,11 @@ public class Comment {
         this.hostId = hostId;
     }
 
-    public byte getHostType() {
+    public Byte getHostType() {
         return hostType;
     }
 
-    public void setHostType(byte hostType) {
+    public void setHostType(Byte hostType) {
         this.hostType = hostType;
     }
 
@@ -62,35 +62,35 @@ public class Comment {
         this.content = content;
     }
 
-    public int getPraiseNumber() {
+    public Integer getPraiseNumber() {
         return praiseNumber;
     }
 
-    public void setPraiseNumber(int praiseNumber) {
+    public void setPraiseNumber(Integer praiseNumber) {
         this.praiseNumber = praiseNumber;
     }
 
-    public int getCriticizeNumber() {
+    public Integer getCriticizeNumber() {
         return criticizeNumber;
     }
 
-    public void setCriticizeNumber(int criticizeNumber) {
+    public void setCriticizeNumber(Integer criticizeNumber) {
         this.criticizeNumber = criticizeNumber;
     }
 
-    public int getReportNumber() {
+    public Integer getReportNumber() {
         return reportNumber;
     }
 
-    public void setReportNumber(int reportNumber) {
+    public void setReportNumber(Integer reportNumber) {
         this.reportNumber = reportNumber;
     }
 
-    public byte getIsDeleted() {
+    public Byte getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(byte isDeleted) {
+    public void setIsDeleted(Byte isDeleted) {
         this.isDeleted = isDeleted;
     }
 

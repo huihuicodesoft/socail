@@ -9,7 +9,8 @@ import org.apache.ibatis.type.Alias;
 public class UserTerminal {
     private Long id;
     private Long userId;
-    private String terminalMark;
+    private Long terminalId;
+    private Byte using;
 
     public Long getId() {
         return id;
@@ -27,11 +28,19 @@ public class UserTerminal {
         this.userId = userId;
     }
 
-    public String getTerminalMark() {
-        return terminalMark;
+    public Long getTerminalId() {
+        return terminalId;
     }
 
-    public void setTerminalMark(String terminalMark) {
-        this.terminalMark = terminalMark;
+    public void setTerminalId(Long terminalId) {
+        this.terminalId = terminalId;
+    }
+
+    public Byte getUsing() {
+        return using;
+    }
+
+    public void setUsing(Byte using) {
+        this.using = using;
     }
 }

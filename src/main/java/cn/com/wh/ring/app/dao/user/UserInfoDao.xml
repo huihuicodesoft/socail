@@ -4,20 +4,21 @@
     <resultMap id="baseResultMap" type="UserInfo">
         <id property="id" column="ID"/>
         <result property="nickname" column="NICKNAME"/>
-        <result property="birthday" column="BIRTHDAY" jdbcType="TIMESTAMP"/>
+        <result property="birthday" column="BIRTHDAY"/>
         <result property="sex" column="SEX"/>
         <result property="avatar" column="AVATAR"/>
         <result property="signature" column="SIGNATURE"/>
-        <result property="lastModifiedTime" column="LAST_MODIFIED_TIME" jdbcType="TIMESTAMP"/>
-        <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
-        <result property="state" column="STATE"/>
+        <result property="addressCode" column="ADDRESS_CODE"/>
+        <result property="lastModifiedTime" column="LAST_MODIFIED_TIME"/>
+        <result property="deleted" column="DELETED"/>
+        <result property="creationTime" column="CREATION_TIME"/>
     </resultMap>
 
     <insert id="insert" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_info
-          (NICKNAME, BIRTHDAY, SEX, AVATAR, SIGNATURE, CREATION_TIME)
-          VALUES
-          (#{nickname}, #{birthday}, #{sex}, #{avatar}, #{signature}, NOW())
+        (NICKNAME, BIRTHDAY, AVATAR, SIGNATURE, ADDRESS_CODE, LAST_MODIFIED_TIME, CREATION_TIME)
+        VALUES
+        (#{nickname}, #{birthday}, #{avatar}, #{signature}, #{addressCode}, NOW(), NOW())
     </insert>
 
     <update id="update">

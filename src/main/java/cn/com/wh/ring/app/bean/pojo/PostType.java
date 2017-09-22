@@ -27,8 +27,8 @@ public class PostType {
     private String name;
     private String description;
     private String symbol;
-    private byte support;
-    private byte isDeleted;
+    private Byte support;
+    private Byte isDeleted;
     private Date creationTime;
 
     public Long getId() {
@@ -63,19 +63,19 @@ public class PostType {
         this.symbol = symbol;
     }
 
-    public byte getSupport() {
+    public Byte getSupport() {
         return support;
     }
 
-    public void setSupport(byte support) {
+    public void setSupport(Byte support) {
         this.support = support;
     }
 
-    public byte getIsDeleted() {
+    public Byte getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(byte isDeleted) {
+    public void setIsDeleted(Byte isDeleted) {
         this.isDeleted = isDeleted;
     }
 

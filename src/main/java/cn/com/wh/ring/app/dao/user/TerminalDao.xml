@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wh.ring.app.dao.user.TerminalDao">
+    <resultMap id="baseResultMap" type="Terminal">
+        <id property="id" column="ID"/>
+        <result property="mark" column="MARK"/>
+        <result property="osType" column="OS_TYPE"/>
+        <result property="model" column="MODEL"/>
+        <result property="sdk" column="SDK"/>
+        <result property="system" column="SYSTEM"/>
+        <result property="lastAccessTime" column="LAST_ACCESS_TIME"/>
+        <result property="accessCount" column="ACCESS_COUNT"/>
+        <result property="state" column="STATE"/>
+        <result property="creationTime" column="CREATION_TIME"/>
+    </resultMap>
+
+    <insert id="insertOrUpdate" parameterType="Terminal" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO terminal (MARK, OS_TYPE, MODEL, SDK, SYSTEM, LAST_ACCESS_TIME, ACCESS_COUNT, CREATION_TIME)
+        VALUES (#{mark}, #{osType}, #{model}, #{sdk}, #{system}, NOW(), ACCESS_COUNT+1, NOW())
+        ON DUPLICATE KEY UPDATE
+        <if test="model != null">
+            MODEL = #{model},
+        </if>
+        <if test="sdk != null">
+            SDK = #{sdk},
+        </if>
+        <if test="system != null">
+            SYSTEM = #{system},
+        </if>
+        LAST_ACCESS_TIME = NOW(), ACCESS_COUNT = ACCESS_COUNT+1
+    </insert>
+
+    <select id="queryByMark" resultMap="baseResultMap">
+        SELECT * FROM terminal WHERE MARK = #{mark}
+    </select>
+</mapper>

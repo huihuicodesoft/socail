@@ -14,6 +14,6 @@ public class Constants {
     public static final int MAX_PHOTO_NUMBER = 9;
     public static final int MAX_VIDEO_NUMBER = 1;
 
-    public static final int USER_TYPE_TOURIST = 1;
+    public static final int USER_TYPE_TERMINAL = 1;
     public static final int USER_TYPE_USER = 2;
 }

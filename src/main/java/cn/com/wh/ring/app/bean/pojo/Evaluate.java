@@ -17,10 +17,10 @@ public class Evaluate {
 
     private Long id;
     private Long hostId;
-    private byte hostType;
+    private Byte hostType;
     private String mark;
-    private int markType;
-    private int type;
+    private Integer markType;
+    private Byte type;
     private Date creationTime;
 
     public Long getId() {
@@ -39,11 +39,11 @@ public class Evaluate {
         this.hostId = hostId;
     }
 
-    public byte getHostType() {
+    public Byte getHostType() {
         return hostType;
     }
 
-    public void setHostType(byte hostType) {
+    public void setHostType(Byte hostType) {
         this.hostType = hostType;
     }
 
@@ -55,19 +55,19 @@ public class Evaluate {
         this.mark = mark;
     }
 
-    public int getMarkType() {
+    public Integer getMarkType() {
         return markType;
     }
 
-    public void setMarkType(int markType) {
+    public void setMarkType(Integer markType) {
         this.markType = markType;
     }
 
-    public int getType() {
+    public Byte getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(Byte type) {
         this.type = type;
     }
 

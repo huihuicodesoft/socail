@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserTerminalDao {
-    void insert(UserTerminal userTerminal);
+    void insertOrUpdate(UserTerminal userTerminal);
 
-    Long queryId(UserTerminal userTerminal);
+    void updateNoUsingByUserId(long userId);
+
+    Byte getUsing(long userId, long terminalId);
 }

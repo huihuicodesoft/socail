@@ -13,7 +13,7 @@ public class ReportPost {
     private Long postId;
     private String mark;
     private String content;
-    private int contentType;
+    private Integer contentType;
     private Date creationTime;
 
     public Long getId() {
@@ -48,11 +48,11 @@ public class ReportPost {
         this.content = content;
     }
 
-    public int getContentType() {
+    public Integer getContentType() {
         return contentType;
     }
 
-    public void setContentType(int contentType) {
+    public void setContentType(Integer contentType) {
         this.contentType = contentType;
     }
 

@@ -16,14 +16,14 @@ public class Post {
     private Long userId;
     private String description;
     private String mediaContent;
-    private int postTypeId;
+    private Integer postTypeId;
     private String addressCode;
-    private int praiseNumber;
-    private int criticizeNumber;
-    private int commentNumber;
-    private int reportNumber;
-    private byte anonymous; //{0,1}
-    private byte isDeleted; //{0,1}
+    private Integer praiseNumber;
+    private Integer criticizeNumber;
+    private Integer commentNumber;
+    private Integer reportNumber;
+    private Byte anonymous; //{0,1}
+    private Byte isDeleted; //{0,1}
     private Date creationTime;
 
     public Long getId() {
@@ -58,11 +58,11 @@ public class Post {
         this.mediaContent = mediaContent;
     }
 
-    public int getPostTypeId() {
+    public Integer getPostTypeId() {
         return postTypeId;
     }
 
-    public void setPostTypeId(int postTypeId) {
+    public void setPostTypeId(Integer postTypeId) {
         this.postTypeId = postTypeId;
     }
 
@@ -74,51 +74,51 @@ public class Post {
         this.addressCode = addressCode;
     }
 
-    public int getPraiseNumber() {
+    public Integer getPraiseNumber() {
         return praiseNumber;
     }
 
-    public void setPraiseNumber(int praiseNumber) {
+    public void setPraiseNumber(Integer praiseNumber) {
         this.praiseNumber = praiseNumber;
     }
 
-    public int getCriticizeNumber() {
+    public Integer getCriticizeNumber() {
         return criticizeNumber;
     }
 
-    public void setCriticizeNumber(int criticizeNumber) {
+    public void setCriticizeNumber(Integer criticizeNumber) {
         this.criticizeNumber = criticizeNumber;
     }
 
-    public int getCommentNumber() {
+    public Integer getCommentNumber() {
         return commentNumber;
     }
 
-    public void setCommentNumber(int commentNumber) {
+    public void setCommentNumber(Integer commentNumber) {
         this.commentNumber = commentNumber;
     }
 
-    public int getReportNumber() {
+    public Integer getReportNumber() {
         return reportNumber;
     }
 
-    public void setReportNumber(int reportNumber) {
+    public void setReportNumber(Integer reportNumber) {
         this.reportNumber = reportNumber;
     }
 
-    public byte getAnonymous() {
+    public Byte getAnonymous() {
         return anonymous;
     }
 
-    public void setAnonymous(byte anonymous) {
+    public void setAnonymous(Byte anonymous) {
         this.anonymous = anonymous;
     }
 
-    public byte getIsDeleted() {
+    public Byte getIsDeleted() {
         return isDeleted;
     }
 
-    public void setIsDeleted(byte isDeleted) {
+    public void setIsDeleted(Byte isDeleted) {
         this.isDeleted = isDeleted;
     }
 

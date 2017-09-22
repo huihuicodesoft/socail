@@ -32,12 +32,12 @@ public class CommentServiceImpl implements CommentService {
         if (Strings.isNullOrEmpty(comment)) {
             throw new ServiceException(ReturnCode.ERROR_POST_COMMENT_NULL, "error_post_comment_null");
         }
-        String mark = TokenHelper.getCurrentMark();
+        Long userId = TokenHelper.getCurrentSubjectUserId();
         Comment commentTemp = new Comment();
         commentTemp.setHostId(postId);
         commentTemp.setHostType(Comment.HOST_POST);
         commentTemp.setContent(comment);
-        commentTemp.setUserId(Long.valueOf(mark));
+        commentTemp.setUserId(userId);
         commentDao.insert(commentTemp);
         postDao.increaseCommentNumber(postId);
         return commentTemp.getId();
@@ -45,9 +45,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void praise(Long id) {
-        String currentMark = TokenHelper.getCurrentMark();
-        String currentMarkType = TokenHelper.getCurrentMarkType();
-        int type = TokenHelper.isUserByType(currentMarkType) ? Constants.USER_TYPE_USER : Constants.USER_TYPE_TOURIST;
+        String currentMark = TokenHelper.getCurrentSubjectMarkOrUserId();
+        int type = TokenHelper.getCurrentSubjectType();
         Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_COMMENT, currentMark, type);
         if (evaluate == null) {
             evaluate = new Evaluate();
@@ -69,9 +68,8 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void criticize(Long id) {
-        String currentMark = TokenHelper.getCurrentMark();
-        String currentMarkType = TokenHelper.getCurrentMarkType();
-        int type = TokenHelper.isUserByType(currentMarkType) ? Constants.USER_TYPE_USER : Constants.USER_TYPE_TOURIST;
+        String currentMark = TokenHelper.getCurrentSubjectMarkOrUserId();
+        int type = TokenHelper.getCurrentSubjectType();
         Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_COMMENT, currentMark, type);
         if (evaluate == null) {
             evaluate = new Evaluate();

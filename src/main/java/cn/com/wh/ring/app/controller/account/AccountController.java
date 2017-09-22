@@ -2,7 +2,7 @@ package cn.com.wh.ring.app.controller.account;
 
 import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
-import cn.com.wh.ring.app.bean.request.ThirdAccount;
+import cn.com.wh.ring.app.bean.request.LoginThird;
 import cn.com.wh.ring.app.exception.ResponseException;
 import cn.com.wh.ring.app.service.user.UserService;
 import cn.com.wh.ring.app.utils.PhoneUtils;
@@ -41,8 +41,8 @@ public class AccountController {
             }
             throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
         } else {
-            String token = userService.registerMobileUser(registerMobile);
-            return ResponseHelper.createSuccessResponse(token);
+            userService.registerMobileUser(registerMobile);
+            return ResponseHelper.createSuccessResponse();
         }
     }
 
@@ -63,7 +63,7 @@ public class AccountController {
 
     @PostMapping("v1/login/third")
     @ApiOperation(value = "三方登录")
-    public Response<?> loginMobile(@Valid @RequestBody ThirdAccount thirdAccount, BindingResult result) {
+    public Response<?> loginThird(@Valid @RequestBody LoginThird loginThird, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             for (ObjectError error : errorList) {
@@ -71,7 +71,7 @@ public class AccountController {
             }
             throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
         } else {
-            String token = userService.loginThirdUser(thirdAccount);
+            String token = userService.loginThirdUser(loginThird);
             return ResponseHelper.createSuccessResponse(token);
         }
     }

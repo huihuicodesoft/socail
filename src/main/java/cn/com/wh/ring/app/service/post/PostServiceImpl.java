@@ -79,7 +79,7 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        post.setUserId(Long.valueOf(TokenHelper.getCurrentMark()));
+        post.setUserId(TokenHelper.getCurrentSubjectUserId());
         post.setPostTypeId(postPublish.getPostType());
         post.setDescription(postPublish.getDescription());
         post.setAddressCode(postPublish.getAddressCode());
@@ -109,7 +109,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<cn.com.wh.ring.app.bean.response.Post> queryByUserId(Long userId, cn.com.wh.ring.app.bean.request.Page page) {
         if (userId == null) {
-            userId = Long.valueOf(TokenHelper.getCurrentMark());
+            userId = TokenHelper.getCurrentSubjectUserId();
         }
         PageHelper.startPage(page.getPageNumber(), page.getPageSize());
         List<Post> list = postDao.queryByUserId(userId, page.getMaxId(), Constants.BOOLEAN_FALSE);
@@ -156,9 +156,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void praise(Long id) {
-        String currentMark = TokenHelper.getCurrentMark();
-        String currentMarkType = TokenHelper.getCurrentMarkType();
-        int type = TokenHelper.isUserByType(currentMarkType) ? Constants.USER_TYPE_USER : Constants.USER_TYPE_TOURIST;
+        String currentMark = TokenHelper.getCurrentSubjectMarkOrUserId();
+        int type = TokenHelper.getCurrentSubjectType();
         Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_POST, currentMark, type);
         if (evaluate == null) {
             evaluate = new Evaluate();
@@ -180,9 +179,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void criticize(Long id) {
-        String currentMark = TokenHelper.getCurrentMark();
-        String currentMarkType = TokenHelper.getCurrentMarkType();
-        int type = TokenHelper.isUserByType(currentMarkType) ? Constants.USER_TYPE_USER : Constants.USER_TYPE_TOURIST;
+        String currentMark = TokenHelper.getCurrentSubjectMarkOrUserId();
+        int type = TokenHelper.getCurrentSubjectType();
         Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_POST, currentMark, type);
         if (evaluate == null) {
             evaluate = new Evaluate();
@@ -206,7 +204,7 @@ public class PostServiceImpl implements PostService {
     public void report(Long id, Report report) {
         ReportPost reportPost = new ReportPost();
         reportPost.setPostId(id);
-        reportPost.setMark(TokenHelper.getCurrentMark());
+        reportPost.setMark(TokenHelper.getCurrentSubjectMarkOrUserId());
         reportPost.setContent(report.getContent());
         reportPost.setContentType(report.getContentType());
         reportPostDao.insert(reportPost);

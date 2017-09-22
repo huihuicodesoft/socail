@@ -18,13 +18,13 @@ public class SmsCodeHelper {
     @Autowired
     SmsCodeDao smsCodeDao;
 
-    public boolean verification(RegisterMobile mobileAccount) {
+    public boolean verification(RegisterMobile registerMobile) {
         boolean result;
-        SmsCode smsCode = smsCodeDao.query(mobileAccount.getMobile());
+        SmsCode smsCode = smsCodeDao.query(registerMobile.getMobile());
         if (smsCode == null) {
             throw ServiceException.create(ReturnCode.ERROR_SMS_CODE, "error_sms_code");
         } else {
-            if (smsCode.getCode().equals(mobileAccount.getCode())
+            if (smsCode.getCode().equals(registerMobile.getCode())
                     && System.currentTimeMillis() - smsCode.getUpdateTime().getTime() <= SMS_CODE_TIME) {
                  result = true;
             } else {

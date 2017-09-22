@@ -5,11 +5,11 @@ import org.apache.shiro.authc.AuthenticationException;
 /**
  * Created by Hui on 2017/9/8.
  */
-public class TokenException extends AuthenticationException {
+public class AuthException extends AuthenticationException {
     private int code;
     private String message;
 
-    public TokenException(int code, String message) {
+    public AuthException(int code, String message) {
         this.code = code;
         this.message = message;
     }

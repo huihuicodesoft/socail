@@ -11,13 +11,14 @@ import java.util.Date;
 public class UserInfo {
     private Long id;
     private String nickname;
-    private Long birthday;
-    private int sex;
+    private Date birthday;
+    private Byte sex;
     private String avatar;
     private String signature;
+    private String addressCode;
     private Date lastModifiedTime;
+    private Byte deleted;
     private Date creationTime;
-    private int state;
 
     public Long getId() {
         return id;
@@ -35,19 +36,19 @@ public class UserInfo {
         this.nickname = nickname;
     }
 
-    public Long getBirthday() {
+    public Date getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Long birthday) {
+    public void setBirthday(Date birthday) {
         this.birthday = birthday;
     }
 
-    public int getSex() {
+    public Byte getSex() {
         return sex;
     }
 
-    public void setSex(int sex) {
+    public void setSex(Byte sex) {
         this.sex = sex;
     }
 
@@ -67,6 +68,14 @@ public class UserInfo {
         this.signature = signature;
     }
 
+    public String getAddressCode() {
+        return addressCode;
+    }
+
+    public void setAddressCode(String addressCode) {
+        this.addressCode = addressCode;
+    }
+
     public Date getLastModifiedTime() {
         return lastModifiedTime;
     }
@@ -75,19 +84,19 @@ public class UserInfo {
         this.lastModifiedTime = lastModifiedTime;
     }
 
+    public Byte getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Byte deleted) {
+        this.deleted = deleted;
+    }
+
     public Date getCreationTime() {
         return creationTime;
     }
 
     public void setCreationTime(Date creationTime) {
         this.creationTime = creationTime;
-    }
-
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
     }
 }

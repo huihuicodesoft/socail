@@ -14,20 +14,20 @@ public class User {
     public static final byte ACCOUNT_TYPE_QQ = 3;
     public static final byte ACCOUNT_TYPE_SINA = 4;
 
-    public static final byte STATE_USING = 0;
-    public static final byte STATE_SCRAP = 1;
-    public static final byte STATE_LOCAK = 2;
+    public static final byte STATE_USING = 1;
+    public static final byte STATE_SCRAP = 2;
+    public static final byte STATE_LOCAK = 3;
 
     private Long id;
     private Long userId;
     private String account;
-    private byte accountType;
+    private Byte accountType;
     private Long userInfoId;
     private String password;
     private String accessToken;
     private String refreshToken;
     private String bindAccount;
-    private byte state; //账号状态 0 : 正在使用（默认）1 : 废弃 2：锁定
+    private Byte state; //账号状态 0 : 正在使用（默认）1 : 废弃 2：锁定
     private Date creationTime;
 
     public Long getId() {
@@ -54,11 +54,11 @@ public class User {
         this.account = account;
     }
 
-    public byte getAccountType() {
+    public Byte getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(byte accountType) {
+    public void setAccountType(Byte accountType) {
         this.accountType = accountType;
     }
 
@@ -102,11 +102,11 @@ public class User {
         this.bindAccount = bindAccount;
     }
 
-    public byte getState() {
+    public Byte getState() {
         return state;
     }
 
-    public void setState(byte state) {
+    public void setState(Byte state) {
         this.state = state;
     }
 
