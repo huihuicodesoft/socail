@@ -12,6 +12,7 @@ import cn.com.wh.ring.app.constant.Constants;
 import cn.com.wh.ring.app.constant.RoleConstants;
 import cn.com.wh.ring.app.dao.user.*;
 import cn.com.wh.ring.app.exception.ServiceException;
+import cn.com.wh.ring.app.helper.FileHelper;
 import cn.com.wh.ring.app.helper.SmsCodeHelper;
 import cn.com.wh.ring.app.helper.TokenHelper;
 import cn.com.wh.ring.app.helper.UserHelper;
@@ -51,6 +52,8 @@ public class UserServiceImp implements UserService {
     TerminalService terminalService;
     @Autowired
     SmsCodeHelper smsCodeHelper;
+    @Autowired
+    FileHelper fileHelper;
 
     private List<UserSaveId> mUserSaveIdList;
 
@@ -165,7 +168,7 @@ public class UserServiceImp implements UserService {
             userRoleDao.insert(user.getUserId(), RoleConstants.ROLE_USER);
         } else {
             if (!UserHelper.canUse(user.getState())) {
-                throw new ServiceException(ReturnCode.ERROR_ACCOUNT_UN_USE, "error_account_un_use");
+                throw new ServiceException(ReturnCode.ERROR_USER_LOCKED, "error_account_locked");
             }
             user.setAccessToken(loginThird.getAccessToken());
             user.setRefreshToken(loginThird.getRefreshToken());
@@ -200,12 +203,25 @@ public class UserServiceImp implements UserService {
     private User getMobileAccountUsing(String mobile) {
         User user = userDao.queryByAccount(mobile, User.ACCOUNT_TYPE_MOBILE);
         if (user == null) {
-            throw new ServiceException(ReturnCode.ERROR_MOBILE_UN_EXIST, "error_mobile_un_exist");
+            throw new ServiceException(ReturnCode.ERROR_USER_UN_EXIST, "error_mobile_un_exist");
         } else {
             if (UserHelper.canUse(user.getState())) {
                 return user;
             } else {
-                throw new ServiceException(ReturnCode.ERROR_ACCOUNT_UN_USE, "error_account_un_use");
+                throw new ServiceException(ReturnCode.ERROR_USER_LOCKED, "error_account_locked");
+            }
+        }
+    }
+
+    private User getUserUsing(Long userId) {
+        User user = userDao.queryByUserId(userId);
+        if (user == null) {
+            throw new ServiceException(ReturnCode.ERROR_USER_UN_EXIST, "error_user_un_exist");
+        } else {
+            if (UserHelper.canUse(user.getState())) {
+                return user;
+            } else {
+                throw new ServiceException(ReturnCode.ERROR_USER_LOCKED, "error_user_locked");
             }
         }
     }
@@ -224,12 +240,10 @@ public class UserServiceImp implements UserService {
         Terminal terminal = terminalService.queryByMark(TokenHelper.getCurrentSubjectMark());
         bindUserTerminal(user.getUserId(), terminal.getId());
 
-        //组合返回信息
-        UserInfo userInfo = userInfoDao.queryById(user.getUserInfoId());
         String token = TokenHelper.createToken(user.getUserId(), terminal.getId());
         LoginUser loginUser = new LoginUser();
         loginUser.setToken(token);
-        loginUser.setUserInfo(new cn.com.wh.ring.app.bean.response.UserInfo(user.getUserId(), userInfo));
+        loginUser.setUserInfo(queryUser(user.getUserId()));
         return loginUser;
     }
 
@@ -241,12 +255,21 @@ public class UserServiceImp implements UserService {
         userTerminalService.bindUserTerminal(userTerminal);
     }
 
-    public void updateUserInfo(Long userId, UserInfo userPojo) {
-
+    public void updateUserInfo(UserInfo userInfo) {
+        User user = getUserUsing(TokenHelper.getCurrentSubjectUserId());
+        userInfo.setId(user.getUserInfoId());
+        userInfoDao.update(userInfo);
     }
 
-    public cn.com.wh.ring.app.bean.response.User queryUser(Long userId) {
-        return null;
+    public cn.com.wh.ring.app.bean.response.UserInfo queryUser(Long userId) {
+        User user = getUserUsing(userId);
+        UserInfo userInfo = userInfoDao.queryById(user.getUserInfoId());
+        //拼接头像地址
+        String avatar = userInfo.getAvatar();
+        if (!Strings.isNullOrEmpty(avatar))
+            userInfo.setAvatar(fileHelper.getFileAvatarUrl(avatar));
+
+        return new cn.com.wh.ring.app.bean.response.UserInfo(userId, userInfo);
     }
 
     public boolean isValid(Long userId) {

@@ -134,7 +134,7 @@ public class PostServiceImpl implements PostService {
                     List<String> files = new ArrayList<>();
                     List<String> nameList = JacksonUtils.readValue(names, List.class);
                     for (String name : nameList) {
-                        files.add(fileHelper.getFileUrl(name));
+                        files.add(fileHelper.getFileImageUrl(name));
                     }
                     temp.setMediaList(files);
                 } catch (Exception e) {

@@ -19,10 +19,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
-@Service
-public class StorageServiceImpl implements StorageService {
-    @Value("${upload.location}")
-    String UPLOAD_LOCATION;
+@Service("StorageServiceImageImpl")
+public class StorageServiceImageImpl implements StorageService {
+    @Value("${upload.image.location}")
+    String UPLOAD_IMAGE_LOCATION;
 
     @Autowired
     FileHelper fileHelper;
@@ -32,7 +32,7 @@ public class StorageServiceImpl implements StorageService {
     @PostConstruct
     @Override
     public void init() {
-        this.rootLocation = Paths.get(UPLOAD_LOCATION);
+        this.rootLocation = Paths.get(UPLOAD_IMAGE_LOCATION);
         try {
             if (!Files.exists(rootLocation)) {
                 Files.createDirectory(rootLocation);

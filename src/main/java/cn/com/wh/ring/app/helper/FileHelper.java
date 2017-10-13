@@ -12,26 +12,44 @@ import java.util.UUID;
  */
 @Component
 public final class FileHelper {
-    @Value("${file.url.prefix}")
-    String FILE_URL_PREFIX;
+    @Value("${file.image.url.prefix}")
+    String FILE_IMAGE_URL_PREFIX;
+    @Value("${file.avatar.url.prefix}")
+    String FILE_AVATAR_URL_PREFIX;
 
     /**
-     * 根据文件名拼接url
+     * 根据文件名拼接Image的url
+     *
      * @param fileName
      * @return
      */
-    public String getFileUrl(String fileName) {
+    public String getFileImageUrl(String fileName) {
+        return getFileUrl(FILE_IMAGE_URL_PREFIX, fileName);
+    }
+
+    /**
+     * 根据文件名拼接avatar的url
+     *
+     * @param fileName
+     * @return
+     */
+    public String getFileAvatarUrl(String fileName) {
+        return getFileUrl(FILE_AVATAR_URL_PREFIX, fileName);
+    }
+
+    private String getFileUrl(String dir, String fileName) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(FILE_URL_PREFIX).append(fileName);
+        stringBuilder.append(dir).append(fileName);
         return stringBuilder.toString();
     }
 
     /**
      * 根据原始文件名，生成新的名字
+     *
      * @param originFileName
      * @return
      */
-    public String generateFileName(String originFileName){
+    public String generateFileName(String originFileName) {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         String suffix = originFileName.substring(originFileName.indexOf("."), originFileName.length());
         return uuid + suffix;
@@ -39,6 +57,7 @@ public final class FileHelper {
 
     /**
      * a.png或path/a.png 获得 png
+     *
      * @param path
      * @return
      */
@@ -53,29 +72,29 @@ public final class FileHelper {
         return extension;
     }
 
-    public boolean isPhoto(String path){
+    public boolean isPhoto(String path) {
         boolean result = false;
         String extension = getExtensionName(path);
-        if (!Strings.isNullOrEmpty(extension)){
+        if (!Strings.isNullOrEmpty(extension)) {
             result = "png".equals(extension) || "jpg".equals(extension) || "jpeg".equals(extension);
         }
         return result;
     }
 
-    public boolean isGif(String path){
+    public boolean isGif(String path) {
         boolean result = false;
         String extension = getExtensionName(path);
-        if (!Strings.isNullOrEmpty(extension)){
+        if (!Strings.isNullOrEmpty(extension)) {
             result = "gif".equals(extension);
         }
         return result;
     }
 
-    public boolean isVideo(String path){
+    public boolean isVideo(String path) {
         boolean result = false;
         String extension = getExtensionName(path);
-        if (!Strings.isNullOrEmpty(extension)){
-            result = "avi".equals(extension) || "wmv".equals(extension) || "mp4".equals(extension)|| "flv".equals(extension);
+        if (!Strings.isNullOrEmpty(extension)) {
+            result = "avi".equals(extension) || "wmv".equals(extension) || "mp4".equals(extension) || "flv".equals(extension);
         }
         return result;
     }

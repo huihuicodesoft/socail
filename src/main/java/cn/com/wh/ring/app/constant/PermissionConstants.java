@@ -9,5 +9,8 @@ public class PermissionConstants {
     public static final String PERMISSION_POST_COMMENT = "post:comment";
     public static final String PERMISSION_POST_REPORT = "post:report";
 
+    public static final String PERMISSION_UPLOAD_IMAGE = "upload:image";
+    public static final String PERMISSION_UPLOAD_AVATAR = "upload:avatar";
+
     public static final String PERMISSION_USER_INFO = "user:info";
 }

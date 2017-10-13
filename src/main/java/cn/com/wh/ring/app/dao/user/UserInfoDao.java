@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface UserInfoDao {
     void insert(UserInfo userInfo);
 
-    void update(@Param("id") Long id, UserInfo userInfo);
+    void update(UserInfo userInfo);
 
     UserInfo queryById(@Param("id") Long id);
 }

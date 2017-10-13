@@ -1,6 +1,7 @@
 package cn.com.wh.ring.app.service.user;
 
 import cn.com.wh.ring.app.bean.pojo.User;
+import cn.com.wh.ring.app.bean.pojo.UserInfo;
 import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.LoginThird;
@@ -43,7 +44,18 @@ public interface UserService {
      */
     User validUserMobile(String mobile);
 
-    cn.com.wh.ring.app.bean.response.User queryUser(Long userId);
+    /**
+     * 更新用户信息
+     * @param userInfo
+     */
+    void updateUserInfo(UserInfo userInfo);
+
+    /**
+     * 获取用户信息
+     * @param userId
+     * @return
+     */
+    cn.com.wh.ring.app.bean.response.UserInfo queryUser(Long userId);
 
     boolean isValid(Long userId);
 }

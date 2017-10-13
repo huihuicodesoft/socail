@@ -21,12 +21,12 @@
         (#{nickname}, #{birthday}, #{avatar}, #{signature}, #{addressCode}, NOW(), NOW())
     </insert>
 
-    <update id="update">
+    <update id="update" >
         UPDATE user_info
         <set>
             <if test="nickname != null">NICKNAME = #{nickname},</if>
             <if test="birthday != null">BIRTHDAY = #{birthday},</if>
-            <if test="sex >= 0">SEX = #{sex},</if>
+            <if test="sex != null">SEX = #{sex},</if>
             <if test="avatar != null">AVATAR = #{avatar},</if>
             <if test="signature != null">SIGNATURE = #{signature},</if>
             <if test="addressCode != null">ADDRESS_CODE = #{addressCode},</if>

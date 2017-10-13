@@ -20,6 +20,6 @@
     </update>
 
     <select id="getUsing" resultType="byte">
-        SELECT  `USING` FROM user_terminal WHERE USER_ID = #{userId} AND TERMINAL_ID = #{terminalId}
+        SELECT `USING` FROM user_terminal WHERE USER_ID = #{userId} AND TERMINAL_ID = #{terminalId}
     </select>
 </mapper>

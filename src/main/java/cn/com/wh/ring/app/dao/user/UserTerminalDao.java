@@ -1,6 +1,7 @@
 package cn.com.wh.ring.app.dao.user;
 
 import cn.com.wh.ring.app.bean.pojo.UserTerminal;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface UserTerminalDao {
     void insertOrUpdate(UserTerminal userTerminal);
 
-    void updateNoUsingByUserId(long userId);
+    void updateNoUsingByUserId(@Param("userId") long userId);
 
-    Byte getUsing(long userId, long terminalId);
+    Byte getUsing(@Param("userId") long userId, @Param("terminalId") long terminalId);
 }
