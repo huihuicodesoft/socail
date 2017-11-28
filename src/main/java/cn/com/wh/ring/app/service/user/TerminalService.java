@@ -1,6 +1,7 @@
 package cn.com.wh.ring.app.service.user;
 
 import cn.com.wh.ring.app.bean.pojo.Terminal;
+import cn.com.wh.ring.app.bean.principal.TerminalPrincipal;
 import cn.com.wh.ring.app.bean.request.TerminalDetailInfo;
 
 /**
@@ -8,20 +9,20 @@ import cn.com.wh.ring.app.bean.request.TerminalDetailInfo;
  */
 public interface TerminalService {
     /**
-     * 记录访问记录，如果没有就插入，有的话就更新时间
-     * @param terminal
-     */
-    void recordAccessInfo(Terminal terminal);
-
-    /**
      * 记录设备的详细信息
      * @param terminalDetailInfo
      */
-    void recordDetailInfo(TerminalDetailInfo terminalDetailInfo);
+    void recordTerminalDetailInfo(TerminalDetailInfo terminalDetailInfo);
 
     /**
-     *  根据设备标识获取设备信息
-     * @param mark
+     * 根据设备标识获取设备信息
+     * @param uuid
      */
-    Terminal queryByMark(String mark);
+    Terminal queryByUuid(String uuid);
+
+    /**
+     * 记录或者验证有效性
+     * @param terminalPrincipal
+     */
+    boolean isValid(TerminalPrincipal terminalPrincipal);
 }

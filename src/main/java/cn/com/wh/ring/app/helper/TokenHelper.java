@@ -5,6 +5,7 @@ import cn.com.wh.ring.app.bean.principal.UserPrincipal;
 import cn.com.wh.ring.app.constant.Constants;
 import cn.com.wh.ring.common.secret.AES;
 import cn.com.wh.ring.common.secret.RSA;
+import com.google.common.base.Strings;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 
@@ -15,7 +16,7 @@ public class TokenHelper {
     private static final String TERMINAL = "/tourist"; //前台标记游客
     private static final String USER = "user"; //后台生成token需要的局部信息
     private static final int USER_TOKEN_ARRAY_LENGTH = 4;
-    private static final int TERMINAL_TOKEN_ARRAY_LENGTH = 2;
+    private static final int TERMINAL_TOKEN_ARRAY_LENGTH = 4;
     private static final String COLON = "_";
 
     /**
@@ -47,12 +48,18 @@ public class TokenHelper {
     public static TerminalPrincipal parseTerminalToken(String requestToken) {
         TerminalPrincipal terminalPrincipal = null;
         try {
-            String realToken = RSA.decrypt(requestToken.substring(0, requestToken.lastIndexOf(TERMINAL)));
-            String[] info = realToken.split(COLON);
+            String terminalInfo = RSA.decrypt(requestToken.substring(0, requestToken.lastIndexOf(TERMINAL)));
+            String[] info = terminalInfo.split(COLON);
             if (info != null && info.length == TERMINAL_TOKEN_ARRAY_LENGTH) {
                 terminalPrincipal = new TerminalPrincipal();
-                terminalPrincipal.setMark(info[0]);
-                terminalPrincipal.setOsType(Byte.parseByte(info[1]));
+                terminalPrincipal.setUuid(info[0]);
+                if (!Strings.isNullOrEmpty(info[1])){
+                    terminalPrincipal.setImei(info[1]);
+                }
+                if (!Strings.isNullOrEmpty(info[2])){
+                    terminalPrincipal.setMac(info[2]);
+                }
+                terminalPrincipal.setOsType(Byte.parseByte(info[3]));
             }
         } catch (Exception e) {
 
@@ -68,17 +75,17 @@ public class TokenHelper {
         return ((UserPrincipal) getCurrentPrincipal()).getUserId();
     }
 
-    public static String getCurrentSubjectMark() {
-        return ((TerminalPrincipal) getCurrentPrincipal()).getMark();
+    public static String getCurrentSubjectUuid() {
+        return ((TerminalPrincipal) getCurrentPrincipal()).getUuid();
     }
 
-    public static String getCurrentSubjectMarkOrUserId() {
+    public static String getCurrentSubjectUuidOrUserId() {
         String mark;
         int type = getCurrentSubjectType();
         if (type == Constants.USER_TYPE_USER) {
             mark = String.valueOf(getCurrentSubjectUserId());
         } else {
-            mark = getCurrentSubjectMark();
+            mark = getCurrentSubjectUuid();
         }
         return mark;
     }

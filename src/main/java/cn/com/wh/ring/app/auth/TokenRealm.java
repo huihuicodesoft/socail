@@ -2,17 +2,15 @@ package cn.com.wh.ring.app.auth;
 
 import cn.com.wh.ring.app.bean.pojo.Permission;
 import cn.com.wh.ring.app.bean.pojo.Terminal;
-import cn.com.wh.ring.app.bean.pojo.UserTerminal;
 import cn.com.wh.ring.app.bean.principal.TerminalPrincipal;
 import cn.com.wh.ring.app.bean.principal.UserPrincipal;
 import cn.com.wh.ring.app.exception.AuthException;
 import cn.com.wh.ring.app.exception.ServiceException;
-import cn.com.wh.ring.app.helper.TokenHelper;
+import cn.com.wh.ring.app.helper.AccountHelper;
 import cn.com.wh.ring.app.service.permission.PermissionService;
 import cn.com.wh.ring.app.service.user.UserService;
 import cn.com.wh.ring.app.service.user.TerminalService;
 import cn.com.wh.ring.app.service.user.UserTerminalService;
-import com.google.common.base.Strings;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -33,7 +31,7 @@ public class TokenRealm extends AuthorizingRealm {
     @Autowired
     UserService userService;
     @Autowired
-    TerminalService touristService;
+    TerminalService terminalService;
     @Autowired
     UserTerminalService userTerminalService;
     @Autowired
@@ -53,11 +51,7 @@ public class TokenRealm extends AuthorizingRealm {
                     }
                 } else {
                     TerminalPrincipal terminalPrincipal = (TerminalPrincipal) principal;
-                    Terminal terminal = new Terminal();
-                    terminal.setMark(terminalPrincipal.getMark());
-                    terminal.setOsType(terminalPrincipal.getOsType());
-                    touristService.recordAccessInfo(terminal);
-                    return true;
+                    return terminalService.isValid(terminalPrincipal);
                 }
             } catch (ServiceException e) {
                 throw new AuthException(e.getCode(), e.getMessage());

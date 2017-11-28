@@ -156,7 +156,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void praise(Long id) {
-        String currentMark = TokenHelper.getCurrentSubjectMarkOrUserId();
+        String currentMark = TokenHelper.getCurrentSubjectUuidOrUserId();
         int type = TokenHelper.getCurrentSubjectType();
         Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_POST, currentMark, type);
         if (evaluate == null) {
@@ -179,7 +179,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void criticize(Long id) {
-        String currentMark = TokenHelper.getCurrentSubjectMarkOrUserId();
+        String currentMark = TokenHelper.getCurrentSubjectUuidOrUserId();
         int type = TokenHelper.getCurrentSubjectType();
         Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_POST, currentMark, type);
         if (evaluate == null) {
@@ -204,7 +204,7 @@ public class PostServiceImpl implements PostService {
     public void report(Long id, Report report) {
         ReportPost reportPost = new ReportPost();
         reportPost.setPostId(id);
-        reportPost.setMark(TokenHelper.getCurrentSubjectMarkOrUserId());
+        reportPost.setMark(TokenHelper.getCurrentSubjectUuidOrUserId());
         reportPost.setContent(report.getContent());
         reportPost.setContentType(report.getContentType());
         reportPostDao.insert(reportPost);

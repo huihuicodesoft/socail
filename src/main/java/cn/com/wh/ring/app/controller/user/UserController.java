@@ -36,6 +36,7 @@ public class UserController {
     FileHelper fileHelper;
 
     @Autowired
+    @Qualifier("storageServiceImpl")
     StorageService storageService;
 
     @GetMapping("v1/userInfo/{userId}")

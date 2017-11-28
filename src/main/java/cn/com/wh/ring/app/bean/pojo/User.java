@@ -14,10 +14,6 @@ public class User {
     public static final byte ACCOUNT_TYPE_QQ = 3;
     public static final byte ACCOUNT_TYPE_SINA = 4;
 
-    public static final byte STATE_USING = 1;
-    public static final byte STATE_SCRAP = 2;
-    public static final byte STATE_LOCAK = 3;
-
     private Long id;
     private Long userId;
     private String account;

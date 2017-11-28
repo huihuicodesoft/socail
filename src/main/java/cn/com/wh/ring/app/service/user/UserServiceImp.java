@@ -15,7 +15,7 @@ import cn.com.wh.ring.app.exception.ServiceException;
 import cn.com.wh.ring.app.helper.FileHelper;
 import cn.com.wh.ring.app.helper.SmsCodeHelper;
 import cn.com.wh.ring.app.helper.TokenHelper;
-import cn.com.wh.ring.app.helper.UserHelper;
+import cn.com.wh.ring.app.helper.AccountHelper;
 import cn.com.wh.ring.common.response.ReturnCode;
 import cn.com.wh.ring.common.secret.RSA;
 import com.google.common.base.Strings;
@@ -167,7 +167,7 @@ public class UserServiceImp implements UserService {
 
             userRoleDao.insert(user.getUserId(), RoleConstants.ROLE_USER);
         } else {
-            if (!UserHelper.canUse(user.getState())) {
+            if (!AccountHelper.canUse(user.getState())) {
                 throw new ServiceException(ReturnCode.ERROR_USER_LOCKED, "error_account_locked");
             }
             user.setAccessToken(loginThird.getAccessToken());
@@ -205,7 +205,7 @@ public class UserServiceImp implements UserService {
         if (user == null) {
             throw new ServiceException(ReturnCode.ERROR_USER_UN_EXIST, "error_mobile_un_exist");
         } else {
-            if (UserHelper.canUse(user.getState())) {
+            if (AccountHelper.canUse(user.getState())) {
                 return user;
             } else {
                 throw new ServiceException(ReturnCode.ERROR_USER_LOCKED, "error_account_locked");
@@ -218,7 +218,7 @@ public class UserServiceImp implements UserService {
         if (user == null) {
             throw new ServiceException(ReturnCode.ERROR_USER_UN_EXIST, "error_user_un_exist");
         } else {
-            if (UserHelper.canUse(user.getState())) {
+            if (AccountHelper.canUse(user.getState())) {
                 return user;
             } else {
                 throw new ServiceException(ReturnCode.ERROR_USER_LOCKED, "error_user_locked");
@@ -235,9 +235,9 @@ public class UserServiceImp implements UserService {
      */
     private LoginUser recordTerminalToResponse(TerminalDetailInfo terminalDetailInfo, User user) {
         //补充设备详细信息,
-        terminalService.recordDetailInfo(terminalDetailInfo);
+        terminalService.recordTerminalDetailInfo(terminalDetailInfo);
         //绑定用户和设备
-        Terminal terminal = terminalService.queryByMark(TokenHelper.getCurrentSubjectMark());
+        Terminal terminal = terminalService.queryByUuid(TokenHelper.getCurrentSubjectUuid());
         bindUserTerminal(user.getUserId(), terminal.getId());
 
         String token = TokenHelper.createToken(user.getUserId(), terminal.getId());
@@ -274,10 +274,6 @@ public class UserServiceImp implements UserService {
 
     public boolean isValid(Long userId) {
         User user = userDao.queryByUserId(userId);
-        if (user == null) {
-            return false;
-        } else {
-            return UserHelper.canUse(user.getState());
-        }
+        return user == null ? false : AccountHelper.canUse(user.getState());
     }
 }

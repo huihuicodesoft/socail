@@ -9,7 +9,6 @@ import cn.com.wh.ring.common.response.Response;
 import cn.com.wh.ring.common.response.ResponseHelper;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,6 +28,7 @@ public class FileUploadController {
     int PER_MAX_SIZE;
 
     @Autowired
+    @Qualifier("storageServiceImpl")
     StorageService storageService;
 
     @PostMapping("v1/image/upload")

@@ -1,6 +1,8 @@
 package cn.com.wh.ring.app.dao.user;
 
 import cn.com.wh.ring.app.bean.pojo.Terminal;
+import cn.com.wh.ring.app.bean.principal.TerminalPrincipal;
+import cn.com.wh.ring.app.bean.request.TerminalDetailInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +11,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface TerminalDao {
-    void insertOrUpdate(Terminal terminal);
+    void insert(Terminal terminal);
 
-    Terminal queryByMark(@Param("mark") String mark);
+    void updateByUuid(@Param("uuid")String uuid, @Param("terminalDetailInfo") TerminalDetailInfo terminalDetailInfo);
+
+    Terminal queryByUuid(@Param("uuid") String uuid);
 }

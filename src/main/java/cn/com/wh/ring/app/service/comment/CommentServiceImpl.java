@@ -2,7 +2,6 @@ package cn.com.wh.ring.app.service.comment;
 
 import cn.com.wh.ring.app.bean.pojo.Evaluate;
 import cn.com.wh.ring.app.bean.pojo.Comment;
-import cn.com.wh.ring.app.constant.Constants;
 import cn.com.wh.ring.app.dao.evaluate.EvaluateDao;
 import cn.com.wh.ring.app.dao.comment.CommentDao;
 import cn.com.wh.ring.app.dao.post.PostDao;
@@ -45,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void praise(Long id) {
-        String currentMark = TokenHelper.getCurrentSubjectMarkOrUserId();
+        String currentMark = TokenHelper.getCurrentSubjectUuidOrUserId();
         int type = TokenHelper.getCurrentSubjectType();
         Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_COMMENT, currentMark, type);
         if (evaluate == null) {
@@ -68,7 +67,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void criticize(Long id) {
-        String currentMark = TokenHelper.getCurrentSubjectMarkOrUserId();
+        String currentMark = TokenHelper.getCurrentSubjectUuidOrUserId();
         int type = TokenHelper.getCurrentSubjectType();
         Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_COMMENT, currentMark, type);
         if (evaluate == null) {
