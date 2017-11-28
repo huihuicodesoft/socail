@@ -4,6 +4,7 @@ import cn.com.wh.ring.app.bean.pojo.UserInfo;
 import cn.com.wh.ring.app.constant.PermissionConstants;
 import cn.com.wh.ring.app.exception.ResponseException;
 import cn.com.wh.ring.app.helper.FileHelper;
+import cn.com.wh.ring.app.service.storage.STORAGE_TYPE;
 import cn.com.wh.ring.app.service.storage.StorageService;
 import cn.com.wh.ring.app.service.user.UserService;
 import cn.com.wh.ring.common.response.Response;
@@ -35,8 +36,7 @@ public class UserController {
     FileHelper fileHelper;
 
     @Autowired
-    @Qualifier("StorageServiceAvatarImpl")
-    StorageService storageAvatarService;
+    StorageService storageService;
 
     @GetMapping("v1/userInfo/{userId}")
     @ApiOperation(value = "获取用户信息")
@@ -56,7 +56,7 @@ public class UserController {
                 throw ResponseException.create(ReturnCode.ERROR_FILE_UPLOAD_MAX_SIZE, "error_file_upload_max_size");
             } else {
                 try {
-                    String fileName = storageAvatarService.store(file);
+                    String fileName = storageService.store(file, STORAGE_TYPE.AVATAR);
                     UserInfo userInfo = new UserInfo();
                     userInfo.setAvatar(fileName);
                     userService.updateUserInfo(userInfo);

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
  * Created by Hui on 2017/6/15.
@@ -15,6 +16,7 @@ import org.springframework.core.io.ClassPathResource;
  * 通用的spring容器配置
  */
 @Configuration
+@EnableAsync
 @ComponentScan(basePackageClasses = Application.class)
 public class WebContextConfig{
     @Bean

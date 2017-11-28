@@ -2,6 +2,7 @@ package cn.com.wh.ring.app.controller.upload;
 
 import cn.com.wh.ring.app.constant.PermissionConstants;
 import cn.com.wh.ring.app.exception.ResponseException;
+import cn.com.wh.ring.app.service.storage.STORAGE_TYPE;
 import cn.com.wh.ring.common.response.ReturnCode;
 import cn.com.wh.ring.app.service.storage.StorageService;
 import cn.com.wh.ring.common.response.Response;
@@ -28,8 +29,7 @@ public class FileUploadController {
     int PER_MAX_SIZE;
 
     @Autowired
-    @Qualifier("StorageServiceImageImpl")
-    StorageService storageImageService;
+    StorageService storageService;
 
     @PostMapping("v1/image/upload")
     @ApiOperation(value = "上传图片")
@@ -44,7 +44,7 @@ public class FileUploadController {
                     throw ResponseException.create(ReturnCode.ERROR_FILE_UPLOAD_MAX_SIZE, "error_file_upload_max_size");
                 } else {
                     try {
-                        fileNames.add(storageImageService.store(file));
+                        fileNames.add(storageService.store(file, STORAGE_TYPE.IMAGE));
                     } catch (Exception e) {
                         throw ResponseException.create(ReturnCode.ERROR_FILE_STORAGE, "error_file_storage");
                     }
