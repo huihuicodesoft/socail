@@ -25,7 +25,7 @@ public class UserTerminalServiceImpl implements UserTerminalService{
     }
 
     @Override
-    public void valid(long userId, long terminalId) {
+    public void valid(long userId, long terminalId) throws ServiceException {
         Byte using = userTerminalDao.getUsing(userId, terminalId);
         if (using == null || using == Constants.BOOLEAN_FALSE) {
             throw new ServiceException(ReturnCode.ERROR_USER_BIND_TERMINAL_INVALID, "error_user_bind_terminal_invalid");

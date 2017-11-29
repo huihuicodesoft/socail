@@ -1,12 +1,10 @@
 package cn.com.wh.ring.app.auth;
 
 import cn.com.wh.ring.app.bean.pojo.Permission;
-import cn.com.wh.ring.app.bean.pojo.Terminal;
 import cn.com.wh.ring.app.bean.principal.TerminalPrincipal;
 import cn.com.wh.ring.app.bean.principal.UserPrincipal;
 import cn.com.wh.ring.app.exception.AuthException;
 import cn.com.wh.ring.app.exception.ServiceException;
-import cn.com.wh.ring.app.helper.AccountHelper;
 import cn.com.wh.ring.app.service.permission.PermissionService;
 import cn.com.wh.ring.app.service.user.UserService;
 import cn.com.wh.ring.app.service.user.TerminalService;

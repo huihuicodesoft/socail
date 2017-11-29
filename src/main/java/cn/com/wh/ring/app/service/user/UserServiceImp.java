@@ -272,8 +272,12 @@ public class UserServiceImp implements UserService {
         return new cn.com.wh.ring.app.bean.response.UserInfo(userId, userInfo);
     }
 
-    public boolean isValid(Long userId) {
+    public boolean isValid(Long userId) throws ServiceException{
         User user = userDao.queryByUserId(userId);
-        return user == null ? false : AccountHelper.canUse(user.getState());
+        if(user == null) {
+            throw new ServiceException(ReturnCode.ERROR_USER_UN_EXIST, "error_user_un_exist");
+        } else {
+            return AccountHelper.canUse(user.getState());
+        }
     }
 }

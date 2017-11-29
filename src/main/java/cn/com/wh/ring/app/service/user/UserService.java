@@ -6,6 +6,7 @@ import cn.com.wh.ring.app.bean.request.LoginMobile;
 import cn.com.wh.ring.app.bean.request.RegisterMobile;
 import cn.com.wh.ring.app.bean.request.LoginThird;
 import cn.com.wh.ring.app.bean.response.LoginUser;
+import cn.com.wh.ring.app.exception.ServiceException;
 
 /**
  * Created by Hui on 2017/6/14.
@@ -57,5 +58,5 @@ public interface UserService {
      */
     cn.com.wh.ring.app.bean.response.UserInfo queryUser(Long userId);
 
-    boolean isValid(Long userId);
+    boolean isValid(Long userId) throws ServiceException;
 }
