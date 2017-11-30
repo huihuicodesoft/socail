@@ -8,8 +8,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/6/22.
  */
-@Alias("Terminal")
-public class Terminal {
+@Alias("TerminalPojo")
+public class TerminalPojo {
     private Long id;
     private String uuid;
     private String imei;
@@ -21,10 +21,10 @@ public class Terminal {
     private Date creationTime;
     private Byte state;//账号状态 1 : 正在使用（默认）2 : 废弃 3：锁定
 
-    public Terminal() {
+    public TerminalPojo() {
     }
 
-    public Terminal(TerminalPrincipal terminalPrincipal) {
+    public TerminalPojo(TerminalPrincipal terminalPrincipal) {
         this.uuid = terminalPrincipal.getUuid();
         this.imei = terminalPrincipal.getImei();
         this.mac = terminalPrincipal.getMac();

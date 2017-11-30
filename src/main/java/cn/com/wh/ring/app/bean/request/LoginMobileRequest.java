@@ -1,5 +1,6 @@
 package cn.com.wh.ring.app.bean.request;
 
+import cn.com.wh.ring.app.bean.pojo.AddressPojo;
 import cn.com.wh.ring.app.utils.PhoneUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -9,7 +10,7 @@ import javax.validation.constraints.Pattern;
 /**
  * Created by Hui on 2017/7/23.
  */
-public class LoginMobile {
+public class LoginMobileRequest {
     @NotNull(message = "手机号不能为空")
     @Length(min = 11, max = 11, message = "手机号非法")
     @Pattern(regexp = PhoneUtils.PHONE_REGEX, message = "手机号非法")
@@ -19,7 +20,9 @@ public class LoginMobile {
     @Length(min = 1, message = "密码不能为空")
     private String password;
 
-    private TerminalDetailInfo terminalDetailInfo;
+    private TerminalDetailInfoRequest terminalDetailInfoRequest;
+
+    private AddressRequest address;
 
     public String getMobile() {
         return mobile;
@@ -37,11 +40,19 @@ public class LoginMobile {
         this.password = password;
     }
 
-    public TerminalDetailInfo getTerminalDetailInfo() {
-        return terminalDetailInfo;
+    public TerminalDetailInfoRequest getTerminalDetailInfoRequest() {
+        return terminalDetailInfoRequest;
     }
 
-    public void setTerminalDetailInfo(TerminalDetailInfo terminalDetailInfo) {
-        this.terminalDetailInfo = terminalDetailInfo;
+    public void setTerminalDetailInfoRequest(TerminalDetailInfoRequest terminalDetailInfoRequest) {
+        this.terminalDetailInfoRequest = terminalDetailInfoRequest;
+    }
+
+    public AddressRequest getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressRequest address) {
+        this.address = address;
     }
 }

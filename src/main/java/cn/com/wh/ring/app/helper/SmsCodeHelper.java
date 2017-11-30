@@ -1,7 +1,7 @@
 package cn.com.wh.ring.app.helper;
 
-import cn.com.wh.ring.app.bean.pojo.SmsCode;
-import cn.com.wh.ring.app.bean.request.RegisterMobile;
+import cn.com.wh.ring.app.bean.pojo.SmsCodePojo;
+import cn.com.wh.ring.app.bean.request.RegisterMobileRequest;
 import cn.com.wh.ring.app.dao.sms.SmsCodeDao;
 import cn.com.wh.ring.app.exception.ServiceException;
 import cn.com.wh.ring.common.response.ReturnCode;
@@ -18,14 +18,14 @@ public class SmsCodeHelper {
     @Autowired
     SmsCodeDao smsCodeDao;
 
-    public boolean verification(RegisterMobile registerMobile) {
+    public boolean verification(RegisterMobileRequest registerMobileRequest) {
         boolean result;
-        SmsCode smsCode = smsCodeDao.query(registerMobile.getMobile());
-        if (smsCode == null) {
+        SmsCodePojo smsCodePojo = smsCodeDao.query(registerMobileRequest.getMobile());
+        if (smsCodePojo == null) {
             throw ServiceException.create(ReturnCode.ERROR_SMS_CODE, "error_sms_code");
         } else {
-            if (smsCode.getCode().equals(registerMobile.getCode())
-                    && System.currentTimeMillis() - smsCode.getUpdateTime().getTime() <= SMS_CODE_TIME) {
+            if (smsCodePojo.getCode().equals(registerMobileRequest.getCode())
+                    && System.currentTimeMillis() - smsCodePojo.getUpdateTime().getTime() <= SMS_CODE_TIME) {
                  result = true;
             } else {
                 throw ServiceException.create(ReturnCode.ERROR_SMS_CODE_INVALID, "error_sms_code_invalid");

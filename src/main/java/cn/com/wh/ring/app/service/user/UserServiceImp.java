@@ -1,21 +1,21 @@
 package cn.com.wh.ring.app.service.user;
 
 import cn.com.wh.ring.app.bean.pojo.*;
-import cn.com.wh.ring.app.bean.pojo.User;
+import cn.com.wh.ring.app.bean.pojo.AddressPojo;
+import cn.com.wh.ring.app.bean.pojo.UserPojo;
 import cn.com.wh.ring.app.bean.pojo.UserInfo;
-import cn.com.wh.ring.app.bean.request.LoginMobile;
-import cn.com.wh.ring.app.bean.request.RegisterMobile;
-import cn.com.wh.ring.app.bean.request.LoginThird;
-import cn.com.wh.ring.app.bean.request.TerminalDetailInfo;
+import cn.com.wh.ring.app.bean.request.*;
 import cn.com.wh.ring.app.bean.response.*;
 import cn.com.wh.ring.app.constant.Constants;
 import cn.com.wh.ring.app.constant.RoleConstants;
+import cn.com.wh.ring.app.dao.address.AddressDao;
 import cn.com.wh.ring.app.dao.user.*;
 import cn.com.wh.ring.app.exception.ServiceException;
 import cn.com.wh.ring.app.helper.FileHelper;
 import cn.com.wh.ring.app.helper.SmsCodeHelper;
 import cn.com.wh.ring.app.helper.TokenHelper;
 import cn.com.wh.ring.app.helper.AccountHelper;
+import cn.com.wh.ring.app.service.address.AddressService;
 import cn.com.wh.ring.common.response.ReturnCode;
 import cn.com.wh.ring.common.secret.RSA;
 import com.google.common.base.Strings;
@@ -43,6 +43,8 @@ public class UserServiceImp implements UserService {
     @Autowired
     UserInfoDao userInfoDao;
     @Autowired
+    AddressService addressService;
+    @Autowired
     UserTerminalService userTerminalService;
     @Autowired
     UserSaveIdDao userSaveIdDao;
@@ -55,11 +57,11 @@ public class UserServiceImp implements UserService {
     @Autowired
     FileHelper fileHelper;
 
-    private List<UserSaveId> mUserSaveIdList;
+    private List<UserSaveIdPojo> mUserSaveIdPojoList;
 
     @PostConstruct
     private void init() {
-        mUserSaveIdList = userSaveIdDao.getAll();
+        mUserSaveIdPojoList = userSaveIdDao.getAll();
     }
 
     private Long generateUserId() {
@@ -76,9 +78,9 @@ public class UserServiceImp implements UserService {
     }
 
     private boolean isSaveUserId(Long userId) {
-        if (mUserSaveIdList != null) {
-            for (UserSaveId userSaveId : mUserSaveIdList) {
-                if (userId == userSaveId.getSaveUserId()) {
+        if (mUserSaveIdPojoList != null) {
+            for (UserSaveIdPojo userSaveIdPojo : mUserSaveIdPojoList) {
+                if (userId == userSaveIdPojo.getSaveUserId()) {
                     //是保留ID
                     return true;
                 }
@@ -88,26 +90,25 @@ public class UserServiceImp implements UserService {
         return false;
     }
 
-    public void registerMobileUser(@Valid RegisterMobile registerMobile) {
-        if (smsCodeHelper.verification(registerMobile)) {
+    public void registerMobileUser(@Valid RegisterMobileRequest registerMobileRequest) {
+        if (smsCodeHelper.verification(registerMobileRequest)) {
             //手机号校验
-            User user = userDao.queryByAccount(registerMobile.getMobile(), User.ACCOUNT_TYPE_MOBILE);
-            if (user == null) {
+            UserPojo userPojo = userDao.queryByAccount(registerMobileRequest.getMobile(), UserPojo.ACCOUNT_TYPE_MOBILE);
+            if (userPojo == null) {
                 //添加用户信息
-                UserInfo userInfo = new UserInfo();
-                userInfoDao.insert(userInfo);
+                UserInfo userInfo = getUserInfoByAddress(registerMobileRequest.getAddress());
 
                 try {
                     //创建账号，绑定用户信息
-                    user = new User();
-                    user.setAccount(registerMobile.getMobile());
-                    user.setPassword(RSA.decrypt(registerMobile.getPassword()));
-                    user.setAccountType(User.ACCOUNT_TYPE_MOBILE);
-                    user.setUserInfoId(userInfo.getId());
-                    user.setUserId(generateUserId());
-                    userDao.insert(user);
+                    userPojo = new UserPojo();
+                    userPojo.setAccount(registerMobileRequest.getMobile());
+                    userPojo.setPassword(RSA.decrypt(registerMobileRequest.getPassword()));
+                    userPojo.setAccountType(UserPojo.ACCOUNT_TYPE_MOBILE);
+                    userPojo.setUserInfoId(userInfo.getId());
+                    userPojo.setUserId(generateUserId());
+                    userDao.insert(userPojo);
 
-                    userRoleDao.insert(user.getUserId(), RoleConstants.ROLE_USER);
+                    userRoleDao.insert(userPojo.getUserId(), RoleConstants.ROLE_USER);
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
@@ -120,21 +121,21 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public LoginUser loginMobileUser(LoginMobile loginMobile) {
+    public LoginUserResponse loginMobileUser(LoginMobileRequest loginMobileRequest) {
         if (TokenHelper.getCurrentSubjectType() != Constants.USER_TYPE_TERMINAL) {
             throw new ServiceException(ReturnCode.ERROR_TOKEN_ERROR, "error_token_error");
         }
-        User user = getMobileAccountUsing(loginMobile.getMobile());
-        if (user != null) {
+        UserPojo userPojo = getMobileAccountUsing(loginMobileRequest.getMobile());
+        if (userPojo != null) {
             String realPassword;
             try {
-                realPassword = RSA.decrypt(loginMobile.getPassword());
+                realPassword = RSA.decrypt(loginMobileRequest.getPassword());
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
             }
-            if (!Strings.isNullOrEmpty(realPassword) && realPassword.equals(user.getPassword())) {
-                return recordTerminalToResponse(loginMobile.getTerminalDetailInfo(), user);
+            if (!Strings.isNullOrEmpty(realPassword) && realPassword.equals(userPojo.getPassword())) {
+                return recordTerminalToResponse(loginMobileRequest.getTerminalDetailInfoRequest(), userPojo);
             } else {
                 throw new ServiceException(ReturnCode.ERROR_ACCOUNT_PASSWORD, "error_account_password");
             }
@@ -144,49 +145,57 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public LoginUser loginThirdUser(LoginThird loginThird) {
+    public LoginUserResponse loginThirdUser(LoginThirdRequest loginThirdRequest) {
         if (TokenHelper.getCurrentSubjectType() != Constants.USER_TYPE_TERMINAL) {
             throw new ServiceException(ReturnCode.ERROR_TOKEN_ERROR, "error_token_error");
         }
         //三方校验
-        User user = userDao.queryByAccount(loginThird.getAccount(), loginThird.getAccountType());
-        if (user == null) {
+        UserPojo userPojo = userDao.queryByAccount(loginThirdRequest.getAccount(), loginThirdRequest.getAccountType());
+        if (userPojo == null) {
             //添加用户信息
-            UserInfo userInfo = new UserInfo();
-            userInfoDao.insert(userInfo);
+            UserInfo userInfo = getUserInfoByAddress(loginThirdRequest.getAddress());
 
             //创建账号，绑定用户信息
-            user = new User();
-            user.setAccount(loginThird.getAccount());
-            user.setAccountType(loginThird.getAccountType());
-            user.setAccessToken(loginThird.getAccessToken());
-            user.setRefreshToken(loginThird.getRefreshToken());
-            user.setUserInfoId(userInfo.getId());
-            user.setUserId(generateUserId());
-            userDao.insert(user);
+            userPojo = new UserPojo();
+            userPojo.setAccount(loginThirdRequest.getAccount());
+            userPojo.setAccountType(loginThirdRequest.getAccountType());
+            userPojo.setAccessToken(loginThirdRequest.getAccessToken());
+            userPojo.setRefreshToken(loginThirdRequest.getRefreshToken());
+            userPojo.setUserInfoId(userInfo.getId());
+            userPojo.setUserId(generateUserId());
+            userDao.insert(userPojo);
 
-            userRoleDao.insert(user.getUserId(), RoleConstants.ROLE_USER);
+            userRoleDao.insert(userPojo.getUserId(), RoleConstants.ROLE_USER);
         } else {
-            if (!AccountHelper.canUse(user.getState())) {
+            if (!AccountHelper.canUse(userPojo.getState())) {
                 throw new ServiceException(ReturnCode.ERROR_USER_LOCKED, "error_account_locked");
             }
-            user.setAccessToken(loginThird.getAccessToken());
-            user.setRefreshToken(loginThird.getRefreshToken());
-            userDao.updateToken(user);
+            userPojo.setAccessToken(loginThirdRequest.getAccessToken());
+            userPojo.setRefreshToken(loginThirdRequest.getRefreshToken());
+            userDao.updateToken(userPojo);
         }
 
-        return recordTerminalToResponse(loginThird.getTerminalDetailInfo(), user);
+        return recordTerminalToResponse(loginThirdRequest.getTerminalDetailInfoRequest(), userPojo);
+    }
+
+    private UserInfo getUserInfoByAddress(AddressRequest addressRequest) {
+        //添加用户信息
+        UserInfo userInfo = new UserInfo();
+        //添加注册地址信息
+        addressService.bind(userInfo, addressRequest);
+        userInfoDao.insert(userInfo);
+        return userInfo;
     }
 
     @Override
-    public void updatePassword(@Valid RegisterMobile registerMobile) {
-        if (smsCodeHelper.verification(registerMobile)) {
+    public void updatePassword(@Valid RegisterMobileRequest registerMobileRequest) {
+        if (smsCodeHelper.verification(registerMobileRequest)) {
             //手机号校验
-            User user = getMobileAccountUsing(registerMobile.getMobile());
-            if (user != null) {
+            UserPojo userPojo = getMobileAccountUsing(registerMobileRequest.getMobile());
+            if (userPojo != null) {
                 try {
-                    userDao.updatePassword(registerMobile.getMobile(), User.ACCOUNT_TYPE_MOBILE,
-                            RSA.decrypt(registerMobile.getPassword()));
+                    userDao.updatePassword(registerMobileRequest.getMobile(), UserPojo.ACCOUNT_TYPE_MOBILE,
+                            RSA.decrypt(registerMobileRequest.getPassword()));
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new ServiceException(ReturnCode.ERROR_PROGRAM, "error_program");
@@ -196,30 +205,30 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User validUserMobile(String mobile) {
+    public UserPojo validUserMobile(String mobile) {
         return getMobileAccountUsing(mobile);
     }
 
-    private User getMobileAccountUsing(String mobile) {
-        User user = userDao.queryByAccount(mobile, User.ACCOUNT_TYPE_MOBILE);
-        if (user == null) {
+    private UserPojo getMobileAccountUsing(String mobile) {
+        UserPojo userPojo = userDao.queryByAccount(mobile, UserPojo.ACCOUNT_TYPE_MOBILE);
+        if (userPojo == null) {
             throw new ServiceException(ReturnCode.ERROR_USER_UN_EXIST, "error_mobile_un_exist");
         } else {
-            if (AccountHelper.canUse(user.getState())) {
-                return user;
+            if (AccountHelper.canUse(userPojo.getState())) {
+                return userPojo;
             } else {
                 throw new ServiceException(ReturnCode.ERROR_USER_LOCKED, "error_account_locked");
             }
         }
     }
 
-    private User getUserUsing(Long userId) {
-        User user = userDao.queryByUserId(userId);
-        if (user == null) {
+    private UserPojo getUserUsing(Long userId) {
+        UserPojo userPojo = userDao.queryByUserId(userId);
+        if (userPojo == null) {
             throw new ServiceException(ReturnCode.ERROR_USER_UN_EXIST, "error_user_un_exist");
         } else {
-            if (AccountHelper.canUse(user.getState())) {
-                return user;
+            if (AccountHelper.canUse(userPojo.getState())) {
+                return userPojo;
             } else {
                 throw new ServiceException(ReturnCode.ERROR_USER_LOCKED, "error_user_locked");
             }
@@ -229,55 +238,55 @@ public class UserServiceImp implements UserService {
     /**
      * 记录设备信息，组合登陆成功结果
      *
-     * @param terminalDetailInfo
-     * @param user
+     * @param terminalDetailInfoRequest
+     * @param userPojo
      * @return
      */
-    private LoginUser recordTerminalToResponse(TerminalDetailInfo terminalDetailInfo, User user) {
+    private LoginUserResponse recordTerminalToResponse(TerminalDetailInfoRequest terminalDetailInfoRequest, UserPojo userPojo) {
         //补充设备详细信息,
-        terminalService.recordTerminalDetailInfo(terminalDetailInfo);
+        terminalService.recordTerminalDetailInfo(terminalDetailInfoRequest);
         //绑定用户和设备
-        Terminal terminal = terminalService.queryByUuid(TokenHelper.getCurrentSubjectUuid());
-        bindUserTerminal(user.getUserId(), terminal.getId());
+        TerminalPojo terminalPojo = terminalService.queryByUuid(TokenHelper.getCurrentSubjectUuid());
+        bindUserTerminal(userPojo.getUserId(), terminalPojo.getId());
 
-        String token = TokenHelper.createToken(user.getUserId(), terminal.getId());
-        LoginUser loginUser = new LoginUser();
-        loginUser.setToken(token);
-        loginUser.setUserInfo(queryUser(user.getUserId()));
-        return loginUser;
+        String token = TokenHelper.createToken(userPojo.getUserId(), terminalPojo.getId());
+        LoginUserResponse loginUserResponse = new LoginUserResponse();
+        loginUserResponse.setToken(token);
+        loginUserResponse.setUserInfoResponse(queryUser(userPojo.getUserId()));
+        return loginUserResponse;
     }
 
     private void bindUserTerminal(Long userId, Long terminalId) {
-        UserTerminal userTerminal = new UserTerminal();
-        userTerminal.setUserId(userId);
-        userTerminal.setTerminalId(terminalId);
-        userTerminal.setUsing(Constants.BOOLEAN_TRUE);
-        userTerminalService.bindUserTerminal(userTerminal);
+        UserTerminalPojo userTerminalPojo = new UserTerminalPojo();
+        userTerminalPojo.setUserId(userId);
+        userTerminalPojo.setTerminalId(terminalId);
+        userTerminalPojo.setUsing(Constants.BOOLEAN_TRUE);
+        userTerminalService.bindUserTerminal(userTerminalPojo);
     }
 
     public void updateUserInfo(UserInfo userInfo) {
-        User user = getUserUsing(TokenHelper.getCurrentSubjectUserId());
-        userInfo.setId(user.getUserInfoId());
+        UserPojo userPojo = getUserUsing(TokenHelper.getCurrentSubjectUserId());
+        userInfo.setId(userPojo.getUserInfoId());
         userInfoDao.update(userInfo);
     }
 
-    public cn.com.wh.ring.app.bean.response.UserInfo queryUser(Long userId) {
-        User user = getUserUsing(userId);
-        UserInfo userInfo = userInfoDao.queryById(user.getUserInfoId());
+    public UserInfoResponse queryUser(Long userId) {
+        UserPojo userPojo = getUserUsing(userId);
+        UserInfo userInfo = userInfoDao.queryById(userPojo.getUserInfoId());
         //拼接头像地址
         String avatar = userInfo.getAvatar();
         if (!Strings.isNullOrEmpty(avatar))
             userInfo.setAvatar(fileHelper.getFileAvatarUrl(avatar));
 
-        return new cn.com.wh.ring.app.bean.response.UserInfo(userId, userInfo);
+        return new UserInfoResponse(userId, userInfo);
     }
 
     public boolean isValid(Long userId) throws ServiceException{
-        User user = userDao.queryByUserId(userId);
-        if(user == null) {
-            throw new ServiceException(ReturnCode.ERROR_USER_UN_EXIST, "error_user_un_exist");
+        UserPojo userPojo = userDao.queryByUserId(userId);
+        if(userPojo == null) {
+            throw ServiceException.create(ReturnCode.ERROR_USER_UN_EXIST, "error_user_un_exist");
         } else {
-            return AccountHelper.canUse(user.getState());
+            return AccountHelper.canUse(userPojo.getState());
         }
     }
 }

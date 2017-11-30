@@ -1,7 +1,7 @@
 package cn.com.wh.ring.app.service.comment;
 
-import cn.com.wh.ring.app.bean.pojo.Evaluate;
-import cn.com.wh.ring.app.bean.pojo.Comment;
+import cn.com.wh.ring.app.bean.pojo.CommentPojo;
+import cn.com.wh.ring.app.bean.pojo.EvaluatePojo;
 import cn.com.wh.ring.app.dao.evaluate.EvaluateDao;
 import cn.com.wh.ring.app.dao.comment.CommentDao;
 import cn.com.wh.ring.app.dao.post.PostDao;
@@ -32,34 +32,34 @@ public class CommentServiceImpl implements CommentService {
             throw new ServiceException(ReturnCode.ERROR_POST_COMMENT_NULL, "error_post_comment_null");
         }
         Long userId = TokenHelper.getCurrentSubjectUserId();
-        Comment commentTemp = new Comment();
-        commentTemp.setHostId(postId);
-        commentTemp.setHostType(Comment.HOST_POST);
-        commentTemp.setContent(comment);
-        commentTemp.setUserId(userId);
-        commentDao.insert(commentTemp);
+        CommentPojo commentPojoTemp = new CommentPojo();
+        commentPojoTemp.setHostId(postId);
+        commentPojoTemp.setHostType(CommentPojo.HOST_POST);
+        commentPojoTemp.setContent(comment);
+        commentPojoTemp.setUserId(userId);
+        commentDao.insert(commentPojoTemp);
         postDao.increaseCommentNumber(postId);
-        return commentTemp.getId();
+        return commentPojoTemp.getId();
     }
 
     @Override
     public void praise(Long id) {
         String currentMark = TokenHelper.getCurrentSubjectUuidOrUserId();
         int type = TokenHelper.getCurrentSubjectType();
-        Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_COMMENT, currentMark, type);
-        if (evaluate == null) {
-            evaluate = new Evaluate();
-            evaluate.setHostId(id);
-            evaluate.setHostType(Evaluate.HOST_TYPE_COMMENT);
-            evaluate.setMark(currentMark);
-            evaluate.setMarkType(type);
-            evaluate.setType(Evaluate.TYPE_PRAISE);
-            evaluateDao.insert(evaluate);
+        EvaluatePojo evaluatePojo = evaluateDao.query(id, EvaluatePojo.HOST_TYPE_COMMENT, currentMark, type);
+        if (evaluatePojo == null) {
+            evaluatePojo = new EvaluatePojo();
+            evaluatePojo.setHostId(id);
+            evaluatePojo.setHostType(EvaluatePojo.HOST_TYPE_COMMENT);
+            evaluatePojo.setMark(currentMark);
+            evaluatePojo.setMarkType(type);
+            evaluatePojo.setType(EvaluatePojo.TYPE_PRAISE);
+            evaluateDao.insert(evaluatePojo);
             commentDao.increasePraiseNumber(id);
         } else {
-            if (evaluate.getType() == Evaluate.TYPE_PRAISE) {
+            if (evaluatePojo.getType() == EvaluatePojo.TYPE_PRAISE) {
                 throw ServiceException.create(ReturnCode.ERROR_PRAISED, "error_praised");
-            } else if (evaluate.getType() == Evaluate.TYPE_CRITICIZED) {
+            } else if (evaluatePojo.getType() == EvaluatePojo.TYPE_CRITICIZED) {
                 throw ServiceException.create(ReturnCode.ERROR_CRITICIZED, "error_criticized");
             }
         }
@@ -69,20 +69,20 @@ public class CommentServiceImpl implements CommentService {
     public void criticize(Long id) {
         String currentMark = TokenHelper.getCurrentSubjectUuidOrUserId();
         int type = TokenHelper.getCurrentSubjectType();
-        Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_COMMENT, currentMark, type);
-        if (evaluate == null) {
-            evaluate = new Evaluate();
-            evaluate.setHostId(id);
-            evaluate.setHostType(Evaluate.HOST_TYPE_COMMENT);
-            evaluate.setMark(currentMark);
-            evaluate.setMarkType(type);
-            evaluate.setType(Evaluate.TYPE_CRITICIZED);
-            evaluateDao.insert(evaluate);
+        EvaluatePojo evaluatePojo = evaluateDao.query(id, EvaluatePojo.HOST_TYPE_COMMENT, currentMark, type);
+        if (evaluatePojo == null) {
+            evaluatePojo = new EvaluatePojo();
+            evaluatePojo.setHostId(id);
+            evaluatePojo.setHostType(EvaluatePojo.HOST_TYPE_COMMENT);
+            evaluatePojo.setMark(currentMark);
+            evaluatePojo.setMarkType(type);
+            evaluatePojo.setType(EvaluatePojo.TYPE_CRITICIZED);
+            evaluateDao.insert(evaluatePojo);
             commentDao.increaseCriticizeNumber(id);
         } else {
-            if (evaluate.getType() == Evaluate.TYPE_PRAISE) {
+            if (evaluatePojo.getType() == EvaluatePojo.TYPE_PRAISE) {
                 throw ServiceException.create(ReturnCode.ERROR_PRAISED, "error_praised");
-            } else if (evaluate.getType() == Evaluate.TYPE_CRITICIZED) {
+            } else if (evaluatePojo.getType() == EvaluatePojo.TYPE_CRITICIZED) {
                 throw ServiceException.create(ReturnCode.ERROR_CRITICIZED, "error_criticized");
             }
         }

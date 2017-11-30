@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.user;
 
-import cn.com.wh.ring.app.bean.pojo.User;
+import cn.com.wh.ring.app.bean.pojo.UserPojo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserDao {
-    void insert(User user);
+    void insert(UserPojo userPojo);
 
     void updatePassword(@Param("account") String account, @Param("accountType") byte accountType, @Param("password") String password);
 
-    void updateToken(User user);
+    void updateToken(UserPojo userPojo);
 
     void updateBindAccount(@Param("userId") Long userId, @Param("account") String account);
 
@@ -21,9 +21,9 @@ public interface UserDao {
 
     Long queryMaxUserId();
 
-    User queryByAccount(@Param("account") String account, @Param("accountType") byte accountType);
+    UserPojo queryByAccount(@Param("account") String account, @Param("accountType") byte accountType);
 
-    User queryByBindAccount(@Param("account") String account);
+    UserPojo queryByBindAccount(@Param("account") String account);
 
-    User queryByUserId(@Param("userId") Long userId);
+    UserPojo queryByUserId(@Param("userId") Long userId);
 }

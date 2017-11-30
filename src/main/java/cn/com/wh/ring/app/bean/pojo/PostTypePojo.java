@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/7/31.
  */
-@Alias("PostType")
-public class PostType {
+@Alias("PostTypePojo")
+public class PostTypePojo {
     public static final byte SUPPORT_ALL = 1; //全被格式
     public static final byte SUPPORT_W = 2; //只支持文字
     public static final byte SUPPORT_P = 3; //[文字] + 图片

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wh.ring.app.dao.evaluate.EvaluateDao">
-    <resultMap id="baseResultMap" type="Evaluate">
+    <resultMap id="baseResultMap" type="EvaluatePojo">
         <id property="id" column="ID"/>
         <result property="hostId" column="HOST_ID"/>
         <result property="hostType" column="HOST_TYPE"/>
@@ -11,12 +11,12 @@
         <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insert" parameterType="Evaluate" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO evaluate (HOST_ID, HOST_TYPE, MARK, MARK_TYPE, TYPE, CREATION_TIME)
+    <insert id="insert" parameterType="EvaluatePojo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO evaluatePojo (HOST_ID, HOST_TYPE, MARK, MARK_TYPE, TYPE, CREATION_TIME)
         VALUES (#{hostId}, #{hostType}, #{mark}, #{markType}, #{type}, NOW())
     </insert>
 
     <select id="query" resultMap="baseResultMap">
-        SELECT * FROM evaluate WHERE HOST_ID = #{hostId} AND HOST_TYPE = #{hostType} AND MARK = #{mark} AND MARK_TYPE = #{markType}
+        SELECT * FROM evaluatePojo WHERE HOST_ID = #{hostId} AND HOST_TYPE = #{hostType} AND MARK = #{mark} AND MARK_TYPE = #{markType}
     </select>
 </mapper>

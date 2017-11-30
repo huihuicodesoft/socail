@@ -3,7 +3,7 @@ package cn.com.wh.ring.app.bean.request;
 /**
  * Created by Hui on 2017/8/17.
  */
-public class Page {
+public class PageRequest {
     private long maxId;
     private int pageNumber;
     private int pageSize;

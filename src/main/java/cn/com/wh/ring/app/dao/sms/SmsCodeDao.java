@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.sms;
 
-import cn.com.wh.ring.app.bean.pojo.SmsCode;
+import cn.com.wh.ring.app.bean.pojo.SmsCodePojo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface SmsCodeDao {
-    void insertOrUpdate(SmsCode smsCode);
+    void insertOrUpdate(SmsCodePojo smsCodePojo);
 
-    SmsCode query(@Param("mobile") String mobile);
+    SmsCodePojo query(@Param("mobile") String mobile);
 }

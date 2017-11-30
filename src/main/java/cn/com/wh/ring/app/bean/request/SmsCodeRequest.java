@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 /**
  * Created by Hui on 2017/7/19.
  */
-public class SmsCode {
+public class SmsCodeRequest {
     @NotNull(message = "手机号不能为空")
     @Length(min = 11, max = 11, message = "手机号非法")
     @Pattern(regexp = PhoneUtils.PHONE_REGEX, message = "手机号非法")

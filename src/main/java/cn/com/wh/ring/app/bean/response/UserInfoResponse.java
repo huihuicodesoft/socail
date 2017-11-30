@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/9/22.
  */
-public class UserInfo {
+public class UserInfoResponse {
     private Long userId;
     private Long infoId;
     private String nickname;
@@ -13,10 +13,10 @@ public class UserInfo {
     private Byte sex;
     private String avatar;
     private String signature;
-    private String addressCode;
+    private String region;
     private Date lastModifiedTime;
 
-    public UserInfo(Long userId, cn.com.wh.ring.app.bean.pojo.UserInfo userInfo) {
+    public UserInfoResponse(Long userId, cn.com.wh.ring.app.bean.pojo.UserInfo userInfo) {
         this.userId = userId;
         if (userInfo != null) {
             infoId = userInfo.getId();
@@ -25,7 +25,7 @@ public class UserInfo {
             sex = userInfo.getSex();
             avatar = userInfo.getAvatar();
             signature = userInfo.getSignature();
-            addressCode = userInfo.getAddressCode();
+            region = userInfo.getRegion();
             lastModifiedTime = userInfo.getLastModifiedTime();
         }
     }
@@ -86,12 +86,12 @@ public class UserInfo {
         this.signature = signature;
     }
 
-    public String getAddressCode() {
-        return addressCode;
+    public String getRegion() {
+        return region;
     }
 
-    public void setAddressCode(String addressCode) {
-        this.addressCode = addressCode;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public Date getLastModifiedTime() {

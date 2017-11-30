@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.com.wh.ring.app.dao.user.TerminalDao">
-    <resultMap id="baseResultMap" type="Terminal">
+<mapper namespace="cn.com.wh.ring.app.dao.userPojo.TerminalDao">
+    <resultMap id="baseResultMap" type="TerminalPojo">
         <id property="id" column="ID"/>
         <result property="uuid" column="UUID"/>
         <result property="imei" column="IMEI"/>
@@ -14,20 +14,20 @@
         <result property="creationTime" column="CREATION_TIME"/>
     </resultMap>
 
-    <insert id="insert" parameterType="Terminal" useGeneratedKeys="true" keyProperty="id">
-        INSERT IGNORE INTO terminal (UUID, IMEI, MAC, OS_TYPE, MODEL, SDK, SYSTEM, CREATION_TIME)
+    <insert id="insert" parameterType="TerminalPojo" useGeneratedKeys="true" keyProperty="id">
+        INSERT IGNORE INTO terminalPojo (UUID, IMEI, MAC, OS_TYPE, MODEL, SDK, SYSTEM, CREATION_TIME)
         VALUES (#{uuid}, #{imei}, #{mac}, #{osType}, #{model}, #{sdk}, #{system}, NOW())
     </insert>
 
     <insert id="updateByUuid">
-        UPDATE terminal SET
-        MODEL = #{terminalDetailInfo.model},
-        SDK = #{terminalDetailInfo.sdk},
-        SYSTEM = #{terminalDetailInfo.system}
+        UPDATE terminalPojo SET
+        MODEL = #{terminalDetailInfoRequest.model},
+        SDK = #{terminalDetailInfoRequest.sdk},
+        SYSTEM = #{terminalDetailInfoRequest.system}
         WHERE UUID = #{uuid}
     </insert>
 
     <select id="queryByUuid" resultMap="baseResultMap">
-        SELECT * FROM terminal WHERE UUID = #{uuid}
+        SELECT * FROM terminalPojo WHERE UUID = #{uuid}
     </select>
 </mapper>

@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Hui on 2017/8/17.
  */
-public class Post {
+public class PostResponse {
      class PostType {
         public PostType(Long id, String name) {
             this.id = id;
@@ -38,7 +38,7 @@ public class Post {
     private String description;
     private List<String> mediaList;
     private PostType postType;
-    private String addressCode;
+    private String region;
     private int praiseNumber;
     private int criticizeNumber;
     private int commentNumber;
@@ -82,12 +82,12 @@ public class Post {
         this.postType = new PostType(id, name);
     }
 
-    public String getAddressCode() {
-        return addressCode;
+    public String getRegion() {
+        return region;
     }
 
-    public void setAddressCode(String addressCode) {
-        this.addressCode = addressCode;
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public int getPraiseNumber() {

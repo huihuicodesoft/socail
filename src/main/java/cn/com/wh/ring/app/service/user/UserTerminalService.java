@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.service.user;
 
-import cn.com.wh.ring.app.bean.pojo.UserTerminal;
+import cn.com.wh.ring.app.bean.pojo.UserTerminalPojo;
 import cn.com.wh.ring.app.exception.ServiceException;
 
 /**
@@ -10,9 +10,9 @@ public interface UserTerminalService {
     /**
      * 用户单点登录，绑定设备
      *
-     * @param userTerminal
+     * @param userTerminalPojo
      */
-    void bindUserTerminal(UserTerminal userTerminal);
+    void bindUserTerminal(UserTerminalPojo userTerminalPojo);
 
     /**
      * 校验用户和设备信息

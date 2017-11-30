@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.auth;
 
-import cn.com.wh.ring.app.bean.pojo.Permission;
+import cn.com.wh.ring.app.bean.pojo.PermissionPojo;
 import cn.com.wh.ring.app.bean.principal.TerminalPrincipal;
 import cn.com.wh.ring.app.bean.principal.UserPrincipal;
 import cn.com.wh.ring.app.exception.AuthException;
@@ -71,8 +71,8 @@ public class TokenRealm extends AuthorizingRealm {
         if (principal instanceof UserPrincipal) {
             Long userId = ((UserPrincipal) principal).getUserId();
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-            List<Permission> permissions = permissionService.getPermissionsOfUser(userId);
-            for (Permission p : permissions) {
+            List<PermissionPojo> permissionPojos = permissionService.getPermissionsOfUser(userId);
+            for (PermissionPojo p : permissionPojos) {
                 info.addStringPermission(p.getPermission());
                 info.addObjectPermission(new WildcardPermission(p.getPermission()));
             }

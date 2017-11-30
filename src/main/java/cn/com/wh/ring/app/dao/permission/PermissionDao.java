@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.permission;
 
-import cn.com.wh.ring.app.bean.pojo.Permission;
+import cn.com.wh.ring.app.bean.pojo.PermissionPojo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,5 +11,5 @@ import java.util.List;
  */
 @Repository
 public interface PermissionDao {
-    List<Permission> queryByUserId(@Param("userId") Long userId);
+    List<PermissionPojo> queryByUserId(@Param("userId") Long userId);
 }

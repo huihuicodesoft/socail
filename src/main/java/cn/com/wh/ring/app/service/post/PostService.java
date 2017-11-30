@@ -1,21 +1,24 @@
 package cn.com.wh.ring.app.service.post;
 
-import cn.com.wh.ring.app.bean.response.Page;
-import cn.com.wh.ring.app.bean.request.PostPublish;
-import cn.com.wh.ring.app.bean.request.Report;
-import cn.com.wh.ring.app.bean.response.Post;
+import cn.com.wh.ring.app.bean.request.PageRequest;
+import cn.com.wh.ring.app.bean.response.PageResponse;
+import cn.com.wh.ring.app.bean.request.PostPublishRequest;
+import cn.com.wh.ring.app.bean.request.ReportRequest;
+import cn.com.wh.ring.app.bean.response.PostResponse;
 
 /**
  * Created by Hui on 2017/7/17.
  */
 public interface PostService {
-    Long publish(PostPublish postPublish);
+    Long publish(PostPublishRequest postPublishRequest);
 
-    Page<Post> queryByUserId(Long userId, cn.com.wh.ring.app.bean.request.Page page);
+    PageResponse<PostResponse> queryByUserId(Long userId, PageRequest pageRequest);
+
+    PageResponse<PostResponse> query(PageRequest pageRequest);
 
     void praise(Long id);
 
     void criticize(Long id);
 
-    void report(Long id, Report report);
+    void report(Long id, ReportRequest reportRequest);
 }

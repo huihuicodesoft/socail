@@ -1,8 +1,8 @@
 package cn.com.wh.ring.app.service.user;
 
-import cn.com.wh.ring.app.bean.pojo.Terminal;
+import cn.com.wh.ring.app.bean.pojo.TerminalPojo;
 import cn.com.wh.ring.app.bean.principal.TerminalPrincipal;
-import cn.com.wh.ring.app.bean.request.TerminalDetailInfo;
+import cn.com.wh.ring.app.bean.request.TerminalDetailInfoRequest;
 import cn.com.wh.ring.app.dao.user.TerminalDao;
 import cn.com.wh.ring.app.helper.TokenHelper;
 import cn.com.wh.ring.app.helper.AccountHelper;
@@ -20,23 +20,23 @@ public class TerminalServiceImp implements TerminalService {
     TerminalDao terminalDao;
 
     @Override
-    public void recordTerminalDetailInfo(TerminalDetailInfo terminalDetailInfo) {
-        terminalDao.updateByUuid(TokenHelper.getCurrentSubjectUuid(), terminalDetailInfo);
+    public void recordTerminalDetailInfo(TerminalDetailInfoRequest terminalDetailInfoRequest) {
+        terminalDao.updateByUuid(TokenHelper.getCurrentSubjectUuid(), terminalDetailInfoRequest);
     }
 
     @Override
-    public Terminal queryByUuid(String uuid) {
+    public TerminalPojo queryByUuid(String uuid) {
         return terminalDao.queryByUuid(uuid);
     }
 
     @Override
     public boolean isValid(TerminalPrincipal terminalPrincipal) {
         boolean result = true;
-        Terminal dbTerminal = terminalDao.queryByUuid(terminalPrincipal.getUuid());
-        if (dbTerminal == null) {
-            terminalDao.insert(new Terminal(terminalPrincipal));
+        TerminalPojo dbTerminalPojo = terminalDao.queryByUuid(terminalPrincipal.getUuid());
+        if (dbTerminalPojo == null) {
+            terminalDao.insert(new TerminalPojo(terminalPrincipal));
         } else {
-            result = AccountHelper.canUse(dbTerminal.getState());
+            result = AccountHelper.canUse(dbTerminalPojo.getState());
         }
         return result;
     }

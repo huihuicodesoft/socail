@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.wh.ring.app.dao.addressRequest.AddressDao">
+    <resultMap id="baseResultMap" type="AddressPojo">
+        <id property="id" column="ID"/>
+        <result property="country" column="COUNTRY"/>
+        <result property="province" column="PROVINCE"/>
+        <result property="city" column="CITY"/>
+        <result property="district" column="DISTRICT"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="AddressPojo" useGeneratedKeys="true" keyProperty="id">
+        INSERT IGNORE INTO addressPojo
+        (COUNTRY, PROVINCE, CITY, DISTRICT)
+        VALUES
+        (#{country}, #{province}, #{city}, #{district)
+    </insert>
+
+    <select id="queryAddressById" parameterType="java.lang.Long" resultMap="baseResultMap">
+        SELECT * FROM addressPojo WHERE ID = #{id}
+    </select>
+</mapper>

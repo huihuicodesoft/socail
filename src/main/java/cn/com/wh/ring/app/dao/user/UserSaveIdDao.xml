@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wh.ring.app.dao.user.UserSaveIdDao">
-    <resultMap id="baseResultMap" type="UserSaveId">
+    <resultMap id="baseResultMap" type="UserSaveIdPojo">
         <id property="id" column="ID" />
         <result property="saveUserId" column="SAVE_USER_ID" />
         <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>

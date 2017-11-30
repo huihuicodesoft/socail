@@ -7,23 +7,37 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/7/17.
  */
-@Alias("Post")
-public class Post {
+@Alias("PostPojo")
+public class PostPojo {
     public static final byte MEDIA_TYPE_PHOTO = 1; //图片
     public static final byte MEDIA_TYPE_VIDEO = 2; //视频
+
+    /**
+     * 帖子状态值
+     * 1：审核中（默认值）
+     * 2：审核失败
+     * 3：审核成功
+     * 4：用户删除
+     */
+    public static final byte STATE_CHECKING = 1;
+    public static final byte STATE_CHECK_FAIL = 2;
+    public static final byte STATE_CHECK_SUCCESS = 3;
+    public static final byte STATE_DELETE = 4;
 
     private Long id;
     private Long userId;
     private String description;
     private String mediaContent;
     private Integer postTypeId;
-    private String addressCode;
     private Integer praiseNumber;
     private Integer criticizeNumber;
     private Integer commentNumber;
     private Integer reportNumber;
     private Byte anonymous; //{0,1}
-    private Byte isDeleted; //{0,1}
+    private Long addressId;
+    private Double lng;
+    private Double lat;
+    private Byte state;
     private Date creationTime;
 
     public Long getId() {
@@ -66,14 +80,6 @@ public class Post {
         this.postTypeId = postTypeId;
     }
 
-    public String getAddressCode() {
-        return addressCode;
-    }
-
-    public void setAddressCode(String addressCode) {
-        this.addressCode = addressCode;
-    }
-
     public Integer getPraiseNumber() {
         return praiseNumber;
     }
@@ -114,12 +120,36 @@ public class Post {
         this.anonymous = anonymous;
     }
 
-    public Byte getIsDeleted() {
-        return isDeleted;
+    public Long getAddressId() {
+        return addressId;
     }
 
-    public void setIsDeleted(Byte isDeleted) {
-        this.isDeleted = isDeleted;
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
+    }
+
+    public Byte getState() {
+        return state;
+    }
+
+    public void setState(Byte state) {
+        this.state = state;
     }
 
     public Date getCreationTime() {

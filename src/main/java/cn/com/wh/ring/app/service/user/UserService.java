@@ -1,11 +1,12 @@
 package cn.com.wh.ring.app.service.user;
 
-import cn.com.wh.ring.app.bean.pojo.User;
+import cn.com.wh.ring.app.bean.pojo.UserPojo;
 import cn.com.wh.ring.app.bean.pojo.UserInfo;
-import cn.com.wh.ring.app.bean.request.LoginMobile;
-import cn.com.wh.ring.app.bean.request.RegisterMobile;
-import cn.com.wh.ring.app.bean.request.LoginThird;
-import cn.com.wh.ring.app.bean.response.LoginUser;
+import cn.com.wh.ring.app.bean.request.LoginMobileRequest;
+import cn.com.wh.ring.app.bean.request.RegisterMobileRequest;
+import cn.com.wh.ring.app.bean.request.LoginThirdRequest;
+import cn.com.wh.ring.app.bean.response.LoginUserResponse;
+import cn.com.wh.ring.app.bean.response.UserInfoResponse;
 import cn.com.wh.ring.app.exception.ServiceException;
 
 /**
@@ -14,36 +15,36 @@ import cn.com.wh.ring.app.exception.ServiceException;
 public interface UserService {
     /**
      * 手机号注册
-     * @param registerMobile
+     * @param registerMobileRequest
      */
-    void registerMobileUser(RegisterMobile registerMobile);
+    void registerMobileUser(RegisterMobileRequest registerMobileRequest);
 
     /**
      * 手机号登录
      * @param mobileAccount
      * @return principal
      */
-    LoginUser loginMobileUser(LoginMobile mobileAccount);
+    LoginUserResponse loginMobileUser(LoginMobileRequest mobileAccount);
 
     /**
      * 三方登录
-     * @param loginThird
+     * @param loginThirdRequest
      * @return principal
      */
-    LoginUser loginThirdUser(LoginThird loginThird);
+    LoginUserResponse loginThirdUser(LoginThirdRequest loginThirdRequest);
 
     /**
      * 修改密码
-     * @param registerMobile
+     * @param registerMobileRequest
      * @return principal
      */
-    void updatePassword(RegisterMobile registerMobile);
+    void updatePassword(RegisterMobileRequest registerMobileRequest);
 
     /**
      * 验证手机号
      * @param mobile
      */
-    User validUserMobile(String mobile);
+    UserPojo validUserMobile(String mobile);
 
     /**
      * 更新用户信息
@@ -56,7 +57,7 @@ public interface UserService {
      * @param userId
      * @return
      */
-    cn.com.wh.ring.app.bean.response.UserInfo queryUser(Long userId);
+    UserInfoResponse queryUser(Long userId);
 
     boolean isValid(Long userId) throws ServiceException;
 }

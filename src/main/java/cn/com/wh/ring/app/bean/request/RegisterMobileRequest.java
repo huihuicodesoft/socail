@@ -9,7 +9,7 @@ import javax.validation.constraints.Pattern;
 /**
  * Created by Hui on 2017/7/19.
  */
-public class RegisterMobile {
+public class RegisterMobileRequest {
     @NotNull(message = "手机号不能为空")
     @Length(min = 11, max = 11, message = "手机号非法")
     @Pattern(regexp = PhoneUtils.PHONE_REGEX, message = "手机号非法")
@@ -22,6 +22,8 @@ public class RegisterMobile {
     @NotNull(message = "验证码不能为空")
     @Length(min = 6, max = 6, message = "验证码不正确")
     private String code;
+
+    private AddressRequest address;
 
     public String getMobile() {
         return mobile;
@@ -47,4 +49,11 @@ public class RegisterMobile {
         this.code = code;
     }
 
+    public AddressRequest getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressRequest address) {
+        this.address = address;
+    }
 }

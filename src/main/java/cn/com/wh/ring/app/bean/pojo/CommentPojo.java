@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/8/3.
  */
-@Alias("Comment")
-public class Comment {
+@Alias("CommentPojo")
+public class CommentPojo {
     public static final byte HOST_POST = 1;//帖子回复
 
     private Long id;

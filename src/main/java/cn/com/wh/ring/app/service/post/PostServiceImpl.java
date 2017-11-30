@@ -1,19 +1,24 @@
 package cn.com.wh.ring.app.service.post;
 
-import cn.com.wh.ring.app.bean.pojo.Evaluate;
-import cn.com.wh.ring.app.bean.pojo.Post;
-import cn.com.wh.ring.app.bean.pojo.PostType;
-import cn.com.wh.ring.app.bean.pojo.ReportPost;
-import cn.com.wh.ring.app.bean.response.Page;
-import cn.com.wh.ring.app.bean.request.PostPublish;
-import cn.com.wh.ring.app.bean.request.Report;
+import cn.com.wh.ring.app.bean.pojo.EvaluatePojo;
+import cn.com.wh.ring.app.bean.pojo.PostPojo;
+import cn.com.wh.ring.app.bean.pojo.PostTypePojo;
+import cn.com.wh.ring.app.bean.pojo.ReportPostPojo;
+import cn.com.wh.ring.app.bean.request.AddressRequest;
+import cn.com.wh.ring.app.bean.request.PageRequest;
+import cn.com.wh.ring.app.bean.request.ReportRequest;
+import cn.com.wh.ring.app.bean.response.PageResponse;
+import cn.com.wh.ring.app.bean.request.PostPublishRequest;
+import cn.com.wh.ring.app.bean.response.PostResponse;
 import cn.com.wh.ring.app.constant.Constants;
+import cn.com.wh.ring.app.dao.address.AddressDao;
 import cn.com.wh.ring.app.dao.post.PostDao;
 import cn.com.wh.ring.app.dao.evaluate.EvaluateDao;
 import cn.com.wh.ring.app.dao.post.PostTypeDao;
 import cn.com.wh.ring.app.dao.report.ReportPostDao;
 import cn.com.wh.ring.app.exception.ServiceException;
 import cn.com.wh.ring.app.helper.FileHelper;
+import cn.com.wh.ring.app.service.address.AddressService;
 import cn.com.wh.ring.common.response.ReturnCode;
 import cn.com.wh.ring.app.helper.TokenHelper;
 import cn.com.wh.ring.app.utils.JacksonUtils;
@@ -39,6 +44,10 @@ public class PostServiceImpl implements PostService {
     PostDao postDao;
     @Autowired
     PostTypeDao postTypeDao;
+
+    @Autowired
+    AddressService addressService;
+
     @Autowired
     EvaluateDao evaluateDao;
     @Autowired
@@ -47,15 +56,15 @@ public class PostServiceImpl implements PostService {
     FileHelper fileHelper;
 
     @Override
-    public Long publish(PostPublish postPublish) {
-        Post post = new Post();
+    public Long publish(PostPublishRequest postPublishRequest) {
+        PostPojo postPojo = new PostPojo();
 
-        List<String> list = postPublish.getMediaContent();
+        List<String> list = postPublishRequest.getMediaContent();
         if (list != null && !list.isEmpty()) {
             if (isAllImage(list)) {
                 if (list.size() <= Constants.MAX_PHOTO_NUMBER) {
                     try {
-                        post.setMediaContent(JacksonUtils.toJSon(list));
+                        postPojo.setMediaContent(JacksonUtils.toJSon(list));
                     } catch (Exception e) {
                         logger.error("图片内容jackson转化异常 =>" + e.toString());
                         throw ServiceException.create(ReturnCode.ERROR_INFO, "error_info");
@@ -66,7 +75,7 @@ public class PostServiceImpl implements PostService {
             } else if (isAllVideo(list)) {
                 if (list.size() == Constants.MAX_VIDEO_NUMBER) {
                     try {
-                        post.setMediaContent(JacksonUtils.toJSon(list));
+                        postPojo.setMediaContent(JacksonUtils.toJSon(list));
                     } catch (Exception e) {
                         logger.error("视频内容jackson转化异常 =>" + e.toString());
                         throw ServiceException.create(ReturnCode.ERROR_INFO, "error_info");
@@ -79,13 +88,15 @@ public class PostServiceImpl implements PostService {
             }
         }
 
-        post.setUserId(TokenHelper.getCurrentSubjectUserId());
-        post.setPostTypeId(postPublish.getPostType());
-        post.setDescription(postPublish.getDescription());
-        post.setAddressCode(postPublish.getAddressCode());
-        post.setAnonymous(postPublish.isAnonymous() ? Constants.BOOLEAN_TRUE : Constants.BOOLEAN_FALSE);
-        postDao.insert(post);
-        return post.getId();
+        postPojo.setUserId(TokenHelper.getCurrentSubjectUserId());
+        postPojo.setPostTypeId(postPublishRequest.getPostType());
+        postPojo.setDescription(postPublishRequest.getDescription());
+        AddressRequest addressRequest = postPublishRequest.getAddress();
+        addressService.bind(postPojo, addressRequest);
+        postPojo.setState(PostPojo.STATE_CHECKING);
+        postPojo.setAnonymous(postPublishRequest.isAnonymous() ? Constants.BOOLEAN_TRUE : Constants.BOOLEAN_FALSE);
+        postDao.insert(postPojo);
+        return postPojo.getId();
     }
 
     private boolean isAllImage(List<String> list) {
@@ -107,28 +118,38 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<cn.com.wh.ring.app.bean.response.Post> queryByUserId(Long userId, cn.com.wh.ring.app.bean.request.Page page) {
+    public PageResponse<PostResponse> queryByUserId(Long userId, PageRequest pageRequest) {
         if (userId == null) {
             userId = TokenHelper.getCurrentSubjectUserId();
         }
-        PageHelper.startPage(page.getPageNumber(), page.getPageSize());
-        List<Post> list = postDao.queryByUserId(userId, page.getMaxId(), Constants.BOOLEAN_FALSE);
-        Page result = new Page(list);
+        PageHelper.startPage(pageRequest.getPageNumber(), pageRequest.getPageSize());
+        List<PostPojo> list = postDao.queryByUserId(userId, pageRequest.getMaxId());
+        return covertListToPage(list);
+    }
 
-        List<cn.com.wh.ring.app.bean.response.Post> responseList = new ArrayList<>();
-        List<Post> tempList = result.getList();
-        for (Post post : tempList) {
-            cn.com.wh.ring.app.bean.response.Post temp = new cn.com.wh.ring.app.bean.response.Post();
-            PostType postType = postTypeDao.queryById(post.getPostTypeId());
+    @Override
+    public PageResponse<PostResponse> query(PageRequest pageRequest) {
+        PageHelper.startPage(pageRequest.getPageNumber(), pageRequest.getPageSize());
+        List<PostPojo> list = postDao.queryByState(PostPojo.STATE_CHECK_SUCCESS, pageRequest.getMaxId());
+        return covertListToPage(list);
+    }
 
-            temp.setId(post.getId());
-            temp.setUserId(post.getUserId());
-            temp.setAddressCode(post.getAddressCode());
-            temp.setAnonymous(post.getAnonymous() == Constants.BOOLEAN_TRUE);
-            if (postType != null)
-                temp.setPostType(postType.getId(), postType.getName());
+    private PageResponse covertListToPage(List<PostPojo> list) {
+        PageResponse result = new PageResponse(list);
+        List<PostResponse> responseList = new ArrayList<>();
+        List<PostPojo> tempList = result.getList();
+        for (PostPojo postPojo : tempList) {
+            PostResponse temp = new PostResponse();
+            PostTypePojo postTypePojo = postTypeDao.queryById(postPojo.getPostTypeId());
 
-            String names = post.getMediaContent();
+            temp.setId(postPojo.getId());
+            temp.setUserId(postPojo.getUserId());
+            temp.setRegion(addressService.getRegion(postPojo.getAddressId()));
+            temp.setAnonymous(postPojo.getAnonymous() == Constants.BOOLEAN_TRUE);
+            if (postTypePojo != null)
+                temp.setPostType(postTypePojo.getId(), postTypePojo.getName());
+
+            String names = postPojo.getMediaContent();
             if (!Strings.isNullOrEmpty(names)) {
                 try {
                     List<String> files = new ArrayList<>();
@@ -142,12 +163,12 @@ public class PostServiceImpl implements PostService {
                 }
             }
 
-            temp.setCommentNumber(post.getCommentNumber());
-            temp.setCriticizeNumber(post.getCriticizeNumber());
-            temp.setPraiseNumber(post.getPraiseNumber());
-            temp.setReportNumber(post.getReportNumber());
-            temp.setCreationTime(post.getCreationTime());
-            temp.setDescription(post.getDescription());
+            temp.setCommentNumber(postPojo.getCommentNumber());
+            temp.setCriticizeNumber(postPojo.getCriticizeNumber());
+            temp.setPraiseNumber(postPojo.getPraiseNumber());
+            temp.setReportNumber(postPojo.getReportNumber());
+            temp.setCreationTime(postPojo.getCreationTime());
+            temp.setDescription(postPojo.getDescription());
             responseList.add(temp);
         }
         result.setList(responseList);
@@ -158,20 +179,20 @@ public class PostServiceImpl implements PostService {
     public void praise(Long id) {
         String currentMark = TokenHelper.getCurrentSubjectUuidOrUserId();
         int type = TokenHelper.getCurrentSubjectType();
-        Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_POST, currentMark, type);
-        if (evaluate == null) {
-            evaluate = new Evaluate();
-            evaluate.setHostId(id);
-            evaluate.setHostType(Evaluate.HOST_TYPE_POST);
-            evaluate.setMark(currentMark);
-            evaluate.setMarkType(type);
-            evaluate.setType(Evaluate.TYPE_PRAISE);
-            evaluateDao.insert(evaluate);
+        EvaluatePojo evaluatePojo = evaluateDao.query(id, EvaluatePojo.HOST_TYPE_POST, currentMark, type);
+        if (evaluatePojo == null) {
+            evaluatePojo = new EvaluatePojo();
+            evaluatePojo.setHostId(id);
+            evaluatePojo.setHostType(EvaluatePojo.HOST_TYPE_POST);
+            evaluatePojo.setMark(currentMark);
+            evaluatePojo.setMarkType(type);
+            evaluatePojo.setType(EvaluatePojo.TYPE_PRAISE);
+            evaluateDao.insert(evaluatePojo);
             postDao.increasePraiseNumber(id);
         } else {
-            if (evaluate.getType() == Evaluate.TYPE_PRAISE) {
+            if (evaluatePojo.getType() == EvaluatePojo.TYPE_PRAISE) {
                 throw ServiceException.create(ReturnCode.ERROR_PRAISED, "error_praised");
-            } else if (evaluate.getType() == Evaluate.TYPE_CRITICIZED) {
+            } else if (evaluatePojo.getType() == EvaluatePojo.TYPE_CRITICIZED) {
                 throw ServiceException.create(ReturnCode.ERROR_CRITICIZED, "error_criticized");
             }
         }
@@ -181,33 +202,33 @@ public class PostServiceImpl implements PostService {
     public void criticize(Long id) {
         String currentMark = TokenHelper.getCurrentSubjectUuidOrUserId();
         int type = TokenHelper.getCurrentSubjectType();
-        Evaluate evaluate = evaluateDao.query(id, Evaluate.HOST_TYPE_POST, currentMark, type);
-        if (evaluate == null) {
-            evaluate = new Evaluate();
-            evaluate.setHostId(id);
-            evaluate.setHostType(Evaluate.HOST_TYPE_POST);
-            evaluate.setMark(currentMark);
-            evaluate.setMarkType(type);
-            evaluate.setType(Evaluate.TYPE_CRITICIZED);
-            evaluateDao.insert(evaluate);
+        EvaluatePojo evaluatePojo = evaluateDao.query(id, EvaluatePojo.HOST_TYPE_POST, currentMark, type);
+        if (evaluatePojo == null) {
+            evaluatePojo = new EvaluatePojo();
+            evaluatePojo.setHostId(id);
+            evaluatePojo.setHostType(EvaluatePojo.HOST_TYPE_POST);
+            evaluatePojo.setMark(currentMark);
+            evaluatePojo.setMarkType(type);
+            evaluatePojo.setType(EvaluatePojo.TYPE_CRITICIZED);
+            evaluateDao.insert(evaluatePojo);
             postDao.increaseCriticizeNumber(id);
         } else {
-            if (evaluate.getType() == Evaluate.TYPE_PRAISE) {
+            if (evaluatePojo.getType() == EvaluatePojo.TYPE_PRAISE) {
                 throw ServiceException.create(ReturnCode.ERROR_PRAISED, "error_praised");
-            } else if (evaluate.getType() == Evaluate.TYPE_CRITICIZED) {
+            } else if (evaluatePojo.getType() == EvaluatePojo.TYPE_CRITICIZED) {
                 throw ServiceException.create(ReturnCode.ERROR_CRITICIZED, "error_criticized");
             }
         }
     }
 
     @Override
-    public void report(Long id, Report report) {
-        ReportPost reportPost = new ReportPost();
-        reportPost.setPostId(id);
-        reportPost.setMark(TokenHelper.getCurrentSubjectUuidOrUserId());
-        reportPost.setContent(report.getContent());
-        reportPost.setContentType(report.getContentType());
-        reportPostDao.insert(reportPost);
+    public void report(Long id, ReportRequest reportRequest) {
+        ReportPostPojo reportPostPojo = new ReportPostPojo();
+        reportPostPojo.setPostId(id);
+        reportPostPojo.setMark(TokenHelper.getCurrentSubjectUuidOrUserId());
+        reportPostPojo.setContent(reportRequest.getContent());
+        reportPostPojo.setContentType(reportRequest.getContentType());
+        reportPostDao.insert(reportPostPojo);
         postDao.increaseReportNumber(id);
     }
 }

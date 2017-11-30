@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.post;
 
-import cn.com.wh.ring.app.bean.pojo.Post;
+import cn.com.wh.ring.app.bean.pojo.PostPojo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Repository
 public interface PostDao {
-    void insert(Post post);
+    void insert(PostPojo postPojo);
 
     void increasePraiseNumber(@Param("id") Long id);
 
@@ -21,7 +21,9 @@ public interface PostDao {
 
     void increaseReportNumber(@Param("id") Long id);
 
-    Post queryById(@Param("id") Long id);
+    PostPojo queryById(@Param("id") Long id);
 
-    List<Post> queryByUserId(@Param("userId") Long userId, @Param("maxId") Long maxId, @Param("isDeleted") int isDeleted);
+    List<PostPojo> queryByUserId(@Param("userId") Long userId, @Param("maxId") Long maxId);
+
+    List<PostPojo> queryByState(@Param("state") Byte state, @Param("maxId") Long maxId);
 }

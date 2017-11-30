@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.com.wh.ring.app.dao.report.ReportPostDao">
-    <resultMap id="baseResultMap" type="ReportPost">
+<mapper namespace="cn.com.wh.ring.app.dao.reportRequest.ReportPostDao">
+    <resultMap id="baseResultMap" type="ReportPostPojo">
         <id property="id" column="ID" />
         <result property="postId" column="POST_ID" />
         <result property="mark" column="MARK" />
@@ -10,7 +10,7 @@
         <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insert" parameterType="ReportPost" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="ReportPostPojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO report_post (POST_ID, MARK, CONTENT, CONTENT_TYPE, CREATION_TIME)
         VALUES (#{postId}, #{mark}, #{content}, #{contentType}, NOW())
     </insert>

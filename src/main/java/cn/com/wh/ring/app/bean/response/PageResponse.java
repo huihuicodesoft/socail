@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by Hui on 2017/8/1.
  */
-public class Page<T> implements Serializable {
+public class PageResponse<T> implements Serializable {
     private long total;        //总记录数
     private int pageNum;    // 第几页
     private int pageSize;    // 每页记录数
@@ -15,7 +15,7 @@ public class Page<T> implements Serializable {
     private int size;        // 当前页的数量 <= pageSize，该属性来自ArrayList的size属性
     private List<T> list;    //结果集
 
-    public Page(List<T> list) {
+    public PageResponse(List<T> list) {
         if (list instanceof com.github.pagehelper.Page) {
             com.github.pagehelper.Page page = (com.github.pagehelper.Page) list;
             this.pageNum = page.getPageNum();

@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.comment;
 
-import cn.com.wh.ring.app.bean.pojo.Comment;
+import cn.com.wh.ring.app.bean.pojo.CommentPojo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Repository
 public interface CommentDao {
-    void insert(Comment postComment);
+    void insert(CommentPojo postCommentPojo);
 
     void increasePraiseNumber(@Param("id") Long id);
 
@@ -19,7 +19,7 @@ public interface CommentDao {
 
     void increaseReportNumber(@Param("id") Long id);
 
-    List<Comment> queryOrderByTime(@Param("id") Long id);
+    List<CommentPojo> queryOrderByTime(@Param("id") Long id);
 
-    List<Comment> queryOrderByPraise(@Param("id") Long id);
+    List<CommentPojo> queryOrderByPraise(@Param("id") Long id);
 }

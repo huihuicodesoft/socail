@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.post;
 
-import cn.com.wh.ring.app.bean.pojo.PostType;
+import cn.com.wh.ring.app.bean.pojo.PostTypePojo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Repository
 public interface PostTypeDao {
-    List<PostType> query(@Param("maxId") Long maxId, @Param("isDeleted") int isDeleted);
+    List<PostTypePojo> query(@Param("maxId") Long maxId, @Param("isDeleted") int isDeleted);
 
-    PostType queryById(@Param("id") long id);
+    PostTypePojo queryById(@Param("id") long id);
 }

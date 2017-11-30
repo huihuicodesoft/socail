@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wh.ring.app.dao.post.PostDao">
-    <resultMap id="baseResultMap" type="Post">
+    <resultMap id="baseResultMap" type="PostPojo">
         <id property="id" column="ID"/>
         <result property="userId" column="USER_ID"/>
         <result property="description" column="DESCRIPTION"/>
@@ -13,51 +13,64 @@
         <result property="commentNumber" column="COMMENT_NUMBER"/>
         <result property="reportNumber" column="REPORT_NUMBER"/>
         <result property="anonymous" column="ANONYMOUS"/>
-        <result property="isDeleted" column="IS_DELETED"/>
+        <result property="addressId" column="ADDRESS_ID"/>
+        <result property="lng" column="LNG"/>
+        <result property="lat" column="LAT"/>
+        <result property="state" column="STATE"/>
         <result property="creationTime" column="CREATION_TIME" jdbcType="TIMESTAMP"/>
     </resultMap>
 
-    <insert id="insert" parameterType="Post" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO post
-        (USER_ID, DESCRIPTION, MEDIA_CONTENT, POST_TYPE_ID, ADDRESS_CODE, CREATION_TIME)
+    <insert id="insert" parameterType="PostPojo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO postPojo
+        (USER_ID, DESCRIPTION, MEDIA_CONTENT, POST_TYPE_ID, ADDRESS_ID, LNG, LAT, STATE, CREATION_TIME)
         VALUES
-        (#{userId}, #{description}, #{mediaContent}, #{postTypeId}, #{addressCode}, NOW())
+        (#{userId}, #{description}, #{mediaContent}, #{postTypeId}, #{addressId}, #{lng}, #{lat}, #{state}, NOW())
     </insert>
 
     <update id="increasePraiseNumber" parameterType="java.lang.Long">
-        UPDATE post
+        UPDATE postPojo
         SET
         PRAISE_NUMBER = PRAISE_NUMBER + 1
         WHERE ID = #{id}
     </update>
 
     <update id="increaseCriticizeNumber" parameterType="java.lang.Long">
-        UPDATE post
+        UPDATE postPojo
         SET
         CRITICIZE_NUMBER = CRITICIZE_NUMBER + 1
         WHERE ID = #{id}
     </update>
 
     <update id="increaseCommentNumber" parameterType="java.lang.Long">
-        UPDATE post
+        UPDATE postPojo
         SET
         COMMENT_NUMBER = COMMENT_NUMBER + 1
         WHERE ID = #{id}
     </update>
 
     <update id="increaseReportNumber" parameterType="java.lang.Long">
-        UPDATE post
+        UPDATE postPojo
         SET
         REPORT_NUMBER = REPORT_NUMBER + 1
         WHERE ID = #{id}
     </update>
 
     <select id="queryById" parameterType="java.lang.Long" resultMap="baseResultMap">
-        SELECT * FROM post WHERE ID = #{id}
+        SELECT * FROM postPojo WHERE ID = #{id}
     </select>
 
     <select id="queryByUserId" resultMap="baseResultMap">
-        SELECT * FROM post WHERE USER_ID = #{userId} AND IS_DELETED = #{isDeleted}
+        SELECT * FROM postPojo WHERE USER_ID = #{userId}
+        <if test="maxId > 0">
+            <![CDATA[
+            AND ID <= #{maxId}
+            ]]>
+        </if>
+        ORDER BY CREATION_TIME DESC
+    </select>
+
+    <select id="queryByState" resultMap="baseResultMap">
+        SELECT * FROM postPojo WHERE STATE = #{state}
         <if test="maxId > 0">
             <![CDATA[
             AND ID <= #{maxId}

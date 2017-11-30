@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/7/18.
  */
-@Alias("Evaluate")
-public class Evaluate {
+@Alias("EvaluatePojo")
+public class EvaluatePojo {
     public static final byte HOST_TYPE_POST = 1;//帖子点赞
     public static final byte HOST_TYPE_COMMENT = 2;//回复点赞
 

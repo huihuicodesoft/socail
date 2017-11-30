@@ -5,10 +5,10 @@ import java.util.List;
 /**
  * Created by Hui on 2017/7/17.
  */
-public class PostPublish {
+public class PostPublishRequest {
     private String description;
     private List<String> mediaContent;
-    private String addressCode;
+    private AddressRequest address;
     private int postType;
     private boolean anonymous;
 
@@ -28,12 +28,12 @@ public class PostPublish {
         this.mediaContent = mediaContent;
     }
 
-    public String getAddressCode() {
-        return addressCode;
+    public AddressRequest getAddress() {
+        return address;
     }
 
-    public void setAddressCode(String addressCode) {
-        this.addressCode = addressCode;
+    public void setAddress(AddressRequest address) {
+        this.address = address;
     }
 
     public int getPostType() {

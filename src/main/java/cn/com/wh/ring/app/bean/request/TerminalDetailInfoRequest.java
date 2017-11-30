@@ -4,7 +4,7 @@ package cn.com.wh.ring.app.bean.request;
  * Created by Hui on 2017/9/21.
  * 设备信息
  */
-public class TerminalDetailInfo {
+public class TerminalDetailInfoRequest {
     private String model;
     private String sdk;
     private String system;

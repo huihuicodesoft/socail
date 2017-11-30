@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wh.ring.app.dao.user.UserTerminalDao">
-    <resultMap id="baseResultMap" type="UserTerminal">
+    <resultMap id="baseResultMap" type="UserTerminalPojo">
         <id property="id" column="ID"/>
         <result property="userId" column="USER_ID"/>
         <result property="terminalId" column="TERMINAL_ID"/>
         <result property="using" column="USING"/>
     </resultMap>
 
-    <insert id="insertOrUpdate" parameterType="UserTerminal" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertOrUpdate" parameterType="UserTerminalPojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_terminal (USER_ID, TERMINAL_ID, `USING`) VALUES (#{userId}, #{terminalId}, #{using})
         ON DUPLICATE KEY UPDATE `USING` =  #{using};
     </insert>

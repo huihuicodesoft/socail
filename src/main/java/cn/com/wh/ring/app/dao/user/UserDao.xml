@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.com.wh.ring.app.dao.user.UserDao">
-    <resultMap id="baseResultMap" type="User">
+    <resultMap id="baseResultMap" type="UserPojo">
         <id property="id" column="ID"/>
         <result property="userId" column="USER_ID"/>
         <result property="account" column="ACCOUNT"/>
@@ -15,29 +15,29 @@
         <result property="creationTime" column="CREATION_TIME"/>
     </resultMap>
 
-    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user
+    <insert id="insert" parameterType="UserPojo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO userPojo
         (USER_ID, ACCOUNT, ACCOUNT_TYPE, USER_INFO_ID, PASSWORD, ACCESS_TOKEN, REFRESH_TOKEN, CREATION_TIME)
         VALUES
         (#{userId}, #{account}, #{accountType}, #{userInfoId}, #{password}, #{accessToken}, #{refreshToken}, NOW())
     </insert>
 
     <update id="updateBindAccount">
-        UPDATE user
+        UPDATE userPojo
           SET
             BIND_ACCOUNT = #{account}
         WHERE USER_ID = #{userId}
     </update>
 
     <update id="updatePassword">
-        UPDATE user
+        UPDATE userPojo
           SET
             PASSWORD = #{password}
         WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
     </update>
 
     <update id="updateToken">
-        UPDATE user
+        UPDATE userPojo
           SET
             ACCESS_TOKEN = #{accessToken},
             REFRESH_TOKEN = #{refreshToken}
@@ -45,28 +45,28 @@
     </update>
 
     <update id="updateState" parameterType="java.lang.Long">
-        UPDATE user
+        UPDATE userPojo
           SET
             STATE = #{state}
         WHERE USER_ID = #{userId}
     </update>
 
     <select id="queryMaxUserId" resultType="java.lang.Long">
-        SELECT MAX(USER_ID) FROM user
+        SELECT MAX(USER_ID) FROM userPojo
     </select>
 
     <select id="queryByAccount" resultMap="baseResultMap">
-        SELECT * FROM user
+        SELECT * FROM userPojo
         WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
     </select>
 
     <select id="queryByBindAccount" resultMap="baseResultMap">
-        SELECT * FROM user
+        SELECT * FROM userPojo
         WHERE (BIND_ACCOUNT = #{account} AND STATE == 1
     </select>
 
     <select id="queryByUserId" resultMap="baseResultMap">
-        SELECT * FROM user
+        SELECT * FROM userPojo
         WHERE USER_ID = #{userId}
     </select>
 </mapper>

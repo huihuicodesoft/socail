@@ -1,6 +1,7 @@
 package cn.com.wh.ring.app.bean.request;
 
-import cn.com.wh.ring.app.bean.pojo.User;
+import cn.com.wh.ring.app.bean.pojo.AddressPojo;
+import cn.com.wh.ring.app.bean.pojo.UserPojo;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
@@ -8,11 +9,11 @@ import javax.validation.constraints.NotNull;
 /**
  * Created by Hui on 2017/7/23.
  */
-public class LoginThird {
+public class LoginThirdRequest {
     @NotNull(message = "账号不能为空")
     private String account;
 
-    @Range(min = User.ACCOUNT_TYPE_WX, max = User.ACCOUNT_TYPE_SINA, message = "账号类型非法")
+    @Range(min = UserPojo.ACCOUNT_TYPE_WX, max = UserPojo.ACCOUNT_TYPE_SINA, message = "账号类型非法")
     private byte accountType;
 
     @NotNull(message = "accessToken不能为空")
@@ -20,7 +21,9 @@ public class LoginThird {
 
     private String refreshToken;
 
-    private TerminalDetailInfo terminalDetailInfo;
+    private TerminalDetailInfoRequest terminalDetailInfoRequest;
+
+    private AddressRequest address;
 
     public String getAccount() {
         return account;
@@ -54,11 +57,19 @@ public class LoginThird {
         this.refreshToken = refreshToken;
     }
 
-    public TerminalDetailInfo getTerminalDetailInfo() {
-        return terminalDetailInfo;
+    public TerminalDetailInfoRequest getTerminalDetailInfoRequest() {
+        return terminalDetailInfoRequest;
     }
 
-    public void setTerminalDetailInfo(TerminalDetailInfo terminalDetailInfo) {
-        this.terminalDetailInfo = terminalDetailInfo;
+    public void setTerminalDetailInfoRequest(TerminalDetailInfoRequest terminalDetailInfoRequest) {
+        this.terminalDetailInfoRequest = terminalDetailInfoRequest;
+    }
+
+    public AddressRequest getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressRequest address) {
+        this.address = address;
     }
 }

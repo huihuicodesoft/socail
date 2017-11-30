@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/6/12.
  */
-@Alias("UserInfo")
+@Alias("UserInfoResponse")
 public class UserInfo {
     private Long id;
     private String nickname;
@@ -15,7 +15,9 @@ public class UserInfo {
     private Byte sex;
     private String avatar;
     private String signature;
-    private String addressCode;
+    private Long addressId;
+    private Double lng;
+    private Double lat;
     private Date lastModifiedTime;
     private Byte deleted;
     private Date creationTime;
@@ -68,12 +70,28 @@ public class UserInfo {
         this.signature = signature;
     }
 
-    public String getAddressCode() {
-        return addressCode;
+    public Long getAddressId() {
+        return addressId;
     }
 
-    public void setAddressCode(String addressCode) {
-        this.addressCode = addressCode;
+    public void setAddressId(Long addressId) {
+        this.addressId = addressId;
+    }
+
+    public Double getLng() {
+        return lng;
+    }
+
+    public void setLng(Double lng) {
+        this.lng = lng;
+    }
+
+    public Double getLat() {
+        return lat;
+    }
+
+    public void setLat(Double lat) {
+        this.lat = lat;
     }
 
     public Date getLastModifiedTime() {

@@ -1,9 +1,9 @@
 package cn.com.wh.ring.app.controller.account;
 
-import cn.com.wh.ring.app.bean.request.LoginMobile;
-import cn.com.wh.ring.app.bean.request.RegisterMobile;
-import cn.com.wh.ring.app.bean.request.LoginThird;
-import cn.com.wh.ring.app.bean.response.LoginUser;
+import cn.com.wh.ring.app.bean.request.LoginMobileRequest;
+import cn.com.wh.ring.app.bean.request.RegisterMobileRequest;
+import cn.com.wh.ring.app.bean.request.LoginThirdRequest;
+import cn.com.wh.ring.app.bean.response.LoginUserResponse;
 import cn.com.wh.ring.app.exception.ResponseException;
 import cn.com.wh.ring.app.service.user.UserService;
 import cn.com.wh.ring.app.utils.PhoneUtils;
@@ -34,7 +34,7 @@ public class AccountController {
 
     @PostMapping("v1/register/mobile")
     @ApiOperation(value = "手机注册")
-    public Response<?> registerMobile(@Valid @RequestBody RegisterMobile registerMobile, BindingResult result) {
+    public Response<?> registerMobile(@Valid @RequestBody RegisterMobileRequest registerMobileRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             for (ObjectError error : errorList) {
@@ -42,14 +42,14 @@ public class AccountController {
             }
             throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
         } else {
-            userService.registerMobileUser(registerMobile);
+            userService.registerMobileUser(registerMobileRequest);
             return ResponseHelper.createSuccessResponse();
         }
     }
 
     @PostMapping("v1/login/mobile")
     @ApiOperation(value = "手机登录")
-    public Response<?> loginMobile(@Valid @RequestBody LoginMobile loginMobile, BindingResult result) {
+    public Response<?> loginMobile(@Valid @RequestBody LoginMobileRequest loginMobileRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             for (ObjectError error : errorList) {
@@ -57,14 +57,14 @@ public class AccountController {
             }
             throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
         } else {
-            LoginUser loginUser = userService.loginMobileUser(loginMobile);
-            return ResponseHelper.createSuccessResponse(loginUser);
+            LoginUserResponse loginUserResponse = userService.loginMobileUser(loginMobileRequest);
+            return ResponseHelper.createSuccessResponse(loginUserResponse);
         }
     }
 
     @PostMapping("v1/login/third")
     @ApiOperation(value = "三方登录")
-    public Response<?> loginThird(@Valid @RequestBody LoginThird loginThird, BindingResult result) {
+    public Response<?> loginThird(@Valid @RequestBody LoginThirdRequest loginThirdRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             for (ObjectError error : errorList) {
@@ -72,8 +72,8 @@ public class AccountController {
             }
             throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
         } else {
-            LoginUser loginUser = userService.loginThirdUser(loginThird);
-            return ResponseHelper.createSuccessResponse(loginUser);
+            LoginUserResponse loginUserResponse = userService.loginThirdUser(loginThirdRequest);
+            return ResponseHelper.createSuccessResponse(loginUserResponse);
         }
     }
 
@@ -90,7 +90,7 @@ public class AccountController {
 
     @PostMapping("v1/reset/mobile/password")
     @ApiOperation(value = "重设密码")
-    public Response<?> resetMobilePassword(@Valid @RequestBody RegisterMobile registerMobile, BindingResult result) {
+    public Response<?> resetMobilePassword(@Valid @RequestBody RegisterMobileRequest registerMobileRequest, BindingResult result) {
         if (result.hasErrors()) {
             List<ObjectError> errorList = result.getAllErrors();
             for (ObjectError error : errorList) {
@@ -98,7 +98,7 @@ public class AccountController {
             }
             throw new ResponseException(ReturnCode.ERROR_INFO, "error_info");
         } else {
-            userService.updatePassword(registerMobile);
+            userService.updatePassword(registerMobileRequest);
             return ResponseHelper.createSuccessResponse();
         }
     }

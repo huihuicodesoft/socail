@@ -3,7 +3,7 @@ package cn.com.wh.ring.app.bean.response;
 /**
  * Created by Hui on 2017/6/21.
  */
-public class User {
+public class UserResponse {
     private Long userId;
     private String mobile;
     private String nickname;

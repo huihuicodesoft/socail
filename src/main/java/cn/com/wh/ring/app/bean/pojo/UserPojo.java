@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/6/23.
  */
-@Alias("User")
-public class User {
+@Alias("UserPojo")
+public class UserPojo {
     public static final byte ACCOUNT_TYPE_MOBILE = 1;
     public static final byte ACCOUNT_TYPE_WX = 2;
     public static final byte ACCOUNT_TYPE_QQ = 3;

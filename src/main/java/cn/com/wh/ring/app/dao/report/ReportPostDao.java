@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.report;
 
-import cn.com.wh.ring.app.bean.pojo.ReportPost;
+import cn.com.wh.ring.app.bean.pojo.ReportPostPojo;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ReportPostDao {
-    void insert(ReportPost reportPost);
+    void insert(ReportPostPojo reportPostPojo);
 }

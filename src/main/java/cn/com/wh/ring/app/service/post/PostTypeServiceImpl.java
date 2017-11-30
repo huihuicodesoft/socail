@@ -1,7 +1,8 @@
 package cn.com.wh.ring.app.service.post;
 
-import cn.com.wh.ring.app.bean.pojo.PostType;
-import cn.com.wh.ring.app.bean.response.Page;
+import cn.com.wh.ring.app.bean.pojo.PostTypePojo;
+import cn.com.wh.ring.app.bean.request.PageRequest;
+import cn.com.wh.ring.app.bean.response.PageResponse;
 import cn.com.wh.ring.app.constant.Constants;
 import cn.com.wh.ring.app.dao.post.PostTypeDao;
 import com.github.pagehelper.PageHelper;
@@ -21,9 +22,9 @@ public class PostTypeServiceImpl implements PostTypeService {
     PostTypeDao postTypeDao;
 
     @Override
-    public Page<PostType> query(cn.com.wh.ring.app.bean.request.Page page) {
-        PageHelper.startPage(page.getPageNumber(), page.getPageSize());
-        List<PostType> list = postTypeDao.query(page.getMaxId(), Constants.BOOLEAN_FALSE);
-        return new Page(list);
+    public PageResponse<PostTypePojo> query(PageRequest pageRequest) {
+        PageHelper.startPage(pageRequest.getPageNumber(), pageRequest.getPageSize());
+        List<PostTypePojo> list = postTypeDao.query(pageRequest.getMaxId(), Constants.BOOLEAN_FALSE);
+        return new PageResponse(list);
     }
 }

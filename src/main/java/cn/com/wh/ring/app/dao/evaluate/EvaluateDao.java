@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.evaluate;
 
-import cn.com.wh.ring.app.bean.pojo.Evaluate;
+import cn.com.wh.ring.app.bean.pojo.EvaluatePojo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface EvaluateDao {
-    void insert(Evaluate evaluate);
+    void insert(EvaluatePojo evaluatePojo);
 
-    Evaluate query(@Param("hostId") Long postId, @Param("hostType") int hostType,
-                   @Param("mark") String mark,  @Param("markType") int markType);
+    EvaluatePojo query(@Param("hostId") Long postId, @Param("hostType") int hostType,
+                       @Param("mark") String mark, @Param("markType") int markType);
 }
