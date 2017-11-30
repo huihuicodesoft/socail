@@ -2,7 +2,7 @@ package cn.com.wh.ring.app.service.address;
 
 import cn.com.wh.ring.app.bean.pojo.AddressPojo;
 import cn.com.wh.ring.app.bean.pojo.PostPojo;
-import cn.com.wh.ring.app.bean.pojo.UserInfo;
+import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
 import cn.com.wh.ring.app.bean.request.AddressRequest;
 import cn.com.wh.ring.app.dao.address.AddressDao;
 import com.sun.istack.internal.NotNull;
@@ -26,13 +26,13 @@ public class AddressServiceImpl implements AddressService {
     AddressDao addressDao;
 
     @Override
-    public void bind(@NotNull UserInfo userInfo, AddressRequest addressRequest) {
+    public void bind(@NotNull UserInfoPojo userInfoPojo, AddressRequest addressRequest) {
         if (addressRequest != null) {
             AddressPojo addressPojo = new AddressPojo(addressRequest);
             addressDao.insert(addressPojo);
-            userInfo.setAddressId(addressPojo.getId());
-            userInfo.setLng(addressRequest.getLng());
-            userInfo.setLat(addressRequest.getLat());
+            userInfoPojo.setAddressId(addressPojo.getId());
+            userInfoPojo.setLng(addressRequest.getLng());
+            userInfoPojo.setLat(addressRequest.getLat());
         }
     }
 

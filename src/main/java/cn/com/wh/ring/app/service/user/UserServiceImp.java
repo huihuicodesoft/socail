@@ -1,14 +1,12 @@
 package cn.com.wh.ring.app.service.user;
 
 import cn.com.wh.ring.app.bean.pojo.*;
-import cn.com.wh.ring.app.bean.pojo.AddressPojo;
 import cn.com.wh.ring.app.bean.pojo.UserPojo;
-import cn.com.wh.ring.app.bean.pojo.UserInfo;
+import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
 import cn.com.wh.ring.app.bean.request.*;
 import cn.com.wh.ring.app.bean.response.*;
 import cn.com.wh.ring.app.constant.Constants;
 import cn.com.wh.ring.app.constant.RoleConstants;
-import cn.com.wh.ring.app.dao.address.AddressDao;
 import cn.com.wh.ring.app.dao.user.*;
 import cn.com.wh.ring.app.exception.ServiceException;
 import cn.com.wh.ring.app.helper.FileHelper;
@@ -96,7 +94,7 @@ public class UserServiceImp implements UserService {
             UserPojo userPojo = userDao.queryByAccount(registerMobileRequest.getMobile(), UserPojo.ACCOUNT_TYPE_MOBILE);
             if (userPojo == null) {
                 //添加用户信息
-                UserInfo userInfo = getUserInfoByAddress(registerMobileRequest.getAddress());
+                UserInfoPojo userInfoPojo = getUserInfoByAddress(registerMobileRequest.getAddress());
 
                 try {
                     //创建账号，绑定用户信息
@@ -104,7 +102,7 @@ public class UserServiceImp implements UserService {
                     userPojo.setAccount(registerMobileRequest.getMobile());
                     userPojo.setPassword(RSA.decrypt(registerMobileRequest.getPassword()));
                     userPojo.setAccountType(UserPojo.ACCOUNT_TYPE_MOBILE);
-                    userPojo.setUserInfoId(userInfo.getId());
+                    userPojo.setUserInfoId(userInfoPojo.getId());
                     userPojo.setUserId(generateUserId());
                     userDao.insert(userPojo);
 
@@ -153,7 +151,7 @@ public class UserServiceImp implements UserService {
         UserPojo userPojo = userDao.queryByAccount(loginThirdRequest.getAccount(), loginThirdRequest.getAccountType());
         if (userPojo == null) {
             //添加用户信息
-            UserInfo userInfo = getUserInfoByAddress(loginThirdRequest.getAddress());
+            UserInfoPojo userInfoPojo = getUserInfoByAddress(loginThirdRequest.getAddress());
 
             //创建账号，绑定用户信息
             userPojo = new UserPojo();
@@ -161,7 +159,7 @@ public class UserServiceImp implements UserService {
             userPojo.setAccountType(loginThirdRequest.getAccountType());
             userPojo.setAccessToken(loginThirdRequest.getAccessToken());
             userPojo.setRefreshToken(loginThirdRequest.getRefreshToken());
-            userPojo.setUserInfoId(userInfo.getId());
+            userPojo.setUserInfoId(userInfoPojo.getId());
             userPojo.setUserId(generateUserId());
             userDao.insert(userPojo);
 
@@ -178,13 +176,13 @@ public class UserServiceImp implements UserService {
         return recordTerminalToResponse(loginThirdRequest.getTerminalDetailInfoRequest(), userPojo);
     }
 
-    private UserInfo getUserInfoByAddress(AddressRequest addressRequest) {
+    private UserInfoPojo getUserInfoByAddress(AddressRequest addressRequest) {
         //添加用户信息
-        UserInfo userInfo = new UserInfo();
+        UserInfoPojo userInfoPojo = new UserInfoPojo();
         //添加注册地址信息
-        addressService.bind(userInfo, addressRequest);
-        userInfoDao.insert(userInfo);
-        return userInfo;
+        addressService.bind(userInfoPojo, addressRequest);
+        userInfoDao.insert(userInfoPojo);
+        return userInfoPojo;
     }
 
     @Override
@@ -264,21 +262,21 @@ public class UserServiceImp implements UserService {
         userTerminalService.bindUserTerminal(userTerminalPojo);
     }
 
-    public void updateUserInfo(UserInfo userInfo) {
+    public void updateUserInfo(UserInfoPojo userInfoPojo) {
         UserPojo userPojo = getUserUsing(TokenHelper.getCurrentSubjectUserId());
-        userInfo.setId(userPojo.getUserInfoId());
-        userInfoDao.update(userInfo);
+        userInfoPojo.setId(userPojo.getUserInfoId());
+        userInfoDao.update(userInfoPojo);
     }
 
     public UserInfoResponse queryUser(Long userId) {
         UserPojo userPojo = getUserUsing(userId);
-        UserInfo userInfo = userInfoDao.queryById(userPojo.getUserInfoId());
+        UserInfoPojo userInfoPojo = userInfoDao.queryById(userPojo.getUserInfoId());
         //拼接头像地址
-        String avatar = userInfo.getAvatar();
+        String avatar = userInfoPojo.getAvatar();
         if (!Strings.isNullOrEmpty(avatar))
-            userInfo.setAvatar(fileHelper.getFileAvatarUrl(avatar));
-
-        return new UserInfoResponse(userId, userInfo);
+            userInfoPojo.setAvatar(fileHelper.getFileAvatarUrl(avatar));
+        String region = addressService.getRegion(userInfoPojo.getAddressId());
+        return new UserInfoResponse(userId, userInfoPojo, region);
     }
 
     public boolean isValid(Long userId) throws ServiceException{

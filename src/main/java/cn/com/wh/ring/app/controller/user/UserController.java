@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.controller.user;
 
-import cn.com.wh.ring.app.bean.pojo.UserInfo;
+import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
 import cn.com.wh.ring.app.constant.PermissionConstants;
 import cn.com.wh.ring.app.exception.ResponseException;
 import cn.com.wh.ring.app.helper.FileHelper;
@@ -58,9 +58,9 @@ public class UserController {
             } else {
                 try {
                     String fileName = storageService.store(file, STORAGE_TYPE.AVATAR);
-                    UserInfo userInfo = new UserInfo();
-                    userInfo.setAvatar(fileName);
-                    userService.updateUserInfo(userInfo);
+                    UserInfoPojo userInfoPojo = new UserInfoPojo();
+                    userInfoPojo.setAvatar(fileName);
+                    userService.updateUserInfo(userInfoPojo);
                     String url = fileHelper.getFileAvatarUrl(fileName);
                     return ResponseHelper.createSuccessResponse(url);
                 } catch (Exception e) {
@@ -73,11 +73,11 @@ public class UserController {
     @PostMapping("v1/userInfo/update")
     @ApiOperation(value = "更新用户信息")
     @RequiresPermissions(PermissionConstants.PERMISSION_USER_INFO)
-    public Response<?> updateUserInfo(@RequestBody UserInfo userInfo) {
-        if (userInfo == null) {
+    public Response<?> updateUserInfo(@RequestBody UserInfoPojo userInfoPojo) {
+        if (userInfoPojo == null) {
             throw ResponseException.create(ReturnCode.ERROR_USER_INFO_NULL, "error_user_info_null");
         } else {
-            userService.updateUserInfo(userInfo);
+            userService.updateUserInfo(userInfoPojo);
         }
         return ResponseHelper.createSuccessResponse();
     }

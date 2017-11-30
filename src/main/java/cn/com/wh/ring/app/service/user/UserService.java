@@ -1,7 +1,7 @@
 package cn.com.wh.ring.app.service.user;
 
 import cn.com.wh.ring.app.bean.pojo.UserPojo;
-import cn.com.wh.ring.app.bean.pojo.UserInfo;
+import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
 import cn.com.wh.ring.app.bean.request.LoginMobileRequest;
 import cn.com.wh.ring.app.bean.request.RegisterMobileRequest;
 import cn.com.wh.ring.app.bean.request.LoginThirdRequest;
@@ -48,9 +48,9 @@ public interface UserService {
 
     /**
      * 更新用户信息
-     * @param userInfo
+     * @param userInfoPojo
      */
-    void updateUserInfo(UserInfo userInfo);
+    void updateUserInfo(UserInfoPojo userInfoPojo);
 
     /**
      * 获取用户信息

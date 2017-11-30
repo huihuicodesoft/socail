@@ -1,5 +1,7 @@
 package cn.com.wh.ring.app.bean.response;
 
+import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
+
 import java.util.Date;
 
 /**
@@ -16,17 +18,17 @@ public class UserInfoResponse {
     private String region;
     private Date lastModifiedTime;
 
-    public UserInfoResponse(Long userId, cn.com.wh.ring.app.bean.pojo.UserInfo userInfo) {
+    public UserInfoResponse(Long userId, UserInfoPojo userInfoPojo, String region) {
         this.userId = userId;
-        if (userInfo != null) {
-            infoId = userInfo.getId();
-            nickname = userInfo.getNickname();
-            birthday = userInfo.getBirthday();
-            sex = userInfo.getSex();
-            avatar = userInfo.getAvatar();
-            signature = userInfo.getSignature();
-            region = userInfo.getRegion();
-            lastModifiedTime = userInfo.getLastModifiedTime();
+        if (userInfoPojo != null) {
+            this.infoId = userInfoPojo.getId();
+            this.nickname = userInfoPojo.getNickname();
+            this.birthday = userInfoPojo.getBirthday();
+            this.sex = userInfoPojo.getSex();
+            this.avatar = userInfoPojo.getAvatar();
+            this.signature = userInfoPojo.getSignature();
+            this.region = region;
+            this. lastModifiedTime = userInfoPojo.getLastModifiedTime();
         }
     }
 

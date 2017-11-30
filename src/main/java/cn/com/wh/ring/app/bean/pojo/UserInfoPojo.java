@@ -7,8 +7,8 @@ import java.util.Date;
 /**
  * Created by Hui on 2017/6/12.
  */
-@Alias("UserInfoResponse")
-public class UserInfo {
+@Alias("UserInfoPojo")
+public class UserInfoPojo {
     private Long id;
     private String nickname;
     private Date birthday;

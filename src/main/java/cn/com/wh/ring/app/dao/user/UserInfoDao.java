@@ -1,6 +1,6 @@
 package cn.com.wh.ring.app.dao.user;
 
-import cn.com.wh.ring.app.bean.pojo.UserInfo;
+import cn.com.wh.ring.app.bean.pojo.UserInfoPojo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface UserInfoDao {
-    void insert(UserInfo userInfo);
+    void insert(UserInfoPojo userInfoPojo);
 
-    void update(UserInfo userInfo);
+    void update(UserInfoPojo userInfoPojo);
 
-    UserInfo queryById(@Param("id") Long id);
+    UserInfoPojo queryById(@Param("id") Long id);
 }

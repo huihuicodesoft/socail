@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.com.wh.ring.app.dao.userPojo.UserInfoDao">
-    <resultMap id="baseResultMap" type="UserInfo">
+<mapper namespace="cn.com.wh.ring.app.dao.user.UserInfoDao">
+    <resultMap id="baseResultMap" type="UserInfoPojo">
         <id property="id" column="ID"/>
         <result property="nickname" column="NICKNAME"/>
         <result property="birthday" column="BIRTHDAY"/>
@@ -16,7 +16,7 @@
         <result property="creationTime" column="CREATION_TIME"/>
     </resultMap>
 
-    <insert id="insert" parameterType="UserInfo" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="UserInfoPojo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user_info
         (NICKNAME, BIRTHDAY, AVATAR, SIGNATURE, ADDRESS_ID, LNG, LAT, LAST_MODIFIED_TIME, CREATION_TIME)
         VALUES
