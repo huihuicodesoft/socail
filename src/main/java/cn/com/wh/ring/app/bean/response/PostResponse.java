@@ -43,6 +43,7 @@ public class PostResponse {
     private int criticizeNumber;
     private int commentNumber;
     private int reportNumber;
+    private int state;
     private boolean anonymous;
     private Date creationTime;
 
@@ -80,6 +81,10 @@ public class PostResponse {
 
     public void setPostType(long id, String name) {
         this.postType = new PostType(id, name);
+    }
+
+    public PostType getPostType() {
+        return postType;
     }
 
     public String getRegion() {
@@ -120,6 +125,14 @@ public class PostResponse {
 
     public void setReportNumber(int reportNumber) {
         this.reportNumber = reportNumber;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     public boolean isAnonymous() {

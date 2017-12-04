@@ -23,7 +23,11 @@ public interface PostDao {
 
     PostPojo queryById(@Param("id") Long id);
 
-    List<PostPojo> queryByUserId(@Param("userId") Long userId, @Param("maxId") Long maxId);
+    List<PostPojo> queryUser(@Param("userId") Long userId, @Param("maxId") Long maxId, @Param("state") Byte state);
 
     List<PostPojo> queryByState(@Param("state") Byte state, @Param("maxId") Long maxId);
+
+    Long queryByUserIdAndUUID(@Param("userId") Long userId, @Param("uuid") String uuid);
+
+    Long getMaxId();
 }

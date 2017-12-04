@@ -10,13 +10,21 @@
     </resultMap>
 
     <insert id="insert" parameterType="AddressPojo" useGeneratedKeys="true" keyProperty="id">
-        INSERT IGNORE INTO addressPojo
+        INSERT IGNORE INTO address
         (COUNTRY, PROVINCE, CITY, DISTRICT)
         VALUES
-        (#{country}, #{province}, #{city}, #{district)
+        (#{country}, #{province}, #{city}, #{district})
     </insert>
 
     <select id="queryAddressById" parameterType="java.lang.Long" resultMap="baseResultMap">
-        SELECT * FROM addressPojo WHERE ID = #{id}
+        SELECT * FROM address WHERE ID = #{id}
+    </select>
+
+    <select id="queryId" resultType="long">
+        SELECT ID FROM address WHERE
+        COUNTRY = #{country} AND
+        PROVINCE = #{province} AND
+        CITY = #{city} AND
+        DISTRICT = #{district}
     </select>
 </mapper>

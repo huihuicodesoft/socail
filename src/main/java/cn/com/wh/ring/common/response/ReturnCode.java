@@ -43,8 +43,7 @@ public class ReturnCode {
     public static final int ERROR_POST_ILLEGAL_MEDIA_TYPE = 2013; //媒体类型不合法
     public static final int ERROR_POST_COMMENT_NULL = 2014; //帖子回复不能为空
 
-
     public static final int ERROR_USER_BIND_TERMINAL_INVALID = 2017; //用户设备登录无效
 
-
+    public static final int ERROR_POST_PUBLISHED = 2018; //帖子已经发布
 }

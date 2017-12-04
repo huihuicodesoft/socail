@@ -250,7 +250,7 @@ public class UserServiceImp implements UserService {
         String token = TokenHelper.createToken(userPojo.getUserId(), terminalPojo.getId());
         LoginUserResponse loginUserResponse = new LoginUserResponse();
         loginUserResponse.setToken(token);
-        loginUserResponse.setUserInfoResponse(queryUser(userPojo.getUserId()));
+        loginUserResponse.setUserInfo(queryUser(userPojo.getUserId()));
         return loginUserResponse;
     }
 

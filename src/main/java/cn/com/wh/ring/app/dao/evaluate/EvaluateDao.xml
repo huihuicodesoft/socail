@@ -12,11 +12,11 @@
     </resultMap>
 
     <insert id="insert" parameterType="EvaluatePojo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO evaluatePojo (HOST_ID, HOST_TYPE, MARK, MARK_TYPE, TYPE, CREATION_TIME)
+        INSERT INTO evaluate (HOST_ID, HOST_TYPE, MARK, MARK_TYPE, TYPE, CREATION_TIME)
         VALUES (#{hostId}, #{hostType}, #{mark}, #{markType}, #{type}, NOW())
     </insert>
 
     <select id="query" resultMap="baseResultMap">
-        SELECT * FROM evaluatePojo WHERE HOST_ID = #{hostId} AND HOST_TYPE = #{hostType} AND MARK = #{mark} AND MARK_TYPE = #{markType}
+        SELECT * FROM evaluate WHERE HOST_ID = #{hostId} AND HOST_TYPE = #{hostType} AND MARK = #{mark} AND MARK_TYPE = #{markType}
     </select>
 </mapper>

@@ -30,6 +30,9 @@ public class AddressServiceImpl implements AddressService {
         if (addressRequest != null) {
             AddressPojo addressPojo = new AddressPojo(addressRequest);
             addressDao.insert(addressPojo);
+            if (addressPojo.getId() == 0) {
+                addressPojo.setId(addressDao.queryId(addressPojo));
+            }
             userInfoPojo.setAddressId(addressPojo.getId());
             userInfoPojo.setLng(addressRequest.getLng());
             userInfoPojo.setLat(addressRequest.getLat());
@@ -41,10 +44,12 @@ public class AddressServiceImpl implements AddressService {
         if (addressRequest != null) {
             AddressPojo addressPojo = new AddressPojo(addressRequest);
             addressDao.insert(addressPojo);
+            if (addressPojo.getId() == 0) {
+                addressPojo.setId(addressDao.queryId(addressPojo));
+            }
             postPojo.setAddressId(addressPojo.getId());
             postPojo.setLng(addressRequest.getLng());
             postPojo.setLat(addressRequest.getLat());
-
         }
     }
 

@@ -12,4 +12,6 @@ public interface AddressDao {
     void insert(AddressPojo addressPojo);
 
     AddressPojo queryAddressById(@Param("id") Long id);
+
+    Long queryId(AddressPojo addressPojo);
 }

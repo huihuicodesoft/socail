@@ -6,7 +6,7 @@ package cn.com.wh.ring.app.bean.response;
  */
 public class LoginUserResponse {
     private String token;
-    private UserInfoResponse userInfoResponse;
+    private UserInfoResponse userInfo;
 
     public String getToken() {
         return token;
@@ -16,11 +16,11 @@ public class LoginUserResponse {
         this.token = token;
     }
 
-    public UserInfoResponse getUserInfoResponse() {
-        return userInfoResponse;
+    public UserInfoResponse getUserInfo() {
+        return userInfo;
     }
 
-    public void setUserInfoResponse(UserInfoResponse userInfoResponse) {
-        this.userInfoResponse = userInfoResponse;
+    public void setUserInfo(UserInfoResponse userInfo) {
+        this.userInfo = userInfo;
     }
 }

@@ -30,8 +30,8 @@ public class PostController {
 
     @GetMapping("v1/user/page")
     @RequiresPermissions(PermissionConstants.PERMISSION_USER_INFO)
-    public Response<?> queryByUserId(@RequestParam("userId") Long userId, @ModelAttribute PageRequest pageRequest) {
-        PageResponse<PostResponse> response = postService.queryByUserId(userId, pageRequest);
+    public Response<?> queryUser(@RequestParam(value = "userId", required = false) Long userId, @ModelAttribute PageRequest pageRequest) {
+        PageResponse<PostResponse> response = postService.queryUser(userId, pageRequest);
         return ResponseHelper.createSuccessResponse(response);
     }
 

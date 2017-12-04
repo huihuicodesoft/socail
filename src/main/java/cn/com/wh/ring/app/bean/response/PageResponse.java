@@ -8,6 +8,7 @@ import java.util.List;
  * Created by Hui on 2017/8/1.
  */
 public class PageResponse<T> implements Serializable {
+    private long maxId;        //最大ID
     private long total;        //总记录数
     private int pageNum;    // 第几页
     private int pageSize;    // 每页记录数
@@ -32,6 +33,14 @@ public class PageResponse<T> implements Serializable {
             this.size = list.size();
             this.total = (long) list.size();
         }
+    }
+
+    public long getMaxId() {
+        return maxId;
+    }
+
+    public void setMaxId(long maxId) {
+        this.maxId = maxId;
     }
 
     public long getTotal() {

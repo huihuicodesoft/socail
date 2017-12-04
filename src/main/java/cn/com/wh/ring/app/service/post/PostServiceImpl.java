@@ -57,8 +57,29 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Long publish(PostPublishRequest postPublishRequest) {
-        PostPojo postPojo = new PostPojo();
+        Long id = postDao.queryByUserIdAndUUID(TokenHelper.getCurrentSubjectUserId(), postPublishRequest.getUuid());
+        if (id != null) {
+            throw ServiceException.create(ReturnCode.ERROR_POST_PUBLISHED, "error_post_published");
+        } else {
+            PostPojo postPojo = new PostPojo();
 
+            fillMediaContent(postPublishRequest, postPojo);
+
+            postPojo.setUserId(TokenHelper.getCurrentSubjectUserId());
+            postPojo.setUuid(postPublishRequest.getUuid());
+            postPojo.setPostTypeId(postPublishRequest.getPostType());
+            postPojo.setDescription(postPublishRequest.getDescription());
+            AddressRequest addressRequest = postPublishRequest.getAddress();
+            addressService.bind(postPojo, addressRequest);
+            postPojo.setState(PostPojo.STATE_CHECKING);
+            System.out.print("postPublishRequest.isAnonymous() = "+postPublishRequest.isAnonymous());
+            postPojo.setAnonymous(postPublishRequest.isAnonymous() ? Constants.BOOLEAN_TRUE : Constants.BOOLEAN_FALSE);
+            postDao.insert(postPojo);
+            return postPojo.getId();
+        }
+    }
+
+    private void fillMediaContent(PostPublishRequest postPublishRequest, PostPojo postPojo) {
         List<String> list = postPublishRequest.getMediaContent();
         if (list != null && !list.isEmpty()) {
             if (isAllImage(list)) {
@@ -87,16 +108,6 @@ public class PostServiceImpl implements PostService {
                 throw ServiceException.create(ReturnCode.ERROR_POST_ILLEGAL_MEDIA_TYPE, "error_post_illegal_media_type");
             }
         }
-
-        postPojo.setUserId(TokenHelper.getCurrentSubjectUserId());
-        postPojo.setPostTypeId(postPublishRequest.getPostType());
-        postPojo.setDescription(postPublishRequest.getDescription());
-        AddressRequest addressRequest = postPublishRequest.getAddress();
-        addressService.bind(postPojo, addressRequest);
-        postPojo.setState(PostPojo.STATE_CHECKING);
-        postPojo.setAnonymous(postPublishRequest.isAnonymous() ? Constants.BOOLEAN_TRUE : Constants.BOOLEAN_FALSE);
-        postDao.insert(postPojo);
-        return postPojo.getId();
     }
 
     private boolean isAllImage(List<String> list) {
@@ -118,24 +129,23 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PageResponse<PostResponse> queryByUserId(Long userId, PageRequest pageRequest) {
-        if (userId == null) {
-            userId = TokenHelper.getCurrentSubjectUserId();
-        }
+    public PageResponse<PostResponse> queryUser(Long userId, PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNumber(), pageRequest.getPageSize());
-        List<PostPojo> list = postDao.queryByUserId(userId, pageRequest.getMaxId());
-        return covertListToPage(list);
+        List<PostPojo> list = postDao.queryUser(userId == null ? TokenHelper.getCurrentSubjectUserId() : userId,
+                pageRequest.getMaxId(), userId == null ? null : PostPojo.STATE_CHECK_SUCCESS);
+        return covertListToPage(list, pageRequest.getMaxId());
     }
 
     @Override
     public PageResponse<PostResponse> query(PageRequest pageRequest) {
         PageHelper.startPage(pageRequest.getPageNumber(), pageRequest.getPageSize());
         List<PostPojo> list = postDao.queryByState(PostPojo.STATE_CHECK_SUCCESS, pageRequest.getMaxId());
-        return covertListToPage(list);
+        return covertListToPage(list, pageRequest.getMaxId());
     }
 
-    private PageResponse covertListToPage(List<PostPojo> list) {
+    private PageResponse covertListToPage(List<PostPojo> list, Long maxId) {
         PageResponse result = new PageResponse(list);
+        result.setMaxId(maxId <= 0 ? postDao.getMaxId() : maxId);
         List<PostResponse> responseList = new ArrayList<>();
         List<PostPojo> tempList = result.getList();
         for (PostPojo postPojo : tempList) {
@@ -145,6 +155,7 @@ public class PostServiceImpl implements PostService {
             temp.setId(postPojo.getId());
             temp.setUserId(postPojo.getUserId());
             temp.setRegion(addressService.getRegion(postPojo.getAddressId()));
+            temp.setState(postPojo.getState());
             temp.setAnonymous(postPojo.getAnonymous() == Constants.BOOLEAN_TRUE);
             if (postTypePojo != null)
                 temp.setPostType(postTypePojo.getId(), postTypePojo.getName());

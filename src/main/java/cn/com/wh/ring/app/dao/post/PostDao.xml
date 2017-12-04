@@ -4,6 +4,7 @@
     <resultMap id="baseResultMap" type="PostPojo">
         <id property="id" column="ID"/>
         <result property="userId" column="USER_ID"/>
+        <result property="uuid" column="UUID"/>
         <result property="description" column="DESCRIPTION"/>
         <result property="mediaContent" column="MEDIA_CONTENT"/>
         <result property="postTypeId" column="POST_TYPE_ID"/>
@@ -21,46 +22,49 @@
     </resultMap>
 
     <insert id="insert" parameterType="PostPojo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO postPojo
-        (USER_ID, DESCRIPTION, MEDIA_CONTENT, POST_TYPE_ID, ADDRESS_ID, LNG, LAT, STATE, CREATION_TIME)
+        INSERT INTO post
+        (USER_ID, UUID, DESCRIPTION, MEDIA_CONTENT, POST_TYPE_ID, ANONYMOUS, ADDRESS_ID, LNG, LAT, STATE, CREATION_TIME)
         VALUES
-        (#{userId}, #{description}, #{mediaContent}, #{postTypeId}, #{addressId}, #{lng}, #{lat}, #{state}, NOW())
+        (#{userId}, #{uuid}, #{description}, #{mediaContent}, #{postTypeId}, #{anonymous}, #{addressId}, #{lng}, #{lat}, #{state}, NOW())
     </insert>
 
     <update id="increasePraiseNumber" parameterType="java.lang.Long">
-        UPDATE postPojo
+        UPDATE post
         SET
         PRAISE_NUMBER = PRAISE_NUMBER + 1
         WHERE ID = #{id}
     </update>
 
     <update id="increaseCriticizeNumber" parameterType="java.lang.Long">
-        UPDATE postPojo
+        UPDATE post
         SET
         CRITICIZE_NUMBER = CRITICIZE_NUMBER + 1
         WHERE ID = #{id}
     </update>
 
     <update id="increaseCommentNumber" parameterType="java.lang.Long">
-        UPDATE postPojo
+        UPDATE post
         SET
         COMMENT_NUMBER = COMMENT_NUMBER + 1
         WHERE ID = #{id}
     </update>
 
     <update id="increaseReportNumber" parameterType="java.lang.Long">
-        UPDATE postPojo
+        UPDATE post
         SET
         REPORT_NUMBER = REPORT_NUMBER + 1
         WHERE ID = #{id}
     </update>
 
     <select id="queryById" parameterType="java.lang.Long" resultMap="baseResultMap">
-        SELECT * FROM postPojo WHERE ID = #{id}
+        SELECT * FROM post WHERE ID = #{id}
     </select>
 
-    <select id="queryByUserId" resultMap="baseResultMap">
-        SELECT * FROM postPojo WHERE USER_ID = #{userId}
+    <select id="queryUser" resultMap="baseResultMap">
+        SELECT * FROM post WHERE USER_ID = #{userId}
+        <if test="state != null">
+            AND STATE = #{state}
+        </if>
         <if test="maxId > 0">
             <![CDATA[
             AND ID <= #{maxId}
@@ -70,12 +74,20 @@
     </select>
 
     <select id="queryByState" resultMap="baseResultMap">
-        SELECT * FROM postPojo WHERE STATE = #{state}
+        SELECT * FROM post WHERE STATE = #{state}
         <if test="maxId > 0">
             <![CDATA[
             AND ID <= #{maxId}
             ]]>
         </if>
         ORDER BY CREATION_TIME DESC
+    </select>
+
+    <select id="queryByUserIdAndUUID" resultType="long">
+        SELECT ID FROM post WHERE USER_ID = #{userId} AND UUID = #{uuid}
+    </select>
+
+    <select id="getMaxId" resultType="long">
+        SELECT MAX(ID) FROM post
     </select>
 </mapper>

@@ -16,7 +16,7 @@ public class PostPojo {
      * 帖子状态值
      * 1：审核中（默认值）
      * 2：审核失败
-     * 3：审核成功
+     * 3：审核成功y.B
      * 4：用户删除
      */
     public static final byte STATE_CHECKING = 1;
@@ -26,6 +26,7 @@ public class PostPojo {
 
     private Long id;
     private Long userId;
+    private String uuid;
     private String description;
     private String mediaContent;
     private Integer postTypeId;
@@ -54,6 +55,14 @@ public class PostPojo {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getDescription() {

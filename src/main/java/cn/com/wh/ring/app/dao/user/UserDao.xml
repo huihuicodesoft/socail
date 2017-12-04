@@ -16,28 +16,28 @@
     </resultMap>
 
     <insert id="insert" parameterType="UserPojo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO userPojo
+        INSERT INTO user
         (USER_ID, ACCOUNT, ACCOUNT_TYPE, USER_INFO_ID, PASSWORD, ACCESS_TOKEN, REFRESH_TOKEN, CREATION_TIME)
         VALUES
         (#{userId}, #{account}, #{accountType}, #{userInfoId}, #{password}, #{accessToken}, #{refreshToken}, NOW())
     </insert>
 
     <update id="updateBindAccount">
-        UPDATE userPojo
+        UPDATE user
           SET
             BIND_ACCOUNT = #{account}
         WHERE USER_ID = #{userId}
     </update>
 
     <update id="updatePassword">
-        UPDATE userPojo
+        UPDATE user
           SET
             PASSWORD = #{password}
         WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
     </update>
 
     <update id="updateToken">
-        UPDATE userPojo
+        UPDATE user
           SET
             ACCESS_TOKEN = #{accessToken},
             REFRESH_TOKEN = #{refreshToken}
@@ -45,28 +45,28 @@
     </update>
 
     <update id="updateState" parameterType="java.lang.Long">
-        UPDATE userPojo
+        UPDATE user
           SET
             STATE = #{state}
         WHERE USER_ID = #{userId}
     </update>
 
     <select id="queryMaxUserId" resultType="java.lang.Long">
-        SELECT MAX(USER_ID) FROM userPojo
+        SELECT MAX(USER_ID) FROM user
     </select>
 
     <select id="queryByAccount" resultMap="baseResultMap">
-        SELECT * FROM userPojo
+        SELECT * FROM user
         WHERE (ACCOUNT = #{account} AND ACCOUNT_TYPE =  #{accountType})
     </select>
 
     <select id="queryByBindAccount" resultMap="baseResultMap">
-        SELECT * FROM userPojo
+        SELECT * FROM user
         WHERE (BIND_ACCOUNT = #{account} AND STATE == 1
     </select>
 
     <select id="queryByUserId" resultMap="baseResultMap">
-        SELECT * FROM userPojo
+        SELECT * FROM user
         WHERE USER_ID = #{userId}
     </select>
 </mapper>

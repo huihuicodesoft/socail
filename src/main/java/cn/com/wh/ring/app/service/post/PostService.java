@@ -12,7 +12,7 @@ import cn.com.wh.ring.app.bean.response.PostResponse;
 public interface PostService {
     Long publish(PostPublishRequest postPublishRequest);
 
-    PageResponse<PostResponse> queryByUserId(Long userId, PageRequest pageRequest);
+    PageResponse<PostResponse> queryUser(Long userId, PageRequest pageRequest);
 
     PageResponse<PostResponse> query(PageRequest pageRequest);
 

@@ -27,6 +27,7 @@ public class AddressPojo {
         this.country = addressRequest.getCountry();
         this.province = addressRequest.getProvince();
         this.city = addressRequest.getCity();
+        this.district = addressRequest.getDistrict();
     }
 
     public long getId() {

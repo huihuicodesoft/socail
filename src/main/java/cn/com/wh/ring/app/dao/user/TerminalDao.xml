@@ -15,12 +15,12 @@
     </resultMap>
 
     <insert id="insert" parameterType="TerminalPojo" useGeneratedKeys="true" keyProperty="id">
-        INSERT IGNORE INTO terminalPojo (UUID, IMEI, MAC, OS_TYPE, MODEL, SDK, SYSTEM, CREATION_TIME)
+        INSERT IGNORE INTO terminal (UUID, IMEI, MAC, OS_TYPE, MODEL, SDK, SYSTEM, CREATION_TIME)
         VALUES (#{uuid}, #{imei}, #{mac}, #{osType}, #{model}, #{sdk}, #{system}, NOW())
     </insert>
 
     <insert id="updateByUuid">
-        UPDATE terminalPojo SET
+        UPDATE terminal SET
         MODEL = #{terminalDetailInfoRequest.model},
         SDK = #{terminalDetailInfoRequest.sdk},
         SYSTEM = #{terminalDetailInfoRequest.system}
@@ -28,6 +28,6 @@
     </insert>
 
     <select id="queryByUuid" resultMap="baseResultMap">
-        SELECT * FROM terminalPojo WHERE UUID = #{uuid}
+        SELECT * FROM terminal WHERE UUID = #{uuid}
     </select>
 </mapper>
